@@ -4,6 +4,10 @@
 .DS_Store
 ## exclude raw data - from mediaflux or elsewhere. Keeping it this way, so that "some" data can be stored in gitlab
 data/
+junk/
+raw/
+working/
+resources/
 
 *.log
 
