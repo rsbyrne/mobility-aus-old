@@ -10,6 +10,7 @@ working/
 resources/
 
 *.log
+.credentials.json
 
 # R
 

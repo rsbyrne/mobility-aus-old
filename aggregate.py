@@ -59,6 +59,11 @@ class NoMatchFound(Exception):
 
 def match_poly(fromPoly, toPolys, matches, medianToArea, toBounds, kdTree, keyLookup, centroidTree):
 
+    if type(fromPoly) is shapely.geometry.Polygon:
+        fromPoly = fromPoly.centroid
+    elif type(fromPoly) is shapely.geometry.MultiPolygon:
+        raise Exception("MultiPolygons not supported yet.")
+
     # PREVIOUS STRATEGY
     if len(matches):
         candidate = matches[-1]
