@@ -7,7 +7,7 @@ The site was established on the 12 May 2020 and will be updated at midnight dail
 *COMING SOON*
 
 - [ ] Interactive visualisations
-- [ ] Detailed data aggregation methodologies
+- [ ] Data aggregation details
 - [ ] Frequently Asked Questions
 - [ ] Analysis spotlights
 
@@ -15,7 +15,7 @@ The site was established on the 12 May 2020 and will be updated at midnight dail
 
 ### Facebook Mobility by Local Government Area
 
-These datas, sourced through the Facebook Data For Good program, provide an estimate of the 'Stay At Home Percentage' per day per council area for several Australian regions, as well as the percentage anomaly daily from the full-timeseries average. `%stay` is calculated
+These datas, sourced through the Facebook Data For Good program, provide an estimate of the 'Stay At Home Percentage' per day per council area for several Australian regions, as well as the percentage anomaly daily from the full-timeseries average. The areas in question are given by standard ABS LGA codes; the associated geometries may be freely sourced [here](https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/1270.0.55.003~July%202016~Main%20Features~Local%20Government%20Areas%20(LGA)~7).
 
 **States**
 
@@ -32,8 +32,3 @@ These datas, sourced through the Facebook Data For Good program, provide an esti
 ## Who are we?
 
 This project has been launched under the auspices of a broad coalition of Australian scientists working on COVID-related problems. The first point of contact for any issues related to the producet provided here is the project maintainer, Rohan Byrne: <rohan.byrne@unimelb.edu.au>
-
-## Frequently Asked Questions
-
-*Am I free to use anything I find on this website?*
-**Yes** - everything. This includes all aggregated data products, illustrations, and any code snippets which may be of use.
