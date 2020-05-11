@@ -1,37 +1,34 @@
-## Welcome to GitHub Pages
+# Crisis Mobility Data Portal
 
-You can use the [editor on GitHub](https://github.com/rsbyrne/mobility-aus/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+This repository has been established to provide free and easy access to aggregated mobility data products from Facebook and other sources. The data held here is authorised for general release to the public to support research activities related to the COVID-19 epidemic.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+The site was established on the 12 May 2020 and will be updated at midnight daily for the foreseeable future.
 
-### Markdown
+*COMING SOON*
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+- [ ] Interactive visualisations
+- [ ] Data aggregation methodologies
+- [ ] Frequently Asked Questions
+- [ ] Analysis spotlights
 
-```markdown
-Syntax highlighted code block
+## Products
 
-# Header 1
-## Header 2
-### Header 3
+### Facebook Mobility by Local Government Area
 
-- Bulleted
-- List
+These .csv files provide an estimate of the 'Stay At Home Percentage' per day per council area for several Australian regions, as well as the percentage anomaly daily from the full-timeseries average.
 
-1. Numbered
-2. List
+**States**
 
-**Bold** and _Italic_ and `Code` text
+[Victoria](https://github.com/rsbyrne/mobility-aus/products/vic_mob_tiles.csv)
 
-[Link](url) and ![Image](src)
-```
+[New South Wales](https://github.com/rsbyrne/mobility-aus/products/nsw_mob_tiles.csv)
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+**Metros**
 
-### Jekyll Themes
+[Melbourne](https://github.com/rsbyrne/mobility-aus/products/mel_mob_tiles.csv)
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/rsbyrne/mobility-aus/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+[Sydney](https://github.com/rsbyrne/mobility-aus/products/syd_mob_tiles.csv)
 
-### Support or Contact
+## Who are we?
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+This project has been launched under the auspices of a broad coalition of Australian scientists working on COVID-related problems. The first point of contact for any issues related to the producet provided here is the project maintainer, Rohan Byrne: <rohan.byrne@unimelb.edu.au>
