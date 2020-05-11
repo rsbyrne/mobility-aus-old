@@ -15,17 +15,19 @@ The site was established on the 12 May 2020 and will be updated at midnight dail
 
 ### Facebook Mobility by Local Government Area
 
-These .csv files provide an estimate of the 'Stay At Home Percentage' per day per council area for several Australian regions.
+These .csv files provide an estimate of the 'Stay At Home Percentage' per day per council area for several Australian regions, as well as the percentage anomaly daily from the full-timeseries average.
 
 **States**
 
-- [Victoria]<https://github.com/rsbyrne/mobility-aus/products/vic_mob_tiles.csv
-- [New South Wales]<https://github.com/rsbyrne/mobility-aus/products/nsw_mob_tiles.csv
+[Victoria](https://github.com/rsbyrne/mobility-aus/products/vic_mob_tiles.csv)
+
+[New South Wales](https://github.com/rsbyrne/mobility-aus/products/nsw_mob_tiles.csv)
 
 **Metros**
 
-- [Melbourne]<https://github.com/rsbyrne/mobility-aus/products/mel_mob_tiles.csv
-- [Sydney]<https://github.com/rsbyrne/mobility-aus/products/syd_mob_tiles.csv
+[Melbourne](https://github.com/rsbyrne/mobility-aus/products/mel_mob_tiles.csv)
+
+[Sydney](https://github.com/rsbyrne/mobility-aus/products/syd_mob_tiles.csv)
 
 ## Who are we?
 
