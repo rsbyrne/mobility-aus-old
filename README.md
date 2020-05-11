@@ -19,15 +19,15 @@ These datas, sourced through the Facebook Data For Good program, provide an esti
 
 **States**
 
-[Victoria](https://github.com/rsbyrne/mobility-aus/products/vic_mob_tiles.csv)
+[Victoria](https://github.com/rsbyrne/mobility-aus/products/vic.csv)
 
-[New South Wales](https://github.com/rsbyrne/mobility-aus/products/nsw_mob_tiles.csv)
+[New South Wales](https://github.com/rsbyrne/mobility-aus/products/nsw.csv)
 
 **Metros**
 
-[Melbourne](https://github.com/rsbyrne/mobility-aus/products/mel_mob_tiles.csv)
+[Melbourne](https://github.com/rsbyrne/mobility-aus/products/mel.csv)
 
-[Sydney](https://github.com/rsbyrne/mobility-aus/products/syd_mob_tiles.csv)
+[Sydney](https://github.com/rsbyrne/mobility-aus/products/syd.csv)
 
 ## Who are we?
 
