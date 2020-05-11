@@ -6,8 +6,9 @@ The site was established on the 12 May 2020 and will be updated at midnight dail
 
 *COMING SOON*
 
-- [ ] Interactive visualisations
 - [ ] Data aggregation details
+- [ ] Interactive visualisations
+- [ ] Additional regions
 - [ ] Frequently Asked Questions
 - [ ] Analysis spotlights
 
@@ -19,15 +20,15 @@ These datas, sourced through the Facebook Data For Good program, provide an esti
 
 **States**
 
-[Victoria](https://github.com/rsbyrne/mobility-aus/products/vic.csv)
+[Victoria](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/vic.csv)
 
-[New South Wales](https://github.com/rsbyrne/mobility-aus/products/nsw.csv)
+[New South Wales](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/nsw.csv)
 
 **Metros**
 
-[Melbourne](https://github.com/rsbyrne/mobility-aus/products/mel.csv)
+[Melbourne](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/mel.csv)
 
-[Sydney](https://github.com/rsbyrne/mobility-aus/products/syd.csv)
+[Sydney](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/syd.csv)
 
 ## Who are we?
 
