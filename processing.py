@@ -143,6 +143,7 @@ def aggregate_mob_tiles_to_regions(
             [k for k in outFrm.columns if not k == key]
             )[key].aggregate(np.sum))
     outFrm = outFrm.reset_index()
+    outFrm = outFrm.set_index(['datetime', 'start', 'end', 'length_km'])
     print("Aggregated.")
     return outFrm
 

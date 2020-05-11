@@ -21,8 +21,6 @@ def make_mob_lga_date(
     else:
         raw = load.load_fb_mob_tiles(region)
 
-    raw = load.load_fb_mob_tiles(region)
-
     frm = raw
     frm = processing.aggregate_mob_tiles_to_lga(frm, region)
     frm = processing.aggregate_by_date(frm)
@@ -55,6 +53,7 @@ def make_mob_lga_date(
     anomFrm = frm
 
     frm = anomFrm
+    lgas = load.load_lgas()
     if as_gdf or return_both:
         geometry = list(frm.reset_index()['LGA'].apply(
             lambda x: lgas.loc[x]['geometry']
