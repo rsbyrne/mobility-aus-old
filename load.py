@@ -37,7 +37,7 @@ def _process_geometry(x):
 
 FBDATA = {}
 FBURLS = {}
-for state in {'vic', 'nsw', 'qld', 'act', 'nt', 'sa', 'wa', 'tas'}:
+for state in {'vic', 'mel', 'nsw', 'syd', 'qld', 'act', 'nt', 'sa', 'wa', 'tas'}:
     FBDATA[state] = dict()
     FBURLS[state] = dict()
     for dataset in {'pop', 'mob'}:
@@ -51,10 +51,18 @@ FBURLS['vic']['pop']['tiles'] = '223808228714910'
 FBURLS['vic']['pop']['regs'] = '585468802067851'
 FBURLS['vic']['mob']['tiles'] = '176962986764882'
 FBURLS['vic']['mob']['regs'] = '981514028938434'
+FBURLS['mel']['pop']['tiles'] = None
+FBURLS['mel']['pop']['regs'] = None
+FBURLS['mel']['mob']['tiles'] = '2546450865611593'
+FBURLS['mel']['mob']['regs'] = None
 FBURLS['nsw']['pop']['tiles'] = '658468688050630'
 FBURLS['nsw']['pop']['regs'] = '596832157845704'
 FBURLS['nsw']['mob']['tiles'] = '529422397944028'
 FBURLS['nsw']['mob']['regs'] = '648063726037889'
+FBURLS['syd']['pop']['tiles'] = None
+FBURLS['syd']['pop']['regs'] = None
+FBURLS['syd']['mob']['tiles'] = '579800112886221'
+FBURLS['syd']['mob']['regs'] = None
 FBURLS['qld']['pop']['tiles'] = '237921380649272'
 FBURLS['qld']['pop']['regs'] = '842807756209584'
 FBURLS['qld']['mob']['tiles'] = '869575016889368'
@@ -97,7 +105,9 @@ def quick_pull_data(state, dataset, aggregation):
 
 TZS = {
     'vic': 'Australia/Melbourne',
+    'mel': 'Australia/Melbourne',
     'nsw': 'Australia/Sydney',
+    'syd': 'Australia/Sydney',
     'qld': 'Australia/Queensland',
     'nt': 'Australia/Darwin',
     'sa': 'Australia/Adelaide',
@@ -115,6 +125,16 @@ STATENAMES = {
     'tas': 'Tasmania',
     'nt': 'Northern Territory',
     'act': 'Australian Capital Territory'
+    }
+
+METRONAMES = {
+    'vic': 'Greater Melbourne',
+    'nsw': 'Greater Sydney' 
+    }
+
+GCCNAMES = {
+    'mel': 'Greater Melbourne',
+    'syd': 'Greater Sydney'
     }
 
 def get_fb_pop_tiles(state):
@@ -195,56 +215,72 @@ def load_fb_mob_tiles_wa():
 def load_fb_mob_tiles_tas():
     return load_fb_mob_tiles('tas')
 
-def load_fb_tiles(state, dataset):
+def load_fb_tiles(region, dataset):
+    dataDir = os.path.join(repoPath, 'data')
+    subDir = FBDATA[region][dataset]['tiles']
+    searchDir = os.path.join(dataDir, subDir)
+    if not os.path.isdir(searchDir):
+        os.mkdir(searchDir, mode = 777)
+    try:
+#         pre, ignoreKeys = pre_load_fb_tiles(region, dataset)
+        raise FileNotFoundError
+    except FileNotFoundError:
+        pre, ignoreKeys = None, set()
+    try:
+        new = new_load_fb_tiles(region, dataset, ignoreKeys)
+    except NoNewFiles:
+        new = None
+    out = pd.concat([pre, new])
+#     allFilePath = os.path.join(searchDir, '_all.csv')
+#     out.to_csv(allFilePath)
+    return out
+
+def pre_load_fb_tiles(region, dataset):
+    dataDir = os.path.join(repoPath, 'data')
+    subDir = FBDATA[region][dataset]['tiles']
+    searchDir = os.path.join(dataDir, subDir)
+    allFilePath = os.path.join(searchDir, '_all.csv')
+    if not os.path.isfile(allFilePath):
+        raise FileNotFoundError(allFilePath)
+    loaded = pd.read_csv(allFilePath)
+    fix_dates = lambda t: pd.to_datetime(t, utc = True).tz_convert(TZS[region])
+    loaded['datetime'] = loaded['datetime'].apply(fix_dates)
+    alreadyKeys = set([standardise_timestamp(t) for t in set(loaded['datetime'])])
+    loaded['quadkey'] = loaded['quadkey'].astype(str)
+    if dataset == 'mob':
+        loaded['end_key'] = loaded['end_key'].astype(str)
+        loaded = loaded.set_index(['datetime', 'quadkey', 'end_key'])
+    else:
+        loaded = loaded.set_index(['datetime', 'quadkey'])
+    return loaded, alreadyKeys
+
+class NoNewFiles(Exception):
+    pass
+
+def new_load_fb_tiles(region, dataset, ignoreKeys = set()):
     global FBDATA
     global TZS
     print("Preprocessing...")
     dataDir = os.path.join(repoPath, 'data')
-    subDir = FBDATA[state][dataset]['tiles']
-#     allFilePath = os.path.join(dataDir, subDir, 'all.shp')
-    allFilePath = os.path.join(dataDir, subDir, '_all.csv')
-    if os.path.isfile(allFilePath):
-#         loaded = gdf.from_file(allFilePath)
-        loaded = pd.read_csv(allFilePath)
-        fix_dates = lambda t: pd.Timestamp(datetime.strptime(
-            t.replace(':', ''),
-            '%Y-%m-%d %H%M%S%z'
-            ))
-        fixedDates = {t: fix_dates(t) for t in set(loaded['datetime'])}
-        loaded['datetime'] = loaded['datetime'].apply(lambda t: fixedDates[t])
-        loaded['datetime'] = loaded['datetime'].dt.tz_convert(TZS[state])
-        alreadyKeys = set([standardise_timestamp(t) for t in fixedDates.values()])
-#         timestamps = set(loaded.reset_index()['datetime'])
-#         alreadKeys = set([standardise_timestamp(t) for t in timestamps])
-        loaded['quadkey'] = loaded['quadkey'].astype(str)
-        if dataset == 'mob':
-            loaded['end_key'] = loaded['end_key'].astype(str)
-            loaded = loaded.set_index(['datetime', 'quadkey', 'end_key'])
-        else:
-            loaded = loaded.set_index(['datetime', 'quadkey'])
-    else:
-        loaded = None
-        alreadyKeys = set()
-    print("Loading files...")
+    subDir = FBDATA[region][dataset]['tiles']
     searchDir = os.path.join(dataDir, subDir)
+    print("Loading files...")
     filenames = [
         n for n in os.listdir(searchDir) \
             if (n.endswith('.csv')) \
-                and not (n.rstrip('.csv') in alreadyKeys or n[0] == '_')
+                and not (n.rstrip('.csv') in ignoreKeys or n[0] == '_')
         ]
     if not len(filenames):
-        return loaded
+        raise NoNewFiles
     if dataset == 'mob':
         procFuncs = {
-#             'geometry': lambda x: shapely.wkt.loads(x),
             'geometry': None,
             'date_time': None,
             'start_polygon_id': None,
             'start_polygon_name': None,
             'end_polygon_id': None,
             'end_polygon_name': None,
-#             'length_km': lambda x: float(x),
-            'length_km': None,
+            'length_km': lambda x: float(x),
             'tile_size': None,
             'country': None,
             'level': None,
@@ -294,7 +330,7 @@ def load_fb_tiles(state, dataset):
                 subFrm[key] = subFrm[key].apply(func)
         subFrm['datetime'] = _process_datetime(filename.rstrip('.csv'))
         subFrms.append(subFrm)
-        print('.')
+#         print('.')
     frm = pd.concat(subFrms)
     frm = frm.loc[frm['n_crisis'] > 0.]
     print("Processing...")
@@ -303,52 +339,59 @@ def load_fb_tiles(state, dataset):
             {'start_quadkey': 'quadkey', 'end_quadkey': 'end_key'},
             axis = 1
             )
-    zoom = len(frm.iloc[0]['quadkey'])
-    stateQuadkeys = load_state_quadkeys(state, zoom)
-    frm = frm.drop(
-        frm.loc[frm['quadkey'].apply(lambda x: x not in stateQuadkeys)].index
-        )
-#     quadPolys = {
-#         q: quadkey_to_poly(q) \
-#             for q in set(frm['quadkey'])
-#         }
-#     frm['geometry'] = frm['quadkey'].apply(lambda q: quadPolys[q])
-#     frm = gdf(frm, geometry = 'geometry')
-    frm['datetime'] = frm['datetime'].dt.tz_convert(TZS[state])
+#     # discard superfluous quadkeys:
+#     keyLens = set([len(qk) for qk in frm['quadkey']])
+#     assert len(keyLens) == 1
+#     zoom = list(keyLens)[0]
+#     print("Tile data loaded with zoom level:", zoom)
+#     regionQuadkeys = load_region_quadkeys(region, zoom)
+#     frm = frm.reset_index().set_index('quadkey')
+#     frm = frm.drop(set(frm.index).difference(regionQuadkeys))
+#     frm = frm.reset_index()
+#     frm = frm.drop('index', axis = 1)
+    # other tasks:
+    frm['datetime'] = frm['datetime'].dt.tz_convert(TZS[region])
     frm = frm.rename({'n_crisis': 'n'}, axis = 1)
     if dataset == 'mob':
         frm = frm.set_index(['datetime', 'quadkey', 'end_key'])
     else:
         frm.set_index(['datetime', 'quadkey'])
-    oldFrm = frm
-    if not loaded is None:
-        frm = pd.concat([loaded, frm])
-    # saving:
-#     toSave = frm.reset_index()
-#     toSave['datetime'] = toSave['datetime'].apply(lambda x: str(x))
-#     toSave.to_file(allFilePath)
-    frm.to_csv(allFilePath)
     print("Done.")
     return frm
 
-def load_quadkey_polys(quadkeys):
-    quadkeys = set(quadkeys)
-    quadPolys = {q: quadkey_to_poly(q) for q in quadkeys}
-    frm = gdf(quadkeys, colu)
-
-# def load_aggregation(state, dataset, aggregation):
-#     frm = load_fb_tiles(state, dataset)
-#     if aggregator == 'date':
-#         frm = processing.aggregate_by_date(frm)
-
-def load_lgas():
+def load_lgas(region = None, **kwargs):
+    global STATENAMES
+    global GCCNAMES
     paths = [repoPath, 'resources', 'LGA_2019_AUST.shp']
-    lgaShapes = gpd.read_file(os.path.join(*paths))
-    lgaShapes['LGA_CODE19'] = lgaShapes['LGA_CODE19'].astype(int)
-    lgaShapes['STE_CODE16'] = lgaShapes['STE_CODE16'].astype(int)
-    lgaLookup = lgaShapes.set_index('LGA_CODE19')
-    lgaLookup = lgaLookup.dropna()
-    return lgaLookup
+    lgas = gpd.read_file(os.path.join(*paths))
+    lgas['LGA_CODE19'] = lgas['LGA_CODE19'].astype(int)
+    lgas = lgas.set_index('LGA_CODE19')
+    if region is None:
+        lgas['STE_CODE16'] = lgas['STE_CODE16'].astype(int)
+    else:
+        if region in STATENAMES:
+            lgas = lgas.loc[lgas['STE_NAME16'] == STATENAMES[region]]
+            if region == 'nsw':
+                lgas = lgas.drop(19399) # drop Unincorporated
+        elif region in GCCNAMES:
+            from processing import clip_to_gcc
+            if region == 'mel':
+                # buffer to include Geelong/Bellarine
+                lgas = clip_to_gcc(lgas, GCCNAMES[region], buffer = 0.3)
+                lgas = lgas.drop(21450) # drop Cardinia
+                lgas = lgas.drop(24130) # drop Macedon Ranges
+            elif region == 'syd':
+                lgas = clip_to_gcc(lgas, GCCNAMES[region], **kwargs)
+                lgas = lgas.drop(10900) # drop Blue Mountains
+                lgas = lgas.drop(13800) # drop Hawkesbury
+                lgas = lgas.drop(11650) # drop Central Coast
+            else:
+                lgas = clip_to_gcc(lgas, GCCNAMES[region])
+        else:
+            raise KeyError
+        lgas = lgas.drop(['STE_NAME16', 'STE_CODE16'], axis = 1)
+    lgas = lgas.dropna()
+    return lgas
 
 def load_aus():
     paths = [repoPath, 'resources', 'AUS_2016_AUST.shp']
@@ -465,6 +508,10 @@ def make_aus_pop():
     frm.to_file(outPath)
     return frm
 
+def load_gcc(gcc):
+    global GCCNAMES
+    return load_gccs().loc[GCCNAMES[gcc]]['geometry']
+
 def load_gccs():
     openPath = os.path.join(repoPath, 'resources', 'gcc.shp')
     if os.path.isfile(openPath):
@@ -481,7 +528,7 @@ def make_gccs():
         region = shapely.ops.unary_union(
             sa4.set_index('GCC_NAME16').loc[gcc]['geometry']
             )
-        region = region.buffer(np.sqrt(region.area) * 1e-3)
+        region = region.buffer(np.sqrt(region.area) * 1e-4)
         geoms.append(region)
     frm = gdf(gccs, columns = ['gcc'], geometry = geoms)
     frm = frm.set_index('gcc')
@@ -489,18 +536,78 @@ def make_gccs():
     frm.to_file(savePath)
     return frm
 
-def load_state_quadkeys(state, zoom):
-    filename = state + '_quadkeys' + str(zoom) + '.json'
-    if not os.path.isfile(os.path.join(repoPath, 'resources', filename)):
-        return make_state_quadkeys(state, zoom)
-    with open(os.path.join(repoPath, 'resources',  filename), 'r') as f:
-        return json.load(f)
+def load_region(region, fromLGAs = False):
+    if fromLGAs:
+        lgas = load_lgas(region)
+        return shapely.ops.unary_union(lgas.convex_hull)
+    else:
+        global STATENAMES
+        global GCCNAMES
+        if region == 'aus':
+            return load_aus()
+        elif region in STATENAMES:
+            return load_state(region)
+        elif region in GCCNAMES:
+            return load_gcc(region)
+        else:
+            raise ValueError
 
-def make_state_quadkeys(state, zoom):
-    states = load_states(state)
-    statePoly = states.loc['Victoria']['geometry']
-    quadkeys = utils.find_quadkeys(statePoly, zoom, easy = False, soft = True)
-    filename = state + '_quadkeys' + str(zoom) + '.json'
-    with open(os.path.join(repoPath, 'resources',  filename), 'w') as f:
-        json.dump(quadkeys, f)
+def load_region_quadkeys(region, zoom):
+    poly = load_region(region)
+    return load_poly_quadkeys(poly, zoom)
+def load_poly_quadkeys(poly, zoom):
+    import hashlib
+    s = str(poly).encode()
+    polyHash = \
+        str(int(hashlib.sha256(s).hexdigest(), 16) % (10 ** 8))
+    filename = \
+        'poly' \
+        + '_' + polyHash \
+        + '_' + str(zoom) \
+        + '_' + 'quadkeys' \
+        + '.json'
+    filePath = os.path.join(repoPath, 'resources', filename)
+    if os.path.isfile(filePath):
+        with open(filePath, 'r') as f:
+            quadkeys = json.load(f)
+    else:
+        quadkeys = utils.find_quadkeys(
+            poly,
+            zoom,
+            easy = False,
+            soft = True
+            )
+        with open(filePath, 'w') as f:
+            json.dump(quadkeys, f)
     return quadkeys
+
+# #     allFilePath = os.path.join(dataDir, subDir, 'all.shp')
+#     allFilePath = os.path.join(dataDir, subDir, '_all.csv')
+#     if os.path.isfile(allFilePath):
+# #         loaded = gdf.from_file(allFilePath)
+#         loaded = pd.read_csv(allFilePath)
+#         fix_dates = lambda t: pd.Timestamp(datetime.strptime(
+#             t.replace(':', ''),
+#             '%Y-%m-%d %H%M%S%z'
+#             ))
+#         fixedDates = {t: fix_dates(t) for t in set(loaded['datetime'])}
+#         loaded['datetime'] = loaded['datetime'].apply(lambda t: fixedDates[t])
+#         loaded['datetime'] = loaded['datetime'].dt.tz_convert(TZS[state])
+#         alreadyKeys = set([standardise_timestamp(t) for t in fixedDates.values()])
+# #         timestamps = set(loaded.reset_index()['datetime'])
+# #         alreadKeys = set([standardise_timestamp(t) for t in timestamps])
+#         loaded['quadkey'] = loaded['quadkey'].astype(str)
+#         if dataset == 'mob':
+#             loaded['end_key'] = loaded['end_key'].astype(str)
+#             loaded = loaded.set_index(['datetime', 'quadkey', 'end_key'])
+#         else:
+#             loaded = loaded.set_index(['datetime', 'quadkey'])
+#     else:
+#         loaded = None
+#         alreadyKeys = set()
+
+# if region == 'Greater Melbourne':
+#     # buffer to include Geelong/Bellarine
+#     lgas = clip_to_gcc(lgas, gcc, buffer = 0.3)
+#     lgas = lgas.drop(21450) # drop Cardinia
+#     lgas = lgas.drop(24130) # drop Macedon Ranges

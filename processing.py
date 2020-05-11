@@ -1,13 +1,18 @@
 from itertools import product
+import os
+import json
 import numpy as np
 import pandas as pd
 df = pd.DataFrame
 import geopandas as gpd
 gdf = gpd.GeoDataFrame
+sjoin = gpd.tools.sjoin
 import shapely
 import load
 from aggregate import aggregate
 from utils import quadkey_to_poly, quadkeys_to_polys
+
+repoPath = os.path.abspath(os.path.dirname(__file__))
 
 def quadkeys_to_lgas(quadkeys, skipkeys = set()):
     quadkeys = sorted(set([q for q in quadkeys if not q in skipkeys]))
@@ -24,21 +29,16 @@ def quadkeys_to_lgas(quadkeys, skipkeys = set()):
     matches = aggregate(fromPolys, toPolys)
     return dict(zip(quadkeys, [toLGAs[m] for m in matches]))
 
-import pandas as pd
-df = pd.DataFrame
-import geopandas as gpd
-gdf = gpd.GeoDataFrame
-sjoin = gpd.tools.sjoin
-import numpy as np
-import load
-
 def get_intersections(fromFrm, toFrm):
+    return make_intersections(fromFrm, toFrm)
+def make_intersections(fromFrm, toFrm):
     joined = gpd.tools.sjoin(fromFrm, toFrm, 'left', 'intersects')
+    joined = joined.dropna()
     groupby = joined['index_right'].groupby(joined.index)
     def agg_func(s):
         nonlocal fromFrm
         nonlocal toFrm
-        toIndices = sorted(set(s))
+        toIndices = sorted(set([int(x) for x in s]))
         if len(toIndices) == 1:
             return [(toIndices[0], 1)]
         toPolys = [toFrm.loc[i]['geometry'] for i in toIndices]
@@ -47,7 +47,9 @@ def get_intersections(fromFrm, toFrm):
         weights = [fromPoly.intersection(p).area for p in toPolys]
         weights = [w / sum(weights) for w in weights]
         return list(zip(toIndices, weights))
-    return groupby.aggregate(agg_func)
+    weights = groupby.aggregate(agg_func)
+    weights = dict(zip(weights.index, list(weights)))
+    return weights
 
 def get_quadFrm(frm):
     flatFrm = frm.reset_index()
@@ -59,39 +61,157 @@ def get_quadFrm(frm):
     quadFrm.index.name = 'quadkey'
     return quadFrm
 
-def aggregate_mob_tiles_to_regions(fromFrm, toFrm, key = 'n'):
-    quadFrm = get_quadFrm(fromFrm)
-    weights = get_intersections(quadFrm, toFrm)
+def get_quadkey_lga_weights(poly, zoom, **kwargs):
+    print("Getting weights...")
+    import hashlib
+    s = str(poly).encode()
+    polyHash = \
+        str(int(hashlib.sha256(s).hexdigest(), 16) % (10 ** 8))
+    filename = \
+        'poly' \
+        + '_' + polyHash \
+        + '_' + str(zoom) \
+        + '_' + 'weights' \
+        + '.json'
+    filePath = os.path.join(repoPath, 'resources', filename)
+    if not os.path.isfile(filePath):
+        weights = make_quadkey_lga_weights(poly, zoom, **kwargs)
+        with open(filePath, 'w') as f:
+            json.dump(weights, f)
+    else:
+        with open(filePath, 'r') as f:
+            weights = json.load(f)
+    print("Weights obtained.")
+    return weights
+def make_quadkey_lga_weights(poly, zoom, lgas = None):
+    if lgas is None:
+        lgas = load.load_lgas()
+    quadkeys = load.load_poly_quadkeys(poly, zoom)
+    quadFrm = get_quadFrm(df(quadkeys, columns = ['quadkey']))
+    weights = get_intersections(quadFrm, lgas)
+    return weights
+
+def aggregate_mob_tiles_to_regions(
+        fromFrm,
+        toFrm = None,
+        weights = None,
+        key = 'n'
+        ):
+    assert not (toFrm is None and weights is None)
+    if weights is None:
+        print("Getting weights...")
+        quadFrm = get_quadFrm(fromFrm)
+        weights = get_intersections(quadFrm, toFrm)
+        print("Weights obtained.")
+    print("Aggregating to regions...")
+    fromFrm = fromFrm.reset_index().set_index('quadkey')
+    fromFrm = fromFrm.drop(
+        set(fromFrm.index).difference(set(weights.keys()))
+        )
+    fromFrm = fromFrm.reset_index().set_index('end_key')
+    fromFrm = fromFrm.drop(
+        set(fromFrm.index).difference(set(weights.keys()))
+        )
+    fromFrm = fromFrm.reset_index().set_index(
+        ['datetime', 'quadkey', 'end_key']
+        )
     def disagg_func(inp):
         nonlocal weights
         grDF = inp[1]
         date = grDF.iloc[0]['datetime']
         startKey = grDF.iloc[0]['quadkey']
-        endKeys, ns = [*zip(*[*grDF[['end_key', key]].values])]
-        startWeights = weights.loc[startKey]
+        endKeys, length_kms, ns = [
+            *zip(*[*grDF[['end_key', 'length_km', key]].values])
+            ]
+        startWeights = weights[startKey]
         outRows = []
-        for endKey, n in zip(endKeys, ns):
-            endWeights = weights.loc[endKey]
+        for endKey, length_km, n in zip(endKeys, length_kms, ns):
+            endWeights = weights[endKey]
             possibleJourneys = list(product(startWeights, endWeights))
             for pair in possibleJourneys:
                 (start, startWeight), (end, endWeight) = pair
-                outRow = [start, end, n * startWeight * endWeight]
+                outRow = [start, end, length_km, n * startWeight * endWeight]
                 outRow.append(date)
                 outRows.append(outRow)
         return outRows
     groupby = fromFrm.reset_index().groupby(['datetime', 'quadkey'])
-    groupby = groupby[['datetime', 'quadkey', 'end_key', key]]
+    groupby = groupby[['datetime', 'quadkey', 'end_key', 'length_km', key]]
     out = [i for sl in [disagg_func(f) for f in groupby] for i in sl]
-    outFrm = df(out, columns = ['start', 'end', key, 'datetime'])
-    outFrm = df(outFrm.groupby(['start', 'end', 'datetime'])[key].aggregate(np.sum))
+    outFrm = df(out, columns = ['start', 'end', 'length_km', key, 'datetime'])
+    outFrm = df(
+        outFrm.groupby(
+            [k for k in outFrm.columns if not k == key]
+            )[key].aggregate(np.sum))
+    outFrm = outFrm.reset_index()
+    print("Aggregated.")
     return outFrm
 
-def aggregate_mob_tiles_to_lga(fromFrm):
-    lgas = load.load_lgas()
-    return aggregate_mob_tiles_to_regions(fromFrm, lgas)
+def aggregate_pop_tiles_to_regions(
+        fromFrm,
+        toFrm = None,
+        weights = None,
+        key = 'n'
+        ):
+    assert not (toFrm is None and weights is None)
+    if weights is None:
+        print("Getting weights...")
+        quadFrm = get_quadFrm(fromFrm)
+        weights = get_intersections(quadFrm, toFrm)
+        print("Weights obtained.")
+    print("Aggregating to regions...")
+    fromFrm = fromFrm.reset_index().set_index('quadkey')
+    fromFrm = fromFrm.drop(
+        set(fromFrm.index).difference(set(weights.keys()))
+        )
+    fromFrm = fromFrm.reset_index().set_index(
+        ['datetime', 'quadkey']
+        )
+    def disagg_func(inp):
+        nonlocal weights
+        grDF = inp[1]
+        date = grDF.iloc[0]['datetime']
+        n = float(grDF[key])
+        startKey = grDF.iloc[0]['quadkey']
+        startWeights = weights[startKey]
+        outRows = []
+        for start, startWeight in startWeights:
+            outRow = [start, n * startWeight]
+            outRow.append(date)
+            outRows.append(outRow)
+        return outRows
+    groupby = fromFrm.reset_index().groupby(['datetime', 'quadkey'])
+    groupby = groupby[['datetime', 'quadkey', key]]
+    out = [i for sl in [disagg_func(f) for f in groupby] for i in sl]
+    outFrm = df(out, columns = ['start', key, 'datetime'])
+    outFrm = df(
+        outFrm.groupby(
+            ['start', 'datetime']
+            )[key].aggregate(np.sum))
+    print("Aggregated.")
+    return outFrm
 
-def aggregate_mob_tiles_lga_date(fromFrm):
-    return aggregate_by_date(aggregate_mob_tiles_to_lga(fromFrm))
+def aggregate_tiles_to_lga(frm, region, lgas = None, variant = 'mob'):
+    if lgas is None:
+        lgas = load.load_lgas()
+    zoom = list(set([
+        len(str(qk)) for qk in frm.reset_index()['quadkey']
+        ]))[0]
+    poly = load.load_region(region, fromLGAs = True)
+    weights = get_quadkey_lga_weights(
+        poly,
+        zoom,
+        lgas = lgas
+        )
+    if variant == 'mob':
+        return aggregate_mob_tiles_to_regions(frm, weights = weights)
+    elif variant == 'pop':
+        return aggregate_pop_tiles_to_regions(frm, weights = weights)
+    else:
+        raise ValueError
+def aggregate_pop_tiles_to_lga(frm, region, lgas = None):
+    return aggregate_tiles_to_lga(frm, region, lgas, 'pop')
+def aggregate_mob_tiles_to_lga(frm, region, lgas = None):
+    return aggregate_tiles_to_lga(frm, region, lgas, 'mob')
 
 def clip_to_gcc(frm, gcc, convex = True, **kwargs):
     poly = load.load_gccs().loc[gcc]['geometry']
@@ -133,12 +253,15 @@ def aggregate_by_date(
         datetimeKey = 'datetime',
         func = np.sum
         ):
+    print("Aggregating by date...")
     if not type(aggregate) in {set, list, tuple}:
         aggregate = [aggregate]
     indexNames = [nm for nm in frm.index.names if not nm == datetimeKey]
     frm = frm.copy()
     frm['date'] = list(frm.reset_index()[datetimeKey].apply(make_date))
+    frm['date'] = pd.to_datetime(frm['date']).dt.date
     frm = frm[[*aggregate, 'date']].reset_index()
     groupby = frm.groupby(['date', *indexNames])
     frm = groupby.aggregate(func)
+    print("Aggregated.")
     return frm

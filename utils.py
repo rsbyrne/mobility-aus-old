@@ -30,6 +30,7 @@ def quadkey_to_centroid(quadkey):
             )
         )
 def quadkey_to_point(quadkey):
+    quadkey = str(quadkey)
     return shapely.geometry.Point(*quadkey_to_centroid(quadkey))
 def quadkey_to_poly(quadkey):
     x0, y0, x1, y1 = mercantile.bounds(mercantile.quadkey_to_tile(quadkey))
@@ -51,6 +52,11 @@ def flip_quadkey(q, flip):
     if flip[1]: lat = -lat
     tile = mercantile.tile(lng, lat, z)
     return mercantile.quadkey(tile)
+
+def load_polys_tiles_frm(frm):
+    quadkeys = sorted(set(frm.reset_index()['quadkey']))
+    polys = quadkeys_to_polys(quadkeys)
+    return gdf(quadkeys, geometry = polys)
 
 def children(quadkeys, levels = 1):
     if not type(quadkeys) is list:
@@ -78,11 +84,10 @@ def find_quadkeys(poly, zoom, easy = False, soft = True):
         toPoly = convexPoly
     else:
         toPoly = poly
-    while z <= zoom:
+    while z <= zoom and len(quadkeys):
         quadpolys = [quadkey_to_poly(q) for q in quadkeys]
         certain = []
-        if z < zoom:
-            check = []
+        check = []
         for q, qp in zip(quadkeys, quadpolys):
             if qp.intersects(squarePoly):
                 if qp.within(toPoly):
@@ -90,14 +95,18 @@ def find_quadkeys(poly, zoom, easy = False, soft = True):
                 elif qp.intersects(toPoly):
                     check.append(q)
             nChecks += 1
-        outKeys.extend(children(certain, zoom - z))
+        childKeys = children(certain, zoom - z)
+        if len(childKeys):
+            outKeys.extend(childKeys)
         if z < zoom:
             if len(check):
                 quadkeys = children(check, 1)
+            else:
+                quadkeys = []
         elif soft:
             outKeys.extend(check)
         z += 1
-    print(nChecks)
+    assert all([len(k) == zoom for k in outKeys]), outKeys
     return outKeys
 
 def standardise_timestamp(t):

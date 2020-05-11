@@ -8,6 +8,7 @@ junk/
 raw/
 working/
 resources/
+transient/
 
 *.log
 .credentials.json
