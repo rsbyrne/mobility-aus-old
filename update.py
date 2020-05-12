@@ -10,7 +10,7 @@ regions = {'vic', 'mel', 'syd', 'nsw'}
 
 for region in regions:
     frm, frmGDF = produce.make_mob_lga_date(
-        'syd',
+        region,
         get = True,
         return_both = True
         )
