@@ -1,187 +1,162 @@
-import utils
-from scipy import spatial
-import shapely
+from itertools import product
 import numpy as np
-import os
-import pickle
-import random
 
-from mpi4py import MPI
-comm = MPI.COMM_WORLD
-rank = comm.Get_rank()
-size = comm.Get_size()
+import pandas as pd
+df = pd.DataFrame
+import geopandas as gpd
+gdf = gpd.GeoDataFrame
+sjoin = gpd.tools.sjoin
 
-def message(*args, **kwargs):
-    comm.barrier()
-    if rank == 0:
-        print(*args, **kwargs)
+from get import get_quadFrm, get_intersection_weights
+from utils import quadkeys_to_poly
 
-def get_swarm(poly, density):
-    xmin, ymin, xmax, ymax = poly.envelope.bounds
-    xrange, yrange = xmax - xmin, ymax - ymin
-    npoints = int(round(density * xrange * yrange))
-    if npoints > 0:
-        xs = np.random.rand(npoints) * xrange + xmin
-        ys = np.random.rand(npoints) * yrange + ymin
-        return np.stack([xs, ys], axis = 1)
-    else:
-        return np.array([np.array(poly.centroid)])
+def aggregate_mob_tiles_to_lgas(frm, **kwargs):
+    import load
+    lgas = load.load_lgas()
+    return aggregate_mob_tiles_to_regions(frm, lgas, **kwargs)
 
-def get_all_swarms(polys, density):
-    polys = comm.scatter(np.array_split(np.array(polys), size), root = 0)
-    keyLookup = []
-    points = []
-    for i, poly in enumerate(polys):
-        swarm = get_swarm(poly, density)
-        keyLookup.append(np.full(len(swarm), i))
-        points.append(swarm)
-    keyLookup, points = np.concatenate(keyLookup), np.concatenate(points)
-    assert len(keyLookup) == len(points)
-    keyLookup = np.concatenate(comm.allgather(keyLookup))
-    points = np.concatenate(comm.allgather(points))
-    return keyLookup, points
+def aggregate_mob_tiles_to_regions(
+        fromFrm,
+        toFrm,
+        funcDict = None,
+        weights = None,
+        ):
 
-def get_kdTree(polys, density):
-    keyLookup, points = get_all_swarms(polys, density)
-    kdTree = spatial.cKDTree(points)
-    return kdTree, keyLookup
+    print("Aggregating from tiles to regions...")
 
-def find_squares(fromCoords, toCoords):
-    return np.where(
-        (toCoords[:, 0] <= fromCoords[0]) \
-        & (toCoords[:, 2] >= fromCoords[0]) \
-        & (toCoords[:, 1] <= fromCoords[1]) \
-        & (toCoords[:, 3] >= fromCoords[1])
-        )[0]
-
-class NoMatchFound(Exception):
-    pass
-
-def match_poly(fromPoly, toPolys, matches, medianToArea, toBounds, kdTree, keyLookup, centroidTree):
-
-    if type(fromPoly) is shapely.geometry.Polygon:
-        fromPoly = fromPoly.centroid
-    elif type(fromPoly) is shapely.geometry.MultiPolygon:
-        raise Exception("MultiPolygons not supported yet.")
-
-    # PREVIOUS STRATEGY
-    if len(matches):
-        candidate = matches[-1]
-        if not candidate is None:
-            poly = toPolys[candidate]
-            if poly.contains(fromPoly):
-#                 print("Matched from previous.")
-                return candidate
-
-    # SQUARES STRATEGY
-    fromCoords = np.array(fromPoly.centroid)
-    candidates = find_squares(fromCoords, toBounds)
-    for candidate in candidates:
-        poly = toPolys[candidate]
-        if poly.contains(fromPoly):
-#             print("Matched by squares.")
-            return candidate
-
-    # BUFFERING STRATEGY
-    dists, indices = kdTree.query(fromPoly, k = 30)
-    if not len(candidates):
-        dists, indices = zip(*sorted(zip(dists, indices), key = lambda x: x[0]))
-        candidates = frozenset([keyLookup[index] for index in indices])
-    bufferLength = np.sqrt(medianToArea) / 2.
-    fineness = 0
-    prevStatus = 'neither'
-    iterations = 0
-    maxIterations = 30
-    while len(candidates) and iterations < maxIterations:
-        iterations += 1
-        polys = [toPolys[c] for c in candidates]
-        buffer = fromPoly.buffer(bufferLength)
-        subCandidates = [
-            c for c, p in zip(candidates, polys) \
-                if p.intersects(buffer)
-            ]
-        if len(subCandidates) < 1:
-            if prevStatus == 'too big':
-                fineness += 1
-            bufferLength *= (1. + 2. ** -fineness)
-            prevStatus == 'too small'
-        elif len(subCandidates) > 1:
-            if prevStatus == 'too small':
-                fineness += 1
-            bufferLength /= (1. + 2. ** -fineness)
-            candidates = subCandidates
-            prevStatus == 'too big'
-        else:
-#             print("Matched by buffering.")
-            return subCandidates[0]
-
-    # CENTROID STRATEGY
-    dist, index = centroidTree.query(fromPoly)
-    candidate = keyLookup[index]
-#     print("Matched by centroid")
-    return candidate
-
-def match_polys(fromPolys, toPolys, medianToArea, toBounds, kdTree, keyLookup, centroidTree):
-    fromPolys = np.array(fromPolys, dtype = 'object')
-    fromPolys = np.array_split(fromPolys, size)[rank]
-    matches = []
-    for fromPoly in fromPolys:
-        match = match_poly(
-            fromPoly,
-            toPolys,
-            matches,
-            medianToArea,
-            toBounds,
-            kdTree,
-            keyLookup,
-            centroidTree
-            )
-        matches.append(match)
-        if len(matches) % 10000 == 0:
-            print('...')
-        elif len(matches) % 1000 == 0:
-            print('..')
-        elif len(matches) % 100 == 0:
-            print('.')
-    matches = np.concatenate(comm.allgather(matches))
-    return matches
-
-def prepare(fromPolys, toPolys, zoom = 14):
-    fromPolysSamples = [
-        utils.point_to_polygon(p, zoom) if type(p) is shapely.geometry.Point else p \
-            for p in [random.choice(fromPolys) for i in range(100)]
-        ]
-    toPolysSamples = [random.choice(toPolys) for i in range(100)]
-    medianFromArea = np.median([poly.envelope.area for poly in fromPolysSamples])
-    medianToArea = np.median([poly.envelope.area for poly in toPolysSamples])
-    density = 10. / medianToArea
-    kdTree, keyLookup = get_kdTree(toPolys, density)
-    centroidTree = spatial.cKDTree(
-        np.array([np.array(toPoly.centroid) for toPoly in toPolys])
+    # Trim frame
+    frm = fromFrm.copy()
+    indexNames = frm.index.names
+    frm = frm.reset_index()
+    quadkeys = [*frm['quadkey'], *frm['end_key']]
+    bounds = quadkeys_to_poly(quadkeys).envelope
+    toFrm = toFrm.loc[toFrm.intersects(bounds)]
+    if weights is None:
+        quadFrm = get_quadFrm(quadkeys)
+        weights = get_intersection_weights(quadFrm, toFrm)
+    frm = frm.reset_index().set_index('quadkey')
+    frm = frm.drop(
+        set(frm.index).difference(set(weights.keys()))
         )
-    toBounds = np.array([
-        p.envelope.buffer(np.sqrt(medianFromArea) / 2.).bounds \
-            for p in toPolys
+    frm = frm.reset_index().set_index('end_key')
+    frm = frm.drop(
+        set(frm.index).difference(set(weights.keys()))
+        )
+    frm = frm.reset_index().set_index(indexNames)
+
+    def group_func(x):
+        startWeights, endWeights = x[['start_weights', 'end_weights']].values[0]
+        possibleJourneys = list(product(startWeights, endWeights))
+        outRows = []
+        for pair in possibleJourneys:
+            (start, startWeight), (end, endWeight) = pair
+            outRow = [start, end, startWeight * endWeight]
+            outRows.append(outRow)
+        return outRows
+
+    indexNames = frm.index.names
+    frm = frm.reset_index()
+    frm['start_weights'] = frm.reset_index()['quadkey'].apply(
+        lambda x: weights[x]
+        )
+    frm['end_weights'] = frm.reset_index()['end_key'].apply(
+        lambda x: weights[x]
+        )
+    groupby = frm.groupby(['quadkey', 'end_key'])
+    groupby = groupby[['start_weights', 'end_weights']]
+    frm = frm.reset_index().set_index(['quadkey', 'end_key'])
+    frm['possible_journeys'] = groupby.apply(group_func)
+    frm = frm.reset_index().set_index(indexNames)
+    frm = frm.drop({'start_weights', 'end_weights', 'index'}, axis = 1)
+
+    frm = frm.reset_index()
+    lens = [len(item) for item in frm['possible_journeys']]
+    journeys = [
+        arr.flatten()
+            for arr in np.split(
+                np.concatenate(frm['possible_journeys'].values),
+                3,
+                axis = 1
+                )
+        ]
+    frm = df({
+        **{name: np.repeat(frm[name].values, lens) for name in frm.columns}, 
+        **{name: val for name, val in zip(['start', 'stop', 'weight'], journeys)}
+        })
+    dropKeys = {'quadkey', 'end_key', 'level_0', 'possible_journeys'}
+    frm = frm.drop(dropKeys, axis = 1)
+    frm['start'], frm['stop'] = frm['start'].astype(int), frm['stop'].astype(int)
+    frm = frm.set_index(['datetime', 'start', 'stop'])
+
+    buffer = bounds.buffer(np.sqrt(bounds.area) / 10. ** 1.5)
+    indexNames = frm.index.names
+    clippedFrm = toFrm.loc[toFrm.within(buffer)]
+    frm = frm.reset_index().set_index('start')
+    frm = frm.loc[clippedFrm.index]
+    frm = frm.reset_index().set_index(indexNames)
+
+    frm = frm.sort_index()
+
+    print("Aggregated.")
+
+    return frm
+
+def make_date(d):
+    return '-'.join([str(x).zfill(2) for x in d.timetuple()[:3]])
+def aggregate_by_date(
+        frm,
+        datetimeKey = 'datetime',
+        ):
+    print("Aggregating by date...")
+    frm = frm.copy()
+    frm['date'] = list(frm.reset_index()[datetimeKey].apply(make_date))
+    frm['date'] = pd.to_datetime(frm['date']).dt.date
+    indexNames = ['date' if nm == datetimeKey else nm for nm in frm.index.names]
+    frm = frm.reset_index().set_index(indexNames)
+    frm = frm.sort_index()
+    frm = frm.drop('datetime', axis = 1)
+    print("Aggregated.")
+    return frm
+
+def match_regions_by_majority_area(fromFrm, toFrm):
+    fromIndices = fromFrm.index.names
+    print("Performing spatial join...")
+    joined = sjoin(fromFrm, toFrm, 'left', 'intersects')
+    groupby = joined.reset_index().groupby(fromIndices)
+    groupby = groupby[['index_right', 'geometry']]
+    def group_func(x):
+        nonlocal toFrm
+        toIndices = x['index_right']
+        if len(toIndices) == 1:
+            return x
+        fromGeom = list(x['geometry'])[0]
+        toGeoms = [toFrm.loc[index]['geometry'] for index in x['index_right']]
+        areas = [
+            (index, fromGeom.intersection(toGeom).area) 
+                for index, toGeom in zip(toIndices, toGeoms)
+            ]
+        toIndex = sorted(areas, key = lambda x: x[1])[-1][0]
+        x = x.loc[x['index_right'] == toIndex]
+        return x
+    print("Disambiguating...")
+    frm = groupby.apply(group_func)
+    frm = frm.reset_index()
+    frm = frm.drop('level_1', axis = 1)
+    frm = frm.set_index(fromIndices)
+    outFrm = fromFrm.copy()
+    if len(toFrm.index.names) == 1:
+        name = toFrm.index.name
+    else:
+        name = '_'.join(toFrm.index.names)
+    outFrm[name] = frm['index_right']
+    print("Done.")
+    return outFrm
+
+def aggregate_identicals(frm, **kwargs):
+    frm = frm.sort_index()
+    groupby = frm.groupby([
+        frm.index.get_level_values(name)
+            for name in frm.index.names
         ])
-    return medianToArea, toBounds, kdTree, keyLookup, centroidTree
-
-def aggregate(fromPolys, toPolys):
-    medianToArea, toBounds, kdTree, keyLookup, centroidTree = prepare(fromPolys, toPolys)
-    matches = match_polys(fromPolys, toPolys, medianToArea, toBounds, kdTree, keyLookup, centroidTree)
-    return matches
-
-def aggregate_shp(fromShp, toShp, keys, conserve = [], func = np.sum):
-    # Inputs two shp files;
-    # outputs the first shp file aggregated by the second shp file
-    # and indexed by its keys
-    matches = aggregate(list(fromShp.geometry), list(toShp.geometry))
-    newIndexName = toShp.index.name
-    i = 0
-    while newIndexName in [*fromShp.columns, fromShp.index.name]:
-        i += 1
-        newIndexName = toShp.index.name + str(i)
-    fromShpCopy = fromShp.copy()
-    fromShp[newIndexName] = toShp.iloc[matches].index
-    groupby = fromShp.groupby([*conserve, newIndexName])[keys]
-    aggregated = groupby.aggregate(func)
-    return aggregated
+    frm = groupby.aggregate(kwargs)
+    return frm

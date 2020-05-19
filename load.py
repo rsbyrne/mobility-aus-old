@@ -29,7 +29,7 @@ def default_proc(val):
         return val
 
 def _process_datetime(x):
-    stripped = datetime.strptime(x, '%Y-%m-%d-%H%M')
+    stripped = datetime.strptime(x, '%Y-%m-%d %H%M')
     adjusted = stripped.astimezone(timezone.utc)
     return adjusted
 def _process_geometry(x):
@@ -37,56 +37,103 @@ def _process_geometry(x):
 
 FBDATA = {}
 FBURLS = {}
-for state in {'vic', 'mel', 'nsw', 'syd', 'qld', 'act', 'nt', 'sa', 'wa', 'tas'}:
-    FBDATA[state] = dict()
-    FBURLS[state] = dict()
+regions = {
+    'aus',
+    'vic', 'mel',
+    'nsw', 'syd',
+    'qld', 'bri',
+    'nt', 'dar',
+    'act', 'can',
+    'sa', 'ade',
+    'wa', 'per',
+    'tas', 'hob',
+    }
+for region in regions:
+    FBDATA[region] = dict()
+    FBURLS[region] = dict()
     for dataset in {'pop', 'mob'}:
-        FBDATA[state][dataset] = dict()
-        FBURLS[state][dataset] = dict()
+        FBDATA[region][dataset] = dict()
+        FBURLS[region][dataset] = dict()
         for agg in {'tiles', 'regs'}:
-            FBDATA[state][dataset][agg] = '_'.join([state, dataset, agg])
-            FBURLS[state][dataset][agg] = None
+            FBDATA[region][dataset][agg] = '_'.join([region, dataset, agg])
+            FBURLS[region][dataset][agg] = None
 
 FBURLS['vic']['pop']['tiles'] = '223808228714910'
 FBURLS['vic']['pop']['regs'] = '585468802067851'
 FBURLS['vic']['mob']['tiles'] = '176962986764882'
 FBURLS['vic']['mob']['regs'] = '981514028938434'
-FBURLS['mel']['pop']['tiles'] = None
-FBURLS['mel']['pop']['regs'] = None
+FBURLS['mel']['pop']['tiles'] = '1925466407588452'
+FBURLS['mel']['pop']['regs'] = '565738300965768'
 FBURLS['mel']['mob']['tiles'] = '2546450865611593'
-FBURLS['mel']['mob']['regs'] = None
+FBURLS['mel']['mob']['regs'] = '701310510605369'
+
 FBURLS['nsw']['pop']['tiles'] = '658468688050630'
 FBURLS['nsw']['pop']['regs'] = '596832157845704'
 FBURLS['nsw']['mob']['tiles'] = '529422397944028'
 FBURLS['nsw']['mob']['regs'] = '648063726037889'
-FBURLS['syd']['pop']['tiles'] = None
-FBURLS['syd']['pop']['regs'] = None
+FBURLS['syd']['pop']['tiles'] = '2581274605535108'
+FBURLS['syd']['pop']['regs'] = '2638111166453119'
 FBURLS['syd']['mob']['tiles'] = '579800112886221'
-FBURLS['syd']['mob']['regs'] = None
+FBURLS['syd']['mob']['regs'] = '269277164076139'
+
 FBURLS['qld']['pop']['tiles'] = '237921380649272'
 FBURLS['qld']['pop']['regs'] = '842807756209584'
 FBURLS['qld']['mob']['tiles'] = '869575016889368'
 FBURLS['qld']['mob']['regs'] = '266592891137969'
+FBURLS['bri']['pop']['tiles'] = None
+FBURLS['bri']['pop']['regs'] = None
+FBURLS['bri']['mob']['tiles'] = None
+FBURLS['bri']['mob']['regs'] = None
+
 FBURLS['act']['pop']['tiles'] = None
 FBURLS['act']['pop']['regs'] = None
 FBURLS['act']['mob']['tiles'] = None
 FBURLS['act']['mob']['regs'] = None
-FBURLS['nt']['pop']['tiles'] = None
-FBURLS['nt']['pop']['regs'] = None
-FBURLS['nt']['mob']['tiles'] = None
-FBURLS['nt']['mob']['regs'] = None
-FBURLS['wa']['pop']['tiles'] = None
-FBURLS['wa']['pop']['regs'] = None
-FBURLS['wa']['mob']['tiles'] = None
-FBURLS['wa']['mob']['regs'] = None
-FBURLS['sa']['pop']['tiles'] = None
-FBURLS['sa']['pop']['regs'] = None
-FBURLS['sa']['mob']['tiles'] = None
-FBURLS['sa']['mob']['regs'] = None
-FBURLS['tas']['pop']['tiles'] = None
-FBURLS['tas']['pop']['regs'] = None
-FBURLS['tas']['mob']['tiles'] = None
-FBURLS['tas']['mob']['regs'] = None
+FBURLS['can']['pop']['tiles'] = None
+FBURLS['can']['pop']['regs'] = None
+FBURLS['can']['mob']['tiles'] = None
+FBURLS['can']['mob']['regs'] = None
+
+FBURLS['nt']['pop']['tiles'] = '265612204816107'
+FBURLS['nt']['pop']['regs'] = '232940067975299'
+FBURLS['nt']['mob']['tiles'] = '719906238817043'
+FBURLS['nt']['mob']['regs'] = '236213960924061'
+FBURLS['dar']['pop']['tiles'] = None
+FBURLS['dar']['pop']['regs'] = None
+FBURLS['dar']['mob']['tiles'] = None
+FBURLS['dar']['mob']['regs'] = None
+
+FBURLS['wa']['pop']['tiles'] = '1731649863641382'
+FBURLS['wa']['pop']['regs'] = '1085292288522910'
+FBURLS['wa']['mob']['tiles'] = '523885168292314'
+FBURLS['wa']['mob']['regs'] = '261535465239826'
+FBURLS['per']['pop']['tiles'] = '585492418979013'
+FBURLS['per']['pop']['regs'] = '264128567940298'
+FBURLS['per']['mob']['tiles'] = '636945033816336'
+FBURLS['per']['mob']['regs'] = '2301294816837741'
+
+FBURLS['sa']['pop']['tiles'] = '254460345740451'
+FBURLS['sa']['pop']['regs'] = '347769182849254'
+FBURLS['sa']['mob']['tiles'] = '302338520760065'
+FBURLS['sa']['mob']['regs'] = '219876419306608'
+FBURLS['ade']['pop']['tiles'] = '247296463128810'
+FBURLS['ade']['pop']['regs'] = '547900422804131'
+FBURLS['ade']['mob']['tiles'] = '217178312888286'
+FBURLS['ade']['mob']['regs'] = '838313713317099'
+
+FBURLS['tas']['pop']['tiles'] = '2370900323204701'
+FBURLS['tas']['pop']['regs'] = '189120225461391'
+FBURLS['tas']['mob']['tiles'] = '238484180822579'
+FBURLS['tas']['mob']['regs'] = '256249448902015'
+FBURLS['hob']['pop']['tiles'] = None
+FBURLS['hob']['pop']['regs'] = None
+FBURLS['hob']['mob']['tiles'] = None
+FBURLS['hob']['mob']['regs'] = None
+
+FBURLS['aus']['pop']['tiles'] = '220856239014922'
+FBURLS['aus']['pop']['regs'] = '2848131948635964'
+FBURLS['aus']['mob']['tiles'] = '3013895718671644'
+FBURLS['aus']['mob']['regs'] = '156664265628571'
 
 def quick_pull_data(state, dataset, aggregation):
     global FBDATA
@@ -109,11 +156,17 @@ TZS = {
     'nsw': 'Australia/Sydney',
     'syd': 'Australia/Sydney',
     'qld': 'Australia/Queensland',
+    'bri': 'Australia/Brisbane',
     'nt': 'Australia/Darwin',
+    'dar': 'Australia/Darwin',
     'sa': 'Australia/Adelaide',
+    'ade': 'Australia/Adelaide',
     'wa': 'Australia/Perth',
+    'per': 'Australia/Perth',
     'tas': 'Australia/Hobart',
-    'act': 'Australia/Canberra'
+    'hob': 'Australia/Hobart',
+    'act': 'Australia/Canberra',
+    'can': 'Australia/Canberra',
     }
 
 STATENAMES = {
@@ -125,11 +178,6 @@ STATENAMES = {
     'tas': 'Tasmania',
     'nt': 'Northern Territory',
     'act': 'Australian Capital Territory'
-    }
-
-METRONAMES = {
-    'vic': 'Greater Melbourne',
-    'nsw': 'Greater Sydney' 
     }
 
 GCCNAMES = {
@@ -222,8 +270,8 @@ def load_fb_tiles(region, dataset):
     if not os.path.isdir(searchDir):
         os.mkdir(searchDir, mode = 777)
     try:
-#         pre, ignoreKeys = pre_load_fb_tiles(region, dataset)
-        raise FileNotFoundError
+        pre, ignoreKeys = pre_load_fb_tiles(region, dataset)
+#         raise FileNotFoundError
     except FileNotFoundError:
         pre, ignoreKeys = None, set()
     try:
@@ -231,8 +279,8 @@ def load_fb_tiles(region, dataset):
     except NoNewFiles:
         new = None
     out = pd.concat([pre, new])
-#     allFilePath = os.path.join(searchDir, '_all.csv')
-#     out.to_csv(allFilePath)
+    allFilePath = os.path.join(searchDir, '_all.csv')
+    out.to_csv(allFilePath)
     return out
 
 def pre_load_fb_tiles(region, dataset):
@@ -243,8 +291,10 @@ def pre_load_fb_tiles(region, dataset):
     if not os.path.isfile(allFilePath):
         raise FileNotFoundError(allFilePath)
     loaded = pd.read_csv(allFilePath)
+    print("Fixing dates...")
     fix_dates = lambda t: pd.to_datetime(t, utc = True).tz_convert(TZS[region])
-    loaded['datetime'] = loaded['datetime'].apply(fix_dates)
+    fixedDates = {date: fix_dates(date) for date in set(loaded['datetime'])}
+    loaded['datetime'] = loaded['datetime'].apply(lambda x: fixedDates[x])
     alreadyKeys = set([standardise_timestamp(t) for t in set(loaded['datetime'])])
     loaded['quadkey'] = loaded['quadkey'].astype(str)
     if dataset == 'mob':
@@ -260,11 +310,9 @@ class NoNewFiles(Exception):
 def new_load_fb_tiles(region, dataset, ignoreKeys = set()):
     global FBDATA
     global TZS
-    print("Preprocessing...")
     dataDir = os.path.join(repoPath, 'data')
     subDir = FBDATA[region][dataset]['tiles']
     searchDir = os.path.join(dataDir, subDir)
-    print("Loading files...")
     filenames = [
         n for n in os.listdir(searchDir) \
             if (n.endswith('.csv')) \
@@ -273,27 +321,28 @@ def new_load_fb_tiles(region, dataset, ignoreKeys = set()):
     if not len(filenames):
         raise NoNewFiles
     if dataset == 'mob':
+        dropKeys = {
+            'geometry',
+            'start_polygon_id',
+            'start_polygon_name',
+            'end_polygon_id',
+            'end_polygon_name',
+            'tile_size',
+            'country',
+            'level',
+            'n_baseline',
+            'n_difference',
+            'percent_change',
+            'is_statistically_significant',
+            'z_score',
+            'start_lat',
+            'start_lon',
+            'end_lat',
+            'end_lon',
+            }
         procFuncs = {
-            'geometry': None,
-            'date_time': None,
-            'start_polygon_id': None,
-            'start_polygon_name': None,
-            'end_polygon_id': None,
-            'end_polygon_name': None,
-            'length_km': lambda x: float(x),
-            'tile_size': None,
-            'country': None,
-            'level': None,
-            'n_crisis': lambda x: int(x),
-            'n_baseline': None,
-            'n_difference': None,
-            'percent_change': None,
-            'is_statistically_significant': None,
-            'z_score': None,
-            'start_lat': None,
-            'start_lon': None,
-            'end_lat': None,
-            'end_lon': None,
+            'date_time': _process_datetime,
+            'length_km': float,
             'start_quadkey': lambda x: flip_quadkey(str(x), (False, True)),
             'end_quadkey': lambda x: flip_quadkey(str(x), (False, True))
             }
@@ -303,40 +352,45 @@ def new_load_fb_tiles(region, dataset, ignoreKeys = set()):
                 return 0.
             else:
                 return float(x)
+        dropKeys = {
+            'country',
+            'n_baseline',
+            'n_difference',
+            'density_baseline',
+            'density_crisis',
+            'percent_change',
+            'clipped_z_score',
+            'ds',
+            'lat',
+            'lon',
+            }
         procFuncs = {
-            'country': None,
-            'date_time': None,
-            'n_baseline': None,
-            'n_difference': None,
-            'density_baseline': None,
-            'density_crisis': None,
-            'percent_change': None,
-            'clipped_z_score': None,
-            'ds': None,
-            'quadkey': lambda x: str(x),
+            'date_time': _process_datetime,
+            'quadkey': str,
             'n_crisis': _pop_handle_nan,
-            'lat': None,
-            'lon': None,
             }
     else:
         raise ValueError
-    subFrms = []
-    for filename in filenames:
-        subFrm = pd.read_csv(os.path.join(searchDir, filename))
-        dropKeys = [key for key, func in procFuncs.items() if func is None]
-        subFrm = subFrm.drop(dropKeys, axis = 1)
-        for key, func in procFuncs.items():
-            if not func is None:
-                subFrm[key] = subFrm[key].apply(func)
-        subFrm['datetime'] = _process_datetime(filename.rstrip('.csv'))
-        subFrms.append(subFrm)
-#         print('.')
-    frm = pd.concat(subFrms)
+    print("Loading files...")
+    frm = pd.concat([
+        pd.read_csv(os.path.join(searchDir, f)) \
+            for f in filenames
+        ])
+    print("Preprocessing...")
+    frm = frm.drop(dropKeys, axis = 1)
+    for key, func in procFuncs.items(): frm[key] = frm[key].apply(func)
+    frm['date_time'] = frm['date_time'].dt.tz_convert(TZS[region])
     frm = frm.loc[frm['n_crisis'] > 0.]
     print("Processing...")
     if dataset == 'mob':
+        renameDict = {
+            'start_quadkey': 'quadkey',
+            'end_quadkey': 'end_key',
+            'date_time': 'datetime',
+            'length_km': 'km',
+            }
         frm = frm.rename(
-            {'start_quadkey': 'quadkey', 'end_quadkey': 'end_key'},
+            renameDict,
             axis = 1
             )
 #     # discard superfluous quadkeys:
@@ -350,7 +404,6 @@ def new_load_fb_tiles(region, dataset, ignoreKeys = set()):
 #     frm = frm.reset_index()
 #     frm = frm.drop('index', axis = 1)
     # other tasks:
-    frm['datetime'] = frm['datetime'].dt.tz_convert(TZS[region])
     frm = frm.rename({'n_crisis': 'n'}, axis = 1)
     if dataset == 'mob':
         frm = frm.set_index(['datetime', 'quadkey', 'end_key'])
@@ -359,44 +412,20 @@ def new_load_fb_tiles(region, dataset, ignoreKeys = set()):
     print("Done.")
     return frm
 
-def load_lgas(region = None, **kwargs):
-    global STATENAMES
-    global GCCNAMES
+def load_lgas():
     paths = [repoPath, 'resources', 'LGA_2019_AUST.shp']
     lgas = gpd.read_file(os.path.join(*paths))
     lgas['LGA_CODE19'] = lgas['LGA_CODE19'].astype(int)
+    lgas['STE_CODE16'] = lgas['STE_CODE16'].astype(int)
     lgas = lgas.set_index('LGA_CODE19')
-    if region is None:
-        lgas['STE_CODE16'] = lgas['STE_CODE16'].astype(int)
-    else:
-        if region in STATENAMES:
-            lgas = lgas.loc[lgas['STE_NAME16'] == STATENAMES[region]]
-            if region == 'nsw':
-                lgas = lgas.drop(19399) # drop Unincorporated
-        elif region in GCCNAMES:
-            from processing import clip_to_gcc
-            if region == 'mel':
-                # buffer to include Geelong/Bellarine
-                lgas = clip_to_gcc(lgas, GCCNAMES[region], buffer = 0.3)
-                lgas = lgas.drop(21450) # drop Cardinia
-                lgas = lgas.drop(24130) # drop Macedon Ranges
-            elif region == 'syd':
-                lgas = clip_to_gcc(lgas, GCCNAMES[region], **kwargs)
-                lgas = lgas.drop(10900) # drop Blue Mountains
-                lgas = lgas.drop(13800) # drop Hawkesbury
-                lgas = lgas.drop(11650) # drop Central Coast
-            else:
-                lgas = clip_to_gcc(lgas, GCCNAMES[region])
-        else:
-            raise KeyError
-        lgas = lgas.drop(['STE_NAME16', 'STE_CODE16'], axis = 1)
     lgas = lgas.dropna()
     return lgas
 
 def load_aus():
     paths = [repoPath, 'resources', 'AUS_2016_AUST.shp']
     ausFrame = gpd.read_file(os.path.join(*paths))
-    return ausFrame
+    ausPoly = ausFrame.iloc[0]['geometry']
+    return ausPoly
 
 def load_SA(level):
     name = 'SA{0}_2016_AUST.shp'.format(str(level))
@@ -443,7 +472,7 @@ def load_wa(): return load_state('wa')
 def load_tas(): return load_state('tas')
 
 def load_mb(state, trim = True):
-    filename = "MB_2016_{0}.shp".format(state)
+    filename = "MB_2016_{0}.shp".format(state.upper())
     paths = [repoPath, 'resources', filename]
     frm = gpd.read_file(os.path.join(*paths))
     frm['MB_CODE16'] = frm['MB_CODE16'].astype(int)
@@ -466,6 +495,9 @@ def load_mb_qld(): return load_mb('QLD')
 def load_mb_sa(): return load_mb('SA')
 def load_mb_tas(): return load_mb('TAS')
 def load_mb_wa(): return load_mb('WA')
+def load_mb_all():
+    states = {'vic', 'nsw', 'qld', 'nt', 'sa', 'act', 'wa', 'tas'}
+    return pd.concat([load_mb(state) for state in states])
 
 def load_aus_pop():
     filePath = os.path.join(repoPath, 'resources', 'aus_pop_16.shp')
@@ -611,3 +643,37 @@ def load_poly_quadkeys(poly, zoom):
 #     lgas = clip_to_gcc(lgas, gcc, buffer = 0.3)
 #     lgas = lgas.drop(21450) # drop Cardinia
 #     lgas = lgas.drop(24130) # drop Macedon Ranges
+
+#     el
+#         if region in STATENAMES:
+#             lgas = lgas.loc[lgas['STE_NAME16'] == STATENAMES[region]]
+#             if region == 'nsw':
+#                 lgas = lgas.drop(19399) # drop Unincorporated
+#         elif region in GCCNAMES:
+#             from processing import clip_to_gcc
+#             if region == 'mel':
+#                 # buffer to include Geelong/Bellarine
+#                 lgas = clip_to_gcc(lgas, GCCNAMES[region], buffer = 0.3)
+#                 lgas = lgas.drop(21450) # drop Cardinia
+#                 lgas = lgas.drop(24130) # drop Macedon Ranges
+#             elif region == 'syd':
+#                 lgas = clip_to_gcc(lgas, GCCNAMES[region], **kwargs)
+#                 lgas = lgas.drop(10900) # drop Blue Mountains
+#                 lgas = lgas.drop(13800) # drop Hawkesbury
+#                 lgas = lgas.drop(11650) # drop Central Coast
+#             else:
+#                 lgas = clip_to_gcc(lgas, GCCNAMES[region])
+#         else:
+#             raise KeyError
+#         if keep:
+#             raise Exception("Not supported yet.")
+#             remLabel = 'OutOfBounds'
+#             remKeys = set(allLGAs.index).difference(set(lgas.index))
+#             remGeoms = list(allLGAs.loc[remKeys]['geometry'])
+#             remGeom = utils.mixed_polys_to_multi(remGeoms)
+#             remData = {k: [remLabel] for k in lgas.columns}
+#             lgas = lgas.append(gdf(
+#                 remData, geometry = [remGeom,], index = [remLabel]
+#                 ))
+#         lgas = lgas.drop(['STE_NAME16', 'STE_CODE16'], axis = 1)
+#     return lgas

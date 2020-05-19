@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import hashlib
 from datetime import datetime, timezone
 import pandas as pd
 df = pd.DataFrame
@@ -9,14 +10,35 @@ from IPython.display import display
 import shapely
 import mercantile
 
-def quadkey_to_poly(quadkey, flip = (False, False)):
-    x0, y0, x1, y1 = mercantile.bounds(mercantile.quadkey_to_tile(quadkey))
-    if flip[0]:
-        x0, x1 = -x0, -x1
-    if flip[1]:
-        y0, y1 = -y0, -y1
-    poly = shapely.geometry.Polygon([[x0, y0], [x0, y1], [x1, y1], [x1, y0]])
+def pivot(frm, index = 'start', columns = 'date', data = 'stay'):
+    if not type(data) in {list, tuple}:
+        data = [data,]
+    frm = frm[data]
+    frm = frm.reset_index()
+    frm = frm.pivot(index = index, columns = columns)
+    return frm
+
+def make_hash(obj):
+    s = str(obj).encode()
+    return str(int(hashlib.sha256(s).hexdigest(), 16) % (10 ** 8))
+
+def mixed_polys_to_multi(geoms):
+    from shapely.geometry import Polygon, MultiPolygon
+    geoms = [
+        [g,] if type(g) is Polygon else list(g) for g in geoms
+        ]
+    geoms = [i for sl in geoms for i in sl]
+    return shapely.geometry.MultiPolygon(geoms)
+
+def quadkeys_to_poly(quadkeys):
+    quadkeys = sorted(set(quadkeys))
+    tiles = [mercantile.quadkey_to_tile(qk) for qk in quadkeys]
+    tiles = mercantile.simplify(tiles)
+    quadkeys = [mercantile.quadkey(t) for t in tiles]
+    polys = quadkeys_to_polys(quadkeys)
+    poly = shapely.ops.unary_union(polys)
     return poly
+
 def quadkeys_to_polys(quadkeys):
     quadDict = {q: quadkey_to_poly(q) for q in sorted(set(quadkeys))}
     return [quadDict[q] for q in quadkeys]
@@ -71,7 +93,7 @@ def children(quadkeys, levels = 1):
         quadkeys = childrenKeys
     return quadkeys
 
-def find_quadkeys(poly, zoom, easy = False, soft = True):
+def find_quadkeys(poly, zoom, easy = False, soft = True, weights = False):
     z = 1
     outKeys = []
     quadkeys = ['0', '1', '2', '3']
@@ -103,10 +125,22 @@ def find_quadkeys(poly, zoom, easy = False, soft = True):
                 quadkeys = children(check, 1)
             else:
                 quadkeys = []
-        elif soft:
-            outKeys.extend(check)
+        else:
+            if weights:
+                outKeys = [(k, 1.) for k in outKeys]
+                if soft:
+                    quadDict = dict(zip(quadkeys, quadpolys))
+                    quadAreas = dict(zip(quadkeys, [p.area for p in quadpolys]))
+                    outKeys.extend([
+                        (k, quadDict[k].intersection(poly).area / quadAreas[k])
+                            for k in check
+                        ])
+                assert all([len(k[0]) == zoom for k in outKeys]), outKeys
+            else:
+                if soft:
+                    outKeys.extend(check)
+                assert all([len(k) == zoom for k in outKeys]), outKeys
         z += 1
-    assert all([len(k) == zoom for k in outKeys]), outKeys
     return outKeys
 
 def standardise_timestamp(t):
