@@ -1,30 +1,57 @@
 import numpy as np
+import os
+
 import pandas as pd
 df = pd.DataFrame
 import geopandas as gpd
 gdf = gpd.GeoDataFrame
+import shapely
+import mercantile
 
 import load
 import utils
 import processing
 import aggregate
 
-import produce
-import load
-
-import numpy as np
-
-import shapely
-import mercantile
-
 repoPath = os.path.abspath(os.path.dirname(__file__))
 
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+
+def make_mob_plots(frm, region):
+
+    frm = frm.reset_index()
+    func = lambda x: (x['stay'] * x['n']).sum() / x['n'].sum()
+    dateAvs = frm.groupby('date')[['n', 'stay']].apply(func)
+    regionAvs = frm.groupby('start')[['n', 'stay']].apply(func)
+
+    fig, ax = plt.subplots(2)
+    dateAvs.plot(
+        title = 'Net stay-at-home ratio per day',
+        ax = ax[0]
+        )
+    adjRegionAvs = regionAvs.sort_values().apply(lambda x: x - np.median(regionAvs))
+    adjRegionAvs.plot.bar(
+        title = 'All-time stay-at-home ratio per region relative to median',
+        ax = ax[1]
+        )
+    fig.tight_layout(pad = 0.1)
+    fig.set_size_inches(6, 7)
+
+    filename = '_'.join(['mob', 'lga', region]) + '.png'
+    filePath = os.path.join(repoPath, 'products', filename)
+    fig.savefig(filePath)
+
 def get_mob_lga_date(region, refresh = False):
-    name = region
-    filename = '_'.join(['mob', 'lga', name]) + '.csv'
-    filePath = os.path.join(repoPath, 'product', filename)
+    filename = '_'.join(['mob', 'lga', region]) + '.csv'
+    filePath = os.path.join(repoPath, 'products', filename)
     if os.path.isfile(filePath) and not refresh:
-        return pd.read_csv(filePath)
+        out = pd.read_csv(filePath)
+        out['date'] = pd.to_datetime(out['date'])
+        out = out.set_index(['date', 'start'])
+        return out
     else:
         out = make_mob_lga_date(region, refresh)
         out.to_csv(filePath)
@@ -36,8 +63,7 @@ def make_mob_lga_date(region, refresh = False):
     else:
         mob = load.load_fb_mob_tiles(region)
 
-    lgas = load.load_lgas()
-    agg = aggregate.aggregate_mob_tiles_to_regions(mob, lgas)
+    agg = aggregate.aggregate_mob_tiles_to_lgas(mob, region)
     agg = aggregate.aggregate_by_date(agg)
 
     frm = agg.copy()
@@ -59,22 +85,17 @@ def make_mob_lga_date(region, refresh = False):
     frm['stay'] /= frm['n']
     frm['km'] /= frm['n']
     out = frm
+    
+    return out
 
-    frm = out
-    if as_gdf or return_both:
-        geoFrm = processing.frm_to_lgaFrm(frm, key = 'start')
-        if return_both:
-            return frm, geoFrm
-        else:
-            return geoFrm
-    else:
-        return frm
+def make_mob_lga_dateMap(raw, region):
 
-def make_mob_lga_dateMap(region, refresh = False):
-
-    raw = make_mob_lga_date(region, refresh)
-    pivoted = utils.pivot(raw, 'start', 'date', 'stay')
-    pivoted = pivoted['stay']
+    frm = raw.copy()
+    frm['km'] = frm['km'].apply(lambda x: max([x, 1e-3]))
+    frm['log10km'] = np.log10(frm['km'])
+    frm = utils.pivot(frm, 'start', 'date', 'log10km')
+    frm = frm['log10km']
+    pivoted = frm
 
     frm = pivoted.copy()
     indexNames = frm.index.names
@@ -101,8 +122,6 @@ def make_mob_lga_dateMap(region, refresh = False):
 
 def make_dateMap(frm, name, size = 400):
 
-    path = repoPath
-
     minx = np.min(frm.bounds['minx'])
     maxx = np.max(frm.bounds['maxx'])
     miny = np.min(frm.bounds['miny'])
@@ -110,6 +129,7 @@ def make_dateMap(frm, name, size = 400):
     aspect = (maxx - minx) / (maxy - miny)
 
     ts = [n for n in frm.columns if n.isnumeric()]
+    assert len(ts)
 
     allMin = frm[ts].min().min()
     allMax = frm[ts].max().max()
@@ -120,8 +140,7 @@ def make_dateMap(frm, name, size = 400):
 
     from bokeh.io import output_file
     outFilename = name + '.html'
-    outDir = os.path.abspath(path)
-    outPath = os.path.join(outDir, outFilename)
+    outPath = os.path.join(repoPath, 'products', outFilename)
     if os.path.isfile(outPath):
         os.remove(outPath)
     output_file(outPath)
@@ -139,9 +158,9 @@ def make_dateMap(frm, name, size = 400):
     fig.xgrid.grid_line_color = None
     fig.ygrid.grid_line_color = None
 
-    from bokeh.palettes import brewer
+    from bokeh.palettes import Viridis10
     from bokeh.models import LinearColorMapper, ColorBar
-    palette = brewer['RdBu'][10]
+    palette = Viridis10[::-1]
     colourMapper = LinearColorMapper(
         palette = palette,
         low = allMin,

@@ -10,15 +10,33 @@ sjoin = gpd.tools.sjoin
 from get import get_quadFrm, get_intersection_weights
 from utils import quadkeys_to_poly
 
-def aggregate_mob_tiles_to_lgas(frm, **kwargs):
+STATES = {
+    'act': 'Australian Capital Territory',
+    'nsw': 'New South Wales',
+    'nt': 'Northern Territory',
+    'ot': 'Other Territories',
+    'qld': 'Queensland',
+    'sa': 'South Australia',
+    'vic': 'Victoria',
+    'wa': 'Western Australia'
+    }
+
+def aggregate_mob_tiles_to_lgas(frm, clip = None, **kwargs):
     import load
     lgas = load.load_lgas()
-    return aggregate_mob_tiles_to_regions(frm, lgas, **kwargs)
+    out = aggregate_mob_tiles_to_regions(frm, lgas, **kwargs)
+    if not clip is None:
+        if clip in STATES:
+            indexNames = out.index.names
+            out = out.reset_index().set_index('start')
+            lgaIndices = lgas.loc[lgas['STE_NAME16'] == STATES[clip]].index
+            out = out.drop(set(out.index).difference(set(lgaIndices)))
+            out = out.reset_index().set_index(indexNames)
+    return out
 
 def aggregate_mob_tiles_to_regions(
         fromFrm,
         toFrm,
-        funcDict = None,
         weights = None,
         ):
 
@@ -88,11 +106,11 @@ def aggregate_mob_tiles_to_regions(
     frm['start'], frm['stop'] = frm['start'].astype(int), frm['stop'].astype(int)
     frm = frm.set_index(['datetime', 'start', 'stop'])
 
-    buffer = bounds.buffer(np.sqrt(bounds.area) / 10. ** 1.5)
+    buffer = bounds.buffer(np.sqrt(bounds.area) * 1e-1)
     indexNames = frm.index.names
     clippedFrm = toFrm.loc[toFrm.within(buffer)]
     frm = frm.reset_index().set_index('start')
-    frm = frm.loc[clippedFrm.index]
+    frm = frm.drop(set(frm.index).difference(set(clippedFrm.index)))
     frm = frm.reset_index().set_index(indexNames)
 
     frm = frm.sort_index()
