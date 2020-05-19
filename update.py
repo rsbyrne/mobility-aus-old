@@ -1,8 +1,7 @@
 import produce
 
-# regions = {'vic', 'mel', 'syd', 'nsw'}
-regions = {'vic',}
-refresh = False
+regions = {'vic', 'mel', 'syd', 'nsw', 'ade', 'sa', 'per', 'wa', 'tas', 'qld', 'nt'}
+refresh = True
 
 for region in regions:
     mob = produce.get_mob_lga_date(region, refresh = refresh)
