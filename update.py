@@ -1,3 +1,12 @@
+import sys
+import os
+parentDir = os.path.dirname(__file__)
+if not parentDir in sys.path:
+    sys.path.append(parentDir)
+parentDir = os.path.dirname(parentDir)
+if not parentDir in sys.path:
+    sys.path.append(parentDir)
+
 import produce
 
 regions = {'vic', 'mel', 'syd', 'nsw', 'ade', 'sa', 'per', 'wa', 'tas', 'qld', 'nt'}
