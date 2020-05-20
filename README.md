@@ -6,7 +6,7 @@ The site was established on the 12 May 2020 and will be updated at midnight dail
 
 *STATUS - 20 May 2020*
 
-Much of the data is unavailable today due to Facebook download throttling related to the very large date volumes for the Queensland and Western Australia which were added to this portal platform overnight. This is being petitioned and will be rectified shortly.
+Much of the data is unavailable today due to Facebook download throttling related to the very large date volumes for the Queensland and Western Australia which were added overnight. This is being petitioned and will be rectified shortly.
 
 *COMING SOON*
 
