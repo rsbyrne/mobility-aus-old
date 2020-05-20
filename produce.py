@@ -39,7 +39,7 @@ def make_mob_plots(frm, region):
         ax = ax[1]
         )
     fig.tight_layout(pad = 0.1)
-    fig.set_size_inches(9, 12)
+    fig.set_size_inches(6, 7)
 
     filename = '_'.join(['mob', 'lga', region]) + '.png'
     filePath = os.path.join(repoPath, 'products', filename)
