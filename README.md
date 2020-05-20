@@ -20,16 +20,16 @@ These datas, sourced through the Facebook Data For Good program, provide an esti
 
 **States**
 
-[Victoria](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/vic.csv)
+[Queensland](https://rsbyrne.github.io/mobility-aus/products/mob_lga_qld.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_qld.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_qld.png))
 
-[New South Wales](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/nsw.csv)
+[Western Australia](https://rsbyrne.github.io/mobility-aus/products/mob_lga_wa.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_wa.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_wa.png))
 
 **Metros**
 
-[Melbourne](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/mel.csv)
-
-[Sydney](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/syd.csv)
+[Adelaide](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.png))
 
 ## Who are we?
 
 This project has been launched under the auspices of a broad coalition of Australian scientists working on COVID-related problems. The first point of contact for any issues related to the producet provided here is the project maintainer, Rohan Byrne: <rohan.byrne@unimelb.edu.au>
+
+
