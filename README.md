@@ -35,6 +35,4 @@ These datas, sourced through the Facebook Data For Good program, provide an esti
 
 ## Who are we?
 
-This project has been launched under the auspices of a broad coalition of Australian scientists working on COVID-related problems. The first point of contact for any issues related to the producet provided here is the project maintainer, Rohan Byrne: <rohan.byrne@unimelb.edu.au>
-
-
+This project has been launched under the auspices of a broad coalition of Australian scientists working on COVID-related problems. The first point of contact for any issues related to the product provided here is the project maintainer, Rohan Byrne: <rohan.byrne@unimelb.edu.au>
