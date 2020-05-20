@@ -20,15 +20,13 @@ These datas, sourced through the Facebook Data For Good program, provide an esti
 
 **States**
 
-[Victoria](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/vic.csv)
+[Queensland](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/mob_lga_qld.csv) ([maps](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/mob_lga_qld.html), [plots](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/mob_lga_qld.png))
 
-[New South Wales](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/nsw.csv)
+[Western Australia](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/mob_lga_wa.csv) ([maps](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/mob_lga_wa.html), [plots](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/mob_lga_wa.png))
 
 **Metros**
 
-[Melbourne](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/mel.csv)
-
-[Sydney](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/syd.csv)
+[Adelaide](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/mob_lga_ade.csv) ([maps](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/mob_lga_ade.html), [plots](https://raw.githubusercontent.com/rsbyrne/mobility-aus/master/products/mob_lga_ade.png))
 
 ## Who are we?
 
