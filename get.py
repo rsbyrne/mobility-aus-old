@@ -13,8 +13,6 @@ import utils
 
 repoPath = os.path.abspath(os.path.dirname(__file__))
 
-
-
 def get_intersection_weights(fromFrm, toFrm, override = False, name = None, **kwargs):
     if name is None:
         name = '_'.join([

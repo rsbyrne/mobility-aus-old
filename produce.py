@@ -39,7 +39,7 @@ def make_mob_plots(frm, region):
         ax = ax[1]
         )
     fig.tight_layout(pad = 0.1)
-    fig.set_size_inches(6, 7)
+    fig.set_size_inches(9, 12)
 
     filename = '_'.join(['mob', 'lga', region]) + '.png'
     filePath = os.path.join(repoPath, 'products', filename)
@@ -57,12 +57,9 @@ def get_mob_lga_date(region, refresh = False, get = False):
         out = make_mob_lga_date(region, get)
         out.to_csv(filePath)
         return out
-def make_mob_lga_date(region, get = False):
+def make_mob_lga_date(region, get = False, override = False):
 
-    if get:
-        mob = load.get_fb_mob_tiles(region)
-    else:
-        mob = load.load_fb_mob_tiles(region)
+    mob = load.load_fb_tiles(region, 'mob', get = get, override = override)
 
     agg = aggregate.aggregate_mob_tiles_to_lgas(mob, region)
     agg = aggregate.aggregate_by_date(agg)
@@ -171,7 +168,7 @@ def make_dateMap(frm, name, size = 600):
     colourBar = ColorBar(
         color_mapper = colourMapper, 
         label_standoff = 8,
-        width = int(round(aspect * size / 3.)),
+        width = int(round(aspect * size * 0.8)),
         height = int(round(size / 30)),
         border_line_color = None,
         location = (0, 0), 
