@@ -1,4 +1,5 @@
 import numpy as np
+import math
 import os
 
 import pandas as pd
@@ -107,9 +108,10 @@ def make_mob_lga_dateMap(raw, region):
     frm['name'] = lgas.loc[frm.index]['LGA_NAME19']
     frm['area'] = lgas.loc[frm.index]['AREASQKM19']
 
-    scale = np.sqrt(np.min(frm['geometry'].area))
-    frm['geometry'] = frm['geometry'].simplify(scale * 1e-1)
-    frm['geometry'] = frm['geometry'].buffer(scale * 1e-1)
+    scale = np.sqrt(np.median(frm['geometry'].area))
+    scalingCoeff = math.log10(len(frm)) * 1e-1
+    frm['geometry'] = frm['geometry'].simplify(scale * scalingCoeff)
+    frm['geometry'] = frm['geometry'].buffer(scale * 0.5 * scalingCoeff)
 
     frm.columns = [
         str(round(int(n.to_numpy()) / 1e6)) if type(n) is pd.Timestamp else n
@@ -118,9 +120,9 @@ def make_mob_lga_dateMap(raw, region):
 
     mapName = '_'.join(['mob', 'lga', region])
 
-    make_dateMap(frm, mapName, size = 400)
+    make_dateMap(frm, mapName, size = 600)
 
-def make_dateMap(frm, name, size = 400):
+def make_dateMap(frm, name, size = 600):
 
     minx = np.min(frm.bounds['minx'])
     maxx = np.max(frm.bounds['maxx'])
