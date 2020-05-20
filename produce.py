@@ -38,7 +38,7 @@ def make_mob_plots(frm, region):
         title = 'All-time stay-at-home ratio per region relative to median',
         ax = ax[1]
         )
-    fig.tight_layout(pad = 0.1)
+    fig.tight_layout(pad = 0.5)
     fig.set_size_inches(6, 7)
 
     filename = '_'.join(['mob', 'lga', region]) + '.png'
