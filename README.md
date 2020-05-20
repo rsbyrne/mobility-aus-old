@@ -7,7 +7,8 @@ The site was established on the 12 May 2020 and will be updated at midnight dail
 *COMING SOON*
 
 - [ ] Data aggregation details
-- [ ] Interactive visualisations
+- [X] Interactive visualisations
+- [X] Summary plots
 - [ ] Additional regions
 - [ ] Frequently Asked Questions
 - [ ] Analysis spotlights
