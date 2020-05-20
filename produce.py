@@ -44,7 +44,7 @@ def make_mob_plots(frm, region):
     filePath = os.path.join(repoPath, 'products', filename)
     fig.savefig(filePath)
 
-def get_mob_lga_date(region, refresh = False):
+def get_mob_lga_date(region, refresh = False, get = False):
     filename = '_'.join(['mob', 'lga', region]) + '.csv'
     filePath = os.path.join(repoPath, 'products', filename)
     if os.path.isfile(filePath) and not refresh:
@@ -53,12 +53,12 @@ def get_mob_lga_date(region, refresh = False):
         out = out.set_index(['date', 'start'])
         return out
     else:
-        out = make_mob_lga_date(region, refresh)
+        out = make_mob_lga_date(region, get)
         out.to_csv(filePath)
         return out
-def make_mob_lga_date(region, refresh = False):
+def make_mob_lga_date(region, get = False):
 
-    if refresh:
+    if get:
         mob = load.get_fb_mob_tiles(region)
     else:
         mob = load.load_fb_mob_tiles(region)

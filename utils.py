@@ -10,6 +10,18 @@ from IPython.display import display
 import shapely
 import mercantile
 
+def write_fbids():
+    from load import FBURLS as fburls
+    ids = []
+    for values in fburls.values():
+        for values in values.values():
+            for value in values.values():
+                if not value is None:
+                    ids.append(value)
+    idStr = '\n'.join(ids)
+    with open('../fbids.txt', 'w') as f:
+        f.write(idStr)
+
 def pivot(frm, index = 'start', columns = 'date', data = 'stay'):
     if not type(data) in {list, tuple}:
         data = [data,]

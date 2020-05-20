@@ -18,8 +18,6 @@ import itertools
 import utils
 from utils import quadkey_to_poly, standardise_timestamp, flip_quadkey
 
-from fbapi.code import pull_datas
-
 repoPath = os.path.abspath(os.path.dirname(__file__))
 
 def default_proc(val):
@@ -136,15 +134,14 @@ FBURLS['aus']['mob']['tiles'] = '3013895718671644'
 FBURLS['aus']['mob']['regs'] = '156664265628571'
 
 def quick_pull_data(state, dataset, aggregation):
-    global FBDATA
-    global FBURLS
+    from fbapi.code import pull_datas
     rootURL = "https://www.facebook.com/geoinsights-portal/downloads"
     dataID = FBURLS[state][dataset][aggregation]
     dataURL = '/?id='.join([rootURL, dataID])
     with open(os.path.join(repoPath, '.credentials.json'), 'r') as f:
         loginName, loginPass = json.load(f)
     dataDir = os.path.join(repoPath, 'data')
-    outName = FBDATA[state][dataset][aggregation]
+    outName = FBURLS[state][dataset][aggregation]
     outDir = os.path.abspath(os.path.join(dataDir, outName))
     dataMime = 'text/csv'
     outExt = '.csv'
@@ -263,9 +260,12 @@ def load_fb_mob_tiles_wa():
 def load_fb_mob_tiles_tas():
     return load_fb_mob_tiles('tas')
 
-def load_fb_tiles(region, dataset):
+def load_fb_tiles(region, dataset, get = False):
+    global FBURLS
+    if get:
+        quick_pull_data(region, dataset, 'tiles')
     dataDir = os.path.join(repoPath, 'data')
-    subDir = FBDATA[region][dataset]['tiles']
+    subDir = FBURLS[region][dataset]['tiles']
     searchDir = os.path.join(dataDir, subDir)
     if not os.path.isdir(searchDir):
         os.mkdir(searchDir, mode = 777)
@@ -284,8 +284,9 @@ def load_fb_tiles(region, dataset):
     return out
 
 def pre_load_fb_tiles(region, dataset):
+    global FBURLS
     dataDir = os.path.join(repoPath, 'data')
-    subDir = FBDATA[region][dataset]['tiles']
+    subDir = FBURLS[region][dataset]['tiles']
     searchDir = os.path.join(dataDir, subDir)
     allFilePath = os.path.join(searchDir, '_all.csv')
     if not os.path.isfile(allFilePath):
@@ -308,10 +309,10 @@ class NoNewFiles(Exception):
     pass
 
 def new_load_fb_tiles(region, dataset, ignoreKeys = set()):
-    global FBDATA
+    global FBURLS
     global TZS
     dataDir = os.path.join(repoPath, 'data')
-    subDir = FBDATA[region][dataset]['tiles']
+    subDir = FBURLS[region][dataset]['tiles']
     searchDir = os.path.join(dataDir, subDir)
     filenames = [
         n for n in os.listdir(searchDir) \
