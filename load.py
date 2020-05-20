@@ -260,7 +260,7 @@ def load_fb_mob_tiles_wa():
 def load_fb_mob_tiles_tas():
     return load_fb_mob_tiles('tas')
 
-def load_fb_tiles(region, dataset, get = False):
+def load_fb_tiles(region, dataset, get = False, override = False):
     global FBURLS
     if get:
         quick_pull_data(region, dataset, 'tiles')
@@ -269,15 +269,18 @@ def load_fb_tiles(region, dataset, get = False):
     searchDir = os.path.join(dataDir, subDir)
     if not os.path.isdir(searchDir):
         os.mkdir(searchDir, mode = 777)
-    try:
-        pre, ignoreKeys = pre_load_fb_tiles(region, dataset)
-#         raise FileNotFoundError
-    except FileNotFoundError:
-        pre, ignoreKeys = None, set()
+    pre, ignoreKeys = None, set()
+    if not override:
+        try:
+            pre, ignoreKeys = pre_load_fb_tiles(region, dataset)
+        except FileNotFoundError:
+            pass
     try:
         new = new_load_fb_tiles(region, dataset, ignoreKeys)
     except NoNewFiles:
         new = None
+    if new is None and pre is None:
+        raise NoData
     out = pd.concat([pre, new])
     allFilePath = os.path.join(searchDir, '_all.csv')
     out.to_csv(allFilePath)
@@ -306,6 +309,8 @@ def pre_load_fb_tiles(region, dataset):
     return loaded, alreadyKeys
 
 class NoNewFiles(Exception):
+    pass
+class NoData(Exception):
     pass
 
 def new_load_fb_tiles(region, dataset, ignoreKeys = set()):

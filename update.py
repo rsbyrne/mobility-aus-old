@@ -1,11 +1,23 @@
 import produce
+from load import NoData
 
-#regions = {'vic', 'mel', 'syd', 'nsw', 'ade', 'sa', 'per', 'wa', 'tas', 'qld', 'nt'}
-regions = {'vic', 'mel', 'nsw', 'syd'}
+regions = {
+    'vic', 'mel',
+    'nsw', 'syd',
+    'sa', 'ade',
+    'wa', 'per',
+    'tas',
+    'qld',
+    'nt',
+    'aus',
+    }
 refresh = True
 get = False
 
 for region in regions:
-    mob = produce.get_mob_lga_date(region, refresh = refresh, get = get)
-    produce.make_mob_plots(mob, region)
-    produce.make_mob_lga_dateMap(mob, region)
+    try:
+        mob = produce.get_mob_lga_date(region, refresh = refresh, get = get)
+        produce.make_mob_plots(mob, region)
+        produce.make_mob_lga_dateMap(mob, region)
+    except NoData:
+        print("No data currently available for:", region)
