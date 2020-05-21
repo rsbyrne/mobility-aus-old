@@ -4,9 +4,9 @@ This repository has been established to provide free and easy access to aggregat
 
 The site was established on the 12 May 2020 and will be updated at midnight daily for the foreseeable future.
 
-*STATUS - 20 May 2020*
+*STATUS - 21 May 2020*
 
-Much of the data is unavailable today due to Facebook download throttling related to the very large date volumes for the Queensland and Western Australia which were added overnight. This is being petitioned and will be rectified shortly.
+Facebook's restrictive new download limits continue to be a problem. The Victorian and Melbourne datasets are now available, but the larger New South Wales datasets will not be available until tomorrow. Note that, once the bulk of the data is downloaded, only minimal daily updates will be required, at which point Facebook's policies will no longer be an issue.
 
 *COMING SOON*
 
@@ -25,13 +25,17 @@ These datas, sourced through the Facebook Data For Good program, provide an esti
 
 **States**
 
+[Victoria](https://rsbyrne.github.io/mobility-aus/products/mob_lga_vic.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_vic.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_vic.png))
+
 [Queensland](https://rsbyrne.github.io/mobility-aus/products/mob_lga_qld.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_qld.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_qld.png))
 
 [Western Australia](https://rsbyrne.github.io/mobility-aus/products/mob_lga_wa.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_wa.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_wa.png))
 
 **Metros**
 
-[Adelaide](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.png))
+[Melbourne](https://rsbyrne.github.io/mobility-aus/products/mob_lga_mel.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_mel.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_mel.png))
+
+[Adelaide](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_mel.png))
 
 ## Who are we?
 
