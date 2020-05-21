@@ -6,7 +6,7 @@ The site was established on the 12 May 2020 and will be updated at midnight dail
 
 *STATUS - 21 May 2020*
 
-Facebook's restrictive new download limits continue to be a problem. The Victorian and Melbourne datasets are now available, but the larger New South Wales datasets will not be available until tomorrow. Note that, once the bulk of the data is downloaded, only minimal daily updates will be required, at which point Facebook's policies will no longer be an issue.
+Facebook's restrictive new download limits continue to be a problem. The Victorian data and the first month of the Melbourne data are now available, but the larger New South Wales and Sydney datasets will not be available until tomorrow. Note that, once the bulk of the data is downloaded, only minimal daily updates will be required, at which point Facebook's policies will no longer be an issue.
 
 *COMING SOON*
 
