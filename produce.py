@@ -105,10 +105,11 @@ def make_mob_lga_dateMap(raw, region):
     frm['name'] = lgas.loc[frm.index]['LGA_NAME19']
     frm['area'] = lgas.loc[frm.index]['AREASQKM19']
 
-    scale = np.sqrt(np.median(frm['geometry'].area))
-    scalingCoeff = math.log10(len(frm)) * 1e-1
-    frm['geometry'] = frm['geometry'].simplify(scale * scalingCoeff)
-    frm['geometry'] = frm['geometry'].buffer(scale * 0.5 * scalingCoeff)
+    if len(frm) > 20:
+        scale = np.sqrt(np.median(frm['geometry'].area))
+        scalingCoeff = len(frm) * 1e-2
+        frm['geometry'] = frm['geometry'].simplify(scale * scalingCoeff)
+        frm['geometry'] = frm['geometry'].buffer(scale * 0.5 * scalingCoeff)
 
     frm.columns = [
         str(round(int(n.to_numpy()) / 1e6)) if type(n) is pd.Timestamp else n

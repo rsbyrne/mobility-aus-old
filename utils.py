@@ -10,6 +10,24 @@ from IPython.display import display
 import shapely
 import mercantile
 
+def process_dataNames():
+    outNames = []
+    dataPath = os.path.join(os.path.dirname(__file__), 'data')
+    def procStr(x):
+        x = x.replace('_', '')
+        return '-'.join([x[0:4], x[4:6], x[6:8], x[8:]])
+    for dirName in os.listdir(dataPath):
+        if dirName.isnumeric():
+            subPath = os.path.join(dataPath, dirName)
+            for fileName in os.listdir(subPath):
+                if fileName.endswith('.csv'):
+                    if fileName[:8].isnumeric():
+                        old_filePath = os.path.join(subPath, fileName)
+                        new_fileName = procStr(fileName)
+                        new_filePath = os.path.join(subPath, new_fileName)
+                        print("Renaming...")
+                        os.rename(old_filePath, new_filePath)
+
 def write_fbids():
     from load import FBURLS as fburls
     ids = []
