@@ -10,7 +10,7 @@ Sydney is now fully up-to-date, but not yet NSW state-wide.
 
 *COMING SOON*
 
-- [ ] Data aggregation details
+- [X] Data aggregation details
 - [X] Interactive visualisations
 - [X] Summary plots
 - [ ] Additional regions
