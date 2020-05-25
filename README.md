@@ -2,6 +2,8 @@
 
 This repository has been established to provide free and easy access to aggregated mobility data products from Facebook and other sources. The data held here is authorised for general release to the public to support research activities related to the COVID-19 epidemic.
 
+Read the [guide to the data](https://rsbyrne.github.io/mobility-aus/guide.md)
+
 The site was established on the 12 May 2020 and will be updated at midnight daily for the foreseeable future.
 
 *STATUS - 21 May 2020*
