@@ -24,9 +24,9 @@ import os
 def make_mob_plots(frm, region):
 
     frm = frm.reset_index()
-    func = lambda x: (x['stay'] * x['n']).sum() / x['n'].sum()
-    dateAvs = frm.groupby('date')[['n', 'stay']].apply(func)
-    regionAvs = frm.groupby('start')[['n', 'stay']].apply(func)
+    func = lambda x: (x['stay'] * x['weight']).sum()
+    dateAvs = frm.groupby('date')[['weight', 'stay']].apply(func)
+    regionAvs = frm.groupby('start')[['weight', 'stay']].apply(func)
 
     fig, ax = plt.subplots(2)
     dateAvs.plot(
@@ -90,6 +90,7 @@ def make_mob_lga_date(region, get = False, override = False):
         )
     frm['stay'] /= frm['n']
     frm['km'] /= frm['n']
+    frm['weight'] = frm['n'] / frm.reset_index().groupby('date')['n'].aggregate(sum)
     frm = frm.drop('n', axis = 1)
     out = frm
 
