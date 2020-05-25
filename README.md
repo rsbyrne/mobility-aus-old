@@ -6,7 +6,7 @@ The site was established on the 12 May 2020 and will be updated at midnight dail
 
 *STATUS - 21 May 2020*
 
-Facebook's restrictive new download limits continue to be a problem. The Victorian data and the first month of the Melbourne data are now available, but the larger New South Wales and Sydney datasets will not be available until tomorrow. Note that, once the bulk of the data is downloaded, only minimal daily updates will be required, at which point Facebook's policies will no longer be an issue.
+Sydney is now fully up-to-date, but not yet NSW state-wide.
 
 *COMING SOON*
 
@@ -33,9 +33,11 @@ These datas, sourced through the Facebook Data For Good program, provide an esti
 
 **Metros**
 
+[Sydney](https://rsbyrne.github.io/mobility-aus/products/mob_lga_syd.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_syd.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_syd.png))
+
 [Melbourne](https://rsbyrne.github.io/mobility-aus/products/mob_lga_mel.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_mel.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_mel.png))
 
-[Adelaide](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_mel.png))
+[Adelaide](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.png))
 
 ## Who are we?
 
