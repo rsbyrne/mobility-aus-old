@@ -13,19 +13,22 @@ The data we provide are mobility records of thousands of Facebook users for seve
 going as far back as the beginning of April. The data are aggregated by date and local government area.
 We provide the raw data as well as some basic summary plots and maps.
 
-The columns of the provided data are, in order:
-1) The local date.
-2) The Australian Bureau of Statistics
+The columns of the provided data are as labelled:
+- *date*: The local date.
+- *LGA*: The Australian Bureau of Statistics
 [code](https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/1270.0.55.003~July%202019~Main%20Features~Local%20Government%20Areas%20(LGAs)~2)
 for the local government area in question.
-3) The total number of records available for that day; due to potential double-counting,
-the number may correspond to as many as *n* individual people or as few as a third.
-4) The proportion of records for that date and LGA which show no movement
+- *stay*: The proportion of records for that date and LGA which show no movement
 (i.e. the source and destination vicinities are the same).
-5) The average distance travelled per record for all records collected on that date and within that LGA.
+- *km*: The average distance travelled per record for all records collected on that date and within that LGA.
+- *weight*: The proportion of all records available for that day which registered a start position
+somewhere inside the LGA.
+- *visit*: Answers the question 'of the records that document travel between LGAs,
+how many recorded destinations within this LGA?'
 
 The maps show the 'km' dataset with colours mapped to the powers of ten,
 i.e. '-3' represents metres, '-1' represents hundreds of metres, '1' represents tens of kilometres, *et cetera*.
+The plots should be self-explanatory.
 
 ## Details
 
