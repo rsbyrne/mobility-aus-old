@@ -26,7 +26,7 @@ def make_mob_plots(frm, region):
     frm = frm.reset_index()
     func = lambda x: (x['stay'] * x['weight']).sum()
     dateAvs = frm.groupby('date')[['weight', 'stay']].apply(func)
-    regionAvs = frm.groupby('start')[['weight', 'stay']].apply(func)
+    regionAvs = frm.groupby('LGA')[['weight', 'stay']].apply(func)
 
     fig, ax = plt.subplots(2)
     dateAvs.plot(
@@ -51,7 +51,7 @@ def get_mob_lga_date(region, refresh = False, get = False):
     if os.path.isfile(filePath) and not refresh:
         out = pd.read_csv(filePath)
         out['date'] = pd.to_datetime(out['date'])
-        out = out.set_index(['date', 'start'])
+        out = out.set_index(['date', 'LGA'])
         return out
     else:
         out = make_mob_lga_date(region, get)
@@ -74,9 +74,10 @@ def make_mob_lga_date(region, get = False, override = False):
     dateN = trav.groupby('date')['n'].aggregate(sum)
     stopCounts = trav.groupby(['date', 'stop'])['n'].aggregate(sum)
     visit = stopCounts / dateN
-    visit.index.names = ['date', 'start']
+    visit.index.names = ['date', 'LGA']
 
-    frm = frm.set_index(['date', 'start'])
+    frm = frm.rename(dict(start = 'LGA'), axis = 1)
+    frm = frm.set_index(['date', 'LGA'])
     frm = frm.drop('stop', axis = 1)
     procFrm = frm
 
@@ -102,7 +103,7 @@ def make_mob_lga_dateMap(raw, region):
     frm = raw.copy()
     frm['km'] = frm['km'].apply(lambda x: max([x, 1e-3]))
     frm['log10km'] = np.log10(frm['km'])
-    frm = utils.pivot(frm, 'start', 'date', 'log10km')
+    frm = utils.pivot(frm, 'LGA', 'date', 'log10km')
     frm = frm['log10km']
     pivoted = frm
 
@@ -110,7 +111,7 @@ def make_mob_lga_dateMap(raw, region):
     indexNames = frm.index.names
     frm = frm.reset_index()
     lgas = load.load_lgas()
-    frm['geometry'] = frm['start'].apply(lambda x: lgas.loc[x]['geometry'])
+    frm['geometry'] = frm['LGA'].apply(lambda x: lgas.loc[x]['geometry'])
     frm = frm.set_index(indexNames)
     frm = gdf(frm)
     frm['name'] = lgas.loc[frm.index]['LGA_NAME19']
