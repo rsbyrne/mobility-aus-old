@@ -70,11 +70,10 @@ def make_mob_lga_date(region, get = False, override = False):
     frm['km'] *= frm['n']
     frm.loc[frm['km'] == 0., 'stay'] = frm['n']
 
-    trav = frm.loc[frm['start'] != frm['stop']].loc[frm['km'] > 0.]
+    trav = frm.loc[frm['start'] != frm['stop']].loc[frm['km'] > 0.].copy()
     dateN = trav.groupby('date')['n'].aggregate(sum)
     stopCounts = trav.groupby(['date', 'stop'])['n'].aggregate(sum)
     visit = stopCounts / dateN
-    visit = visit.fillna(0.)
     visit.index.names = ['date', 'start']
 
     frm = frm.set_index(['date', 'start'])
@@ -91,6 +90,8 @@ def make_mob_lga_date(region, get = False, override = False):
     frm['stay'] /= frm['n']
     frm['km'] /= frm['n']
     frm['weight'] = frm['n'] / frm.reset_index().groupby('date')['n'].aggregate(sum)
+    frm['visit'] = visit
+    frm['visit'] = frm['visit'].fillna(0.)
     frm = frm.drop('n', axis = 1)
     out = frm
 
