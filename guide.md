@@ -1,6 +1,8 @@
 ---
 layout: page
 title: guide
+permalink: https://rsbyrne.github.io/mobility-aus/guide
+
 ---
 
 # Guide
