@@ -10,20 +10,23 @@ from IPython.display import display
 import shapely
 import mercantile
 
+repoPath = os.path.abspath(os.path.dirname(__file__))
+
 def process_dataNames():
     outNames = []
-    dataPath = os.path.join(os.path.dirname(__file__), 'data')
+    dataPath = os.path.join(repoPath, 'data')
     def procStr(x):
-        x = x.replace('_', '')
-        return '-'.join([x[0:4], x[4:6], x[6:8], x[8:]])
+        x = x.replace('_', '-')
+        x = x.replace(' ', '-')
+        return '-'.join([x[-19:-15], x[-14:-12], x[-11:-9], x[-8:]])
     for dirName in os.listdir(dataPath):
         if dirName.isnumeric():
             subPath = os.path.join(dataPath, dirName)
-            for fileName in os.listdir(subPath):
-                if fileName.endswith('.csv'):
-                    if fileName[:8].isnumeric():
-                        old_filePath = os.path.join(subPath, fileName)
-                        new_fileName = procStr(fileName)
+            for filename in os.listdir(subPath):
+                if filename.endswith('.csv') and not filename == '_all.csv':
+                    if not filename[:-4].replace('-', '').isnumeric():
+                        old_filePath = os.path.join(subPath, filename)
+                        new_fileName = procStr(filename)
                         new_filePath = os.path.join(subPath, new_fileName)
                         print("Renaming...")
                         os.rename(old_filePath, new_filePath)
