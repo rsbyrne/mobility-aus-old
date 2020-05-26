@@ -6,7 +6,7 @@ Read the [guide to the data](https://rsbyrne.github.io/mobility-aus/guide)
 
 The site was established on the 12 May 2020 and will be updated at midnight daily for the foreseeable future.
 
-*STATUS - 21 May 2020*
+*STATUS - 25 May 2020*
 
 Sydney is now fully up-to-date, but not yet NSW state-wide.
 
