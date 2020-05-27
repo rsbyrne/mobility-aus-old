@@ -2,8 +2,6 @@
 
 This repository has been established to provide free and easy access to aggregated mobility data products from Facebook and other sources. The data held here is authorised for general release to the public to support research activities related to the COVID-19 epidemic.
 
-[***Read the guide***](https://rsbyrne.github.io/mobility-aus/guide)
-
 The site was established on the 12 May 2020 and will be updated at midnight daily for the foreseeable future.
 
 *STATUS - 27 May 2020*
@@ -24,7 +22,11 @@ Other regions are updated as far as mid-May and will be completed shortly.
 
 ### Facebook Mobility by Local Government Area
 
-These datas, sourced through the Facebook Data For Good program, provide an estimate of the 'Stay At Home Percentage' per day per council area for several Australian regions, as well as the percentage anomaly daily from the full-timeseries average. The areas in question are given by standard ABS LGA codes; the associated geometries may be freely sourced [here](https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/1270.0.55.003~July%202016~Main%20Features~Local%20Government%20Areas%20(LGA)~7).
+These datas, sourced through the Facebook Data For Good program, provide various aggregated metrics
+relating to mobility, including a measure of the 'stay-at-home ratio' during the COVID-19 crisis.
+The areas in question are given by standard ABS LGA codes; the associated geometries may be freely sourced [here](https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/1270.0.55.003~July%202016~Main%20Features~Local%20Government%20Areas%20(LGA)~7).
+
+[***Read the guide***](https://rsbyrne.github.io/mobility-aus/guide)
 
 **States**
 
