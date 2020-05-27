@@ -2,13 +2,14 @@
 
 This repository has been established to provide free and easy access to aggregated mobility data products from Facebook and other sources. The data held here is authorised for general release to the public to support research activities related to the COVID-19 epidemic.
 
-Read the [guide to the data](https://rsbyrne.github.io/mobility-aus/guide)
+[***Read the guide***](https://rsbyrne.github.io/mobility-aus/guide)
 
 The site was established on the 12 May 2020 and will be updated at midnight daily for the foreseeable future.
 
 *STATUS - 27 May 2020*
 
-New South Wales has been added. All listed data except for Melbourne are up-to-date.
+New South Wales, Sydney, Victoria, and Melbourne are now all fully online and up to date.
+Other regions are updated as far as mid-May and will be completed shortly.
 
 *COMING SOON*
 
