@@ -20,12 +20,12 @@ The columns of the provided data are as labelled:
 - *LGA*: The Australian Bureau of Statistics
 [code](https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/1270.0.55.003~July%202019~Main%20Features~Local%20Government%20Areas%20(LGAs)~2)
 for the local government area in question.
-- *stay*: the proportion of records for that date and LGA which show no movement
-(i.e. the source and destination vicinities are the same).
-- *km*: answers the question 'of the records that show a starting position within this LGA, what was the average distance travelled?'
+- *stay*: the proportion of records for that date and LGA which show zero kilometres of movement.
+- *km*: answers the question 'of the records that show a starting position within this LGA, what was the *average distance* in kilometres travelled?'
+(Note: this metric includes journeys of zero distance, i.e. 'stay' records.)
 - *weight*: the proportion of all records available for that day which registered a start position
 somewhere inside the LGA.
-- *visit*: answers the question 'of the records that show travel between LGAs,
+- *visit*: answers the question 'of the records that show travel *between LGAs*,
 how many had destinations within this LGA?'
 
 The maps show the 'km' dataset with colours mapped to the powers of ten,
