@@ -6,9 +6,9 @@ Read the [guide to the data](https://rsbyrne.github.io/mobility-aus/guide)
 
 The site was established on the 12 May 2020 and will be updated at midnight daily for the foreseeable future.
 
-*STATUS - 25 May 2020*
+*STATUS - 27 May 2020*
 
-Sydney is now fully up-to-date, but not yet NSW state-wide.
+New South Wales has been added. All listed data except for Melbourne are up-to-date.
 
 *COMING SOON*
 
@@ -26,6 +26,8 @@ Sydney is now fully up-to-date, but not yet NSW state-wide.
 These datas, sourced through the Facebook Data For Good program, provide an estimate of the 'Stay At Home Percentage' per day per council area for several Australian regions, as well as the percentage anomaly daily from the full-timeseries average. The areas in question are given by standard ABS LGA codes; the associated geometries may be freely sourced [here](https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/1270.0.55.003~July%202016~Main%20Features~Local%20Government%20Areas%20(LGA)~7).
 
 **States**
+
+[New South Wales](https://rsbyrne.github.io/mobility-aus/products/mob_lga_nsw.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_nsw.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_nsw.png))
 
 [Victoria](https://rsbyrne.github.io/mobility-aus/products/mob_lga_vic.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_vic.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_vic.png))
 
