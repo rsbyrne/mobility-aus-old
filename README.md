@@ -27,6 +27,8 @@ These datas, sourced through the Facebook Data For Good program, provide an esti
 
 **States**
 
+[New South Wales](https://rsbyrne.github.io/mobility-aus/products/mob_lga_nsw.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_nsw.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_nsw.png))
+
 [Victoria](https://rsbyrne.github.io/mobility-aus/products/mob_lga_vic.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_vic.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_vic.png))
 
 [Queensland](https://rsbyrne.github.io/mobility-aus/products/mob_lga_qld.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_qld.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_qld.png))
