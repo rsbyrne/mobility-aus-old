@@ -54,7 +54,7 @@ def get_mob_lga_date(region, refresh = False, get = False):
         out = out.set_index(['date', 'LGA'])
         return out
     else:
-        out = make_mob_lga_date(region, get = get, override = refresh)
+        out = make_mob_lga_date(region, get = get)
         out.to_csv(filePath)
         return out
 def make_mob_lga_date(region, get = False, override = False):
