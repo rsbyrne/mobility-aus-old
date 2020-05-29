@@ -128,7 +128,24 @@ def make_mob_lga_dateMap(raw, region):
     frm['geometry'] = frm['geometry'].buffer(scale * 0.5 * scalingCoeff)
 
     mapName = '_'.join(['mob', 'lga', region])
-    mapTitle = mapName
+    titlesDict = {
+        'aus': 'Australia',
+        'vic': 'Victoria',
+        'mel': 'Melbourne',
+        'nsw': 'New South Wales',
+        'syd': 'Sydney',
+        'qld': 'Queensland',
+        'nt': 'Northern Territory',
+        'dar': 'Darwin',
+        'act': 'Australian Capital Territory',
+        'sa': 'South Australia',
+        'ade': 'Adelaide',
+        'wa': 'Western Australia',
+        'per': 'Perth',
+        'tas': 'Tasmania',
+        'hob': 'Hobart',
+        }
+    mapTitle = '{0} mobility chart'.format(titlesDict[region])
 
     make_dateMap(frm, mapName, mapTitle, size = 600, nonVisKeys = {'name', 'area'})
 
