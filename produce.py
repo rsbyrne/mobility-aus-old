@@ -45,7 +45,7 @@ def make_mob_plots(frm, region):
     filePath = os.path.join(repoPath, 'products', filename)
     fig.savefig(filePath)
 
-def get_mob_lga_date(region, refresh = False, get = False):
+def get_mob_lga_date(region, refresh = False, get = False, override = False):
     filename = '_'.join(['mob', 'lga', region]) + '.csv'
     filePath = os.path.join(repoPath, 'products', filename)
     if os.path.isfile(filePath) and not refresh:
@@ -54,7 +54,7 @@ def get_mob_lga_date(region, refresh = False, get = False):
         out = out.set_index(['date', 'LGA'])
         return out
     else:
-        out = make_mob_lga_date(region, get = get)
+        out = make_mob_lga_date(region, get = get, override = override)
         out.to_csv(filePath)
         return out
 def make_mob_lga_date(region, get = False, override = False):

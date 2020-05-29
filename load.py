@@ -282,7 +282,10 @@ def load_fb_tiles(region, dataset, get = False, override = False):
     if new is None and pre is None:
         raise NoData
     out = pd.concat([pre, new])
+    out = out.sort_index()
     allFilePath = os.path.join(searchDir, '_all.csv')
+    if os.path.exists(allFilePath):
+        os.remove(allFilePath)
     out.to_csv(allFilePath)
     return out
 
@@ -312,6 +315,12 @@ class NoNewFiles(Exception):
     pass
 class NoData(Exception):
     pass
+
+def conditional_flip_quadkey(x):
+    if str(x)[0] != '3':
+        return flip_quadkey(str(x), (False, True))
+    else:
+        return x
 
 def new_load_fb_tiles(region, dataset, ignoreKeys = set()):
     global FBURLS
@@ -349,8 +358,8 @@ def new_load_fb_tiles(region, dataset, ignoreKeys = set()):
         procFuncs = {
             'date_time': _process_datetime,
             'length_km': float,
-            'start_quadkey': lambda x: flip_quadkey(str(x), (False, True)),
-            'end_quadkey': lambda x: flip_quadkey(str(x), (False, True))
+            'start_quadkey': conditional_flip_quadkey,
+            'end_quadkey': conditional_flip_quadkey,
             }
     elif dataset == 'pop':
         def _pop_handle_nan(x):
