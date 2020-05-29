@@ -89,7 +89,7 @@ def make_mob_lga_date(region, get = False, override = False):
         stay = sum
         )
     frm['stay'] /= frm['n']
-    frm['km'] /= frm['n']
+    frm['km'] = frm['km'] / (frm['n'] * (1. - frm['stay']))
     frm['weight'] = frm['n'] / frm.reset_index().groupby('date')['n'].aggregate(sum)
     frm['visit'] = visit
     frm['visit'] = frm['visit'].fillna(0.)
