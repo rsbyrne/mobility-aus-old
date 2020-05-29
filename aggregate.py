@@ -106,7 +106,7 @@ def aggregate_mob_tiles_to_regions(
     frm['start'], frm['stop'] = frm['start'].astype(int), frm['stop'].astype(int)
     frm = frm.set_index(['datetime', 'start', 'stop'])
 
-    buffer = bounds.buffer(np.sqrt(bounds.area) * 1e-1)
+    buffer = bounds.buffer(np.sqrt(bounds.area) * 1e-2)
     indexNames = frm.index.names
     clippedFrm = toFrm.loc[toFrm.within(buffer)]
     frm = frm.reset_index().set_index('start')
