@@ -101,13 +101,18 @@ def make_mob_lga_date(region, get = False, override = False):
 def make_mob_lga_dateMap(raw, region):
 
     frm = raw.copy()
-    frm['km'] = frm['km'].apply(lambda x: max([x, 1e-3]))
-    frm['log10km'] = np.log10(frm['km'])
-    frm = utils.pivot(frm, 'LGA', 'date', 'log10km')
-    frm = frm['log10km']
-    pivoted = frm
+    frms = []
+    for key in [key for key in raw.columns if not key == 'geometry']:
+        subFrm = utils.pivot(frm, 'LGA', 'date', key)[key]
+        subFrm.columns = [
+            str(round(int(n.to_numpy()) / 1e6)) if type(n) is pd.Timestamp else n
+                for n in subFrm.columns
+            ]
+        subFrm.columns = ['_'.join([key, n]) for n in subFrm.columns]
+        frms.append(subFrm)
+    concatFrm = pd.concat(frms, axis = 1)
 
-    frm = pivoted.copy()
+    frm = concatFrm.copy()
     indexNames = frm.index.names
     frm = frm.reset_index()
     lgas = load.load_lgas()
@@ -122,16 +127,12 @@ def make_mob_lga_dateMap(raw, region):
     frm['geometry'] = frm['geometry'].simplify(scale * scalingCoeff)
     frm['geometry'] = frm['geometry'].buffer(scale * 0.5 * scalingCoeff)
 
-    frm.columns = [
-        str(round(int(n.to_numpy()) / 1e6)) if type(n) is pd.Timestamp else n
-            for n in frm.columns
-        ]
-
     mapName = '_'.join(['mob', 'lga', region])
+    mapTitle = mapName
 
-    make_dateMap(frm, mapName, size = 600)
+    make_dateMap(frm, mapName, mapTitle, size = 600, nonVisKeys = {'name', 'area'})
 
-def make_dateMap(frm, name, size = 600):
+def make_dateMap(frm, name, title, size = 600, nonVisKeys = {}):
 
     minx = np.min(frm.bounds['minx'])
     maxx = np.max(frm.bounds['maxx'])
@@ -139,14 +140,22 @@ def make_dateMap(frm, name, size = 600):
     maxy = np.max(frm.bounds['maxy'])
     aspect = (maxx - minx) / (maxy - miny)
 
-    ts = [n for n in frm.columns if n.isnumeric()]
+    ts = sorted(set([n.split('_')[-1] for n in frm.columns]))
+    ts = [n for n in ts if n.isnumeric()]
     assert len(ts)
+    ns = sorted(set([n.split('_')[0] for n in frm.columns]))
+    ns = [n for n in ns if not n in [*nonVisKeys, 'geometry']]
+    assert len(ns)
 
-    allMin = frm[ts].min().min()
-    allMax = frm[ts].max().max()
+    defaultCol = '_'.join([ns[0], ts[-1]])
+
+    indexName = frm.index.name
+
+    mins = {n: frm[['_'.join([n, t]) for t in ts]].min().min() for n in ns}
+    maxs = {n: frm[['_'.join([n, t]) for t in ts]].max().max() for n in ns}
 
     from bokeh.models import GeoJSONDataSource
-    geoJSON = frm.to_json()
+    geoJSON = frm.reset_index().to_json()
     source = GeoJSONDataSource(geojson = geoJSON)
 
     from bokeh.io import output_file
@@ -158,80 +167,107 @@ def make_dateMap(frm, name, size = 600):
 
     from bokeh.plotting import figure
     fig = figure(
-        title = name,
+        title = title,
         plot_height = size,
-        plot_width = int(round(size * aspect)), 
+        plot_width = int(round(size * aspect)) + 50, 
         toolbar_location = 'right',
-        tools = 'pan, wheel_zoom, box_zoom, reset',
+        tools = 'pan, zoom_in, zoom_out, wheel_zoom, reset',
         background_fill_color = "lightgrey"
         )
 
     fig.xgrid.grid_line_color = None
     fig.ygrid.grid_line_color = None
 
-    from bokeh.palettes import Viridis10
+    from bokeh.palettes import Viridis256
     from bokeh.models import LinearColorMapper, ColorBar
-    palette = Viridis10[::-1]
+    palette = Viridis256
     colourMapper = LinearColorMapper(
         palette = palette,
-        low = allMin,
-        high = allMax,
+        low = mins[ns[0]],
+        high = maxs[ns[0]],
         )
     colourBar = ColorBar(
         color_mapper = colourMapper, 
         label_standoff = 8,
-        width = int(round(aspect * size * 0.8)),
-        height = int(round(size / 30)),
+        width = 30,
+        height = int(round(fig.plot_height * 0.9)),
         border_line_color = None,
         location = (0, 0), 
-        orientation = 'horizontal',
+        orientation = 'vertical',
         )
-    fig.add_layout(colourBar, 'below')
+    fig.add_layout(colourBar, 'left')
 
     patches = fig.patches(
         'xs',
         'ys',
         source = source,
         fill_color = dict(
-            field = ts[-1],
+            field = defaultCol,
             transform = colourMapper,
             ),
         line_color = 'grey', 
         line_width = 0.25,
-        fill_alpha = 1
+        fill_alpha = 1,
+        name = defaultCol
         )
 
     from bokeh.models.widgets import DateSlider as Slider
     slider = Slider(
-        title = 'date',
+        title = 'Date',
         start = int(ts[0]),
         end = int(ts[-1]),
-        step = int(8.64 * 1e7),
+        step = int(8.64 * 1e7), # days
         value = int(ts[-1]),
+        width = fig.plot_width - 70
+        )
+
+    from bokeh.models.widgets import Select
+    select = Select(
+        title = "Dataset",
+        options = ns,
+        value = defaultCol.split('_')[0],
+        width = 60
         )
 
     from bokeh.models import CustomJS
     callback = CustomJS(
-        args = dict(patches = patches, source = source, slider = slider),
+        args = dict(
+            patches = patches,
+            source = source,
+            slider = slider,
+    #         key = 'stay', # <--- TESTING
+            select = select,
+            colourMapper = colourMapper,
+            mins = mins,
+            maxs = maxs,
+            ),
         code = """
-            patches.glyph.fill_color['field'] = String(slider.value)
+            const newCol = select.value + '_' + slider.value
+            patches.glyph.fill_color['field'] = newCol
+            patches.name = newCol
+            colourMapper.low = mins[select.value]
+            colourMapper.high = maxs[select.value]
             source.change.emit()
             """,
         )
 
+    from bokeh.models import HoverTool
+    tooltips = [
+        ('Index', '@' + indexName),
+        ('Value', '@$name')
+        ]
+    tooltips.extend([(k.capitalize(), '@' + k) for k in nonVisKeys])
+    hover = HoverTool(
+        renderers = [patches],
+        tooltips = tooltips
+        )
+    fig.add_tools(hover)
+
     slider.js_on_change('value', callback)
+    select.js_on_change('value', callback)
 
     from bokeh.layouts import column, row
-    layout = column(fig, slider)
-
-    from bokeh.models import HoverTool
-    fig.add_tools(HoverTool(
-        renderers = [patches],
-        tooltips = [
-            ('LGA','@name'),
-            ('Area', '@area'),
-            ]
-        ))
+    layout = column(fig, row(select, slider))
 
     from bokeh.io import show
 
