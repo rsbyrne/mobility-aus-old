@@ -320,7 +320,7 @@ def conditional_flip_quadkey(x):
     if str(x)[0] != '3':
         return flip_quadkey(str(x), (False, True))
     else:
-        return x
+        return str(x)
 
 def new_load_fb_tiles(region, dataset, ignoreKeys = set()):
     global FBURLS
