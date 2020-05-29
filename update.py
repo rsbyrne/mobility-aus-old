@@ -14,7 +14,7 @@ regions = {
 
 for region in regions:
     try:
-        mob = produce.make_mob_lga_date(region, refresh = True)
+        mob = produce.get_mob_lga_date(region, refresh = True)
         produce.make_mob_plots(mob, region)
         produce.make_mob_lga_dateMap(mob, region)
     except NoData:
