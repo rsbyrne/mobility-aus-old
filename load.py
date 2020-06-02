@@ -430,12 +430,8 @@ def new_load_fb_tiles(region, dataset, ignoreKeys = set()):
 def load_generic(option, **kwargs):
     optionsDict = {
         'lga': load_lgas,
-        'sa2': load_SA2,
+        'sa2': lambda: load_SA(2),
         }
-    optionsDict.update({
-        'sa{0}'.format(str(i)): lambda: load_SA(i)
-            for i in range(4)
-        })
     return optionsDict[option](**kwargs)
 
 def load_lgas():
