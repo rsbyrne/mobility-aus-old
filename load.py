@@ -427,6 +427,17 @@ def new_load_fb_tiles(region, dataset, ignoreKeys = set()):
     print("Done.")
     return frm
 
+def load_generic(option, **kwargs):
+    optionsDict = {
+        'lga': load_lgas,
+        'sa2': load_SA2,
+        }
+    optionsDict.update({
+        'sa{0}'.format(str(i)): lambda: load_SA(i)
+            for i in range(4)
+        })
+    return optionsDict[option](**kwargs)
+
 def load_lgas():
     paths = [repoPath, 'resources', 'LGA_2019_AUST.shp']
     lgas = gpd.read_file(os.path.join(*paths))
@@ -434,6 +445,7 @@ def load_lgas():
     lgas['STE_CODE16'] = lgas['STE_CODE16'].astype(int)
     lgas = lgas.set_index('LGA_CODE19')
     lgas = lgas.dropna()
+    lgas['name'] = lgas['LGA_NAME19']
     return lgas
 
 def load_aus():
@@ -458,6 +470,7 @@ def load_SA(level):
     frm = frm.set_index(key)
     frm = frm.loc[frm['AREASQKM16'] > 0.]
     frm = frm.dropna()
+    frm['name'] = frm['SA{0}_NAME16'.format(str(level))]
     return frm
 def load_SA4(): return load_SA(4)
 def load_SA3(): return load_SA(3)

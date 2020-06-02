@@ -21,16 +21,16 @@ STATES = {
     'wa': 'Western Australia'
     }
 
-def aggregate_mob_tiles_to_lgas(frm, clip = None, **kwargs):
+def aggregate_mob_tiles_to_abs(frm, clip = None, aggType = 'lga', **kwargs):
     import load
-    lgas = load.load_lgas()
-    out = aggregate_mob_tiles_to_regions(frm, lgas, **kwargs)
+    absFrm = load.load_generic(aggType)
+    out = aggregate_mob_tiles_to_regions(frm, absFrm, **kwargs)
     if not clip is None:
         if clip in STATES:
             indexNames = out.index.names
             out = out.reset_index().set_index('start')
-            lgaIndices = lgas.loc[lgas['STE_NAME16'] == STATES[clip]].index
-            out = out.drop(set(out.index).difference(set(lgaIndices)))
+            absIndices = absFrm.loc[absFrm['STE_NAME16'] == STATES[clip]].index
+            out = out.drop(set(out.index).difference(set(absIndices)))
             out = out.reset_index().set_index(indexNames)
     return out
 
