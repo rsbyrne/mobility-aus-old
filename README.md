@@ -77,6 +77,14 @@ The areas in question are given by standard ABS SA2 codes; the associated geomet
 
 [Adelaide](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_ade.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_ade.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_ade.png))
 
+### Utilities
+
+Some generally useful datasets and documents are provided here.
+
+[ABS code lookup table](https://rsbyrne.github.io/mobility-aus/products/abs_lookup.csv)
+
+[Guide to the data](https://rsbyrne.github.io/mobility-aus/guide)
+
 ## Who are we?
 
 This project has been launched under the auspices of a broad coalition of Australian scientists working on COVID-related problems. The first point of contact for any issues related to the product provided here is the project maintainer, Rohan Byrne: <rohan.byrne@unimelb.edu.au>
