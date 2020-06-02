@@ -6,10 +6,10 @@ The site was established on the 12 May 2020 and will be updated at midnight dail
 
 Don't forget to [***read the guide***](https://rsbyrne.github.io/mobility-aus/guide) for these datas.
 
-*STATUS - 27 May 2020*
+*CHANGES - 2 June 2020*
 
-New South Wales, Sydney, Victoria, and Melbourne are now all fully online and up to date.
-Other regions are updated as far as mid-May and will be completed shortly.
+- Aggregations by Statistical Area have been added. Accordingly, the 'LGA' column has been renamed 'code'.
+- The file *abs_lookup.csv* has been added to Products, providing a quick reference for ABS codes.
 
 *CHANGES - 29 May 2020*
 
@@ -21,8 +21,8 @@ Other regions are updated as far as mid-May and will be completed shortly.
 - [X] Data aggregation details
 - [X] Interactive visualisations
 - [X] Summary plots
-- [ ] Additional regions
-- [ ] Additional aggregations
+- [X] Additional regions
+- [X] Additional aggregations
 - [ ] Frequently Asked Questions
 - [ ] Analysis spotlights
 
@@ -51,6 +51,30 @@ The areas in question are given by standard ABS LGA codes; the associated geomet
 [Melbourne](https://rsbyrne.github.io/mobility-aus/products/mob_lga_mel.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_mel.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_mel.png))
 
 [Adelaide](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.png))
+
+### Facebook Mobility by ABS Statistical Area 2
+
+These datas area as above, but aggregated by ABS Statistical Areas (Level 2) rather than local councils.
+Statistical Areas may be more convenient than councils for experienced researchers.
+The areas in question are given by standard ABS SA2 codes; the associated geometries may be freely sourced [here](https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/1270.0.55.001~July%202016~Main%20Features~Statistical%20Area%20Level%202%20(SA2)~10014).
+
+**States**
+
+[New South Wales](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_nsw.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_nsw.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_nsw.png))
+
+[Victoria](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_vic.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_vic.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_vic.png))
+
+[Queensland](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_qld.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_qld.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_qld.png))
+
+[Western Australia](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_wa.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_wa.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_wa.png))
+
+**Metros**
+
+[Sydney](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_syd.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_syd.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_syd.png))
+
+[Melbourne](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_mel.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_mel.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_mel.png))
+
+[Adelaide](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_ade.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_ade.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_ade.png))
 
 ## Who are we?
 

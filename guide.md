@@ -12,21 +12,20 @@ intellectual property while providing the best possible utility.
 ## Overview
 
 The data we provide are mobility records of thousands of Facebook users for several Australian states and cities
-going as far back as the beginning of April. The data are aggregated by date and local government area.
+going as far back as the beginning of April. The data are aggregated by date and ABS region
+(e.g. Local Government Areas, or Statistical Areas).
 We provide the raw data as well as some basic summary plots and maps.
 
 The columns of the provided data are as labelled:
 - *date*: The local date.
-- *LGA*: The Australian Bureau of Statistics
-[code](https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/1270.0.55.003~July%202019~Main%20Features~Local%20Government%20Areas%20(LGAs)~2)
-for the local government area in question.
-- *stay*: the proportion of records for that date and LGA which show zero kilometres of movement.
-- *km*: answers the question 'of the records that show a starting position within this LGA, what was the *average distance* in kilometres travelled?'
+- *code*: The Australian Bureau of Statistics code for the ABS region in question.
+- *stay*: the proportion of records for that date and region which show zero kilometres of movement.
+- *km*: answers the question 'of the records that show a starting position within this region, what was the *average distance* in kilometres travelled?'
 (Note: this metric includes journeys of zero distance, i.e. 'stay' records.)
 - *weight*: the proportion of all records available for that day which registered a start position
-somewhere inside the LGA.
-- *visit*: answers the question 'of the records that show travel *between LGAs*,
-how many had destinations within this LGA?'
+somewhere inside the region.
+- *visit*: answers the question 'of the records that show travel *between regions*,
+how many had destinations within this region?'
 
 The maps show the 'km' dataset with colours mapped to the powers of ten,
 i.e. '-3' represents metres, '-1' represents hundreds of metres, '1' represents tens of kilometres, *et cetera*.
@@ -62,10 +61,10 @@ for which there are fewer than ten observed users are **discarded** to protect t
 
 We are not permitted to share the data in this form, but we are encouraged to share data which has been processed
 in some way. Our decision was to provide the data to the public aggregated by date and local government area.
-This is done by performing a spatial join of the Facebook tile-based dataset with the ABS-provided LGA shapefile.
-Tiles which lie across multiple LGAs are broken up and their data redistributed proportionally by area
-across the intersecting LGAs. This yields a dataset of Facebook population 'n' keyed by
-start LGA, stop LGA, datetime, and travel distance. Records whose starting LGA does not wholly lie within a ten percent buffer
+This is done by performing a spatial join of the Facebook tile-based dataset with the ABS-provided region shapefile.
+Tiles which lie across multiple regions are broken up and their data redistributed proportionally by area
+across the intersecting regions. This yields a dataset of Facebook population 'n' keyed by
+start region, stop region, datetime, and travel distance. Records whose starting region does not wholly lie within a ten percent buffer
 of the original bounding box for the dataset as a whole are deemed intolerably incomplete and are discarded.
 The remainder is then aggregated by region and day to produce the final data available through this portal.
 
