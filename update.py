@@ -6,7 +6,7 @@ regions = {
     'wa', 'per', 'tas', 'qld', 'nt', 'aus',
     }
 aggTypes = {
-    'lga', 'sa2'
+    'lga', 'sa2',
     }
 
 for region in regions:
@@ -21,11 +21,13 @@ for region in regions:
                 )
             produce.make_mob_plots(
                 mob,
-                region
+                region,
+                aggType,
                 )
             produce.make_mob_dateMap(
                 mob,
-                region
+                region,
+                aggType,
                 )
         except NoData:
             print("No data currently available for:", region)
