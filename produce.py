@@ -21,6 +21,31 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
+def get_abs_lookup(sources, refresh = False):
+    filename = 'abs_lookup.csv'
+    filePath = os.path.join(repoPath, 'products', filename)
+    if os.path.isfile(filePath) and not refresh:
+        out = pd.read_csv(filePath)
+        out = out.set_index('code')
+        if not all([source in set(out['type']) for source in sources]):
+            return get_abs_lookup(sources, refresh = True)
+        return out
+    else:
+        out = make_abs_lookup(sources)
+        out.to_csv(filePath)
+        return out
+def make_abs_lookup(sources):
+    frms = []
+    for source in sources:
+        frm = load.load_generic(source)
+        frm = frm[['name']]
+        frm['type'] = source
+        frm.index.name = 'code'
+        frms.append(frm)
+    frm = pd.concat(frms)
+    frm = frm.sort_index()
+    return frm
+
 def make_mob_plots(frm, region, aggType = 'lga'):
 
     frm = frm.reset_index()
@@ -120,7 +145,7 @@ def make_mob_dateMap(raw, region, aggType = 'lga'):
     frm = frm.set_index(indexNames)
     frm = gdf(frm)
     frm['name'] = aggRegions.loc[frm.index]['name']
-    frm['area'] = aggRegions.loc[frm.index]['AREASQKM19']
+    frm['area'] = aggRegions.loc[frm.index]['area']
 
     scale = np.sqrt(np.median(frm['geometry'].area))
     scalingCoeff = len(frm) ** 2. * 1e-5

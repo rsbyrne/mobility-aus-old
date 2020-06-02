@@ -1,0 +1,2837 @@
+code,name,type
+10050,Albury (C),lga
+10130,Armidale Regional (A),lga
+10250,Ballina (A),lga
+10300,Balranald (A),lga
+10470,Bathurst Regional (A),lga
+10500,Bayside (A),lga
+10550,Bega Valley (A),lga
+10600,Bellingen (A),lga
+10650,Berrigan (A),lga
+10750,Blacktown (C),lga
+10800,Bland (A),lga
+10850,Blayney (A),lga
+10900,Blue Mountains (C),lga
+10950,Bogan (A),lga
+11150,Bourke (A),lga
+11200,Brewarrina (A),lga
+11250,Broken Hill (C),lga
+11300,Burwood (A),lga
+11350,Byron (A),lga
+11400,Cabonne (A),lga
+11450,Camden (A),lga
+11500,Campbelltown (C) (NSW),lga
+11520,Canada Bay (A),lga
+11570,Canterbury-Bankstown (A),lga
+11600,Carrathool (A),lga
+11650,Central Coast (C) (NSW),lga
+11700,Central Darling (A),lga
+11720,Cessnock (C),lga
+11730,Clarence Valley (A),lga
+11750,Cobar (A),lga
+11800,Coffs Harbour (C),lga
+12000,Coolamon (A),lga
+12150,Coonamble (A),lga
+12160,Cootamundra-Gundagai Regional (A),lga
+12350,Cowra (A),lga
+12380,Cumberland (A),lga
+12390,Dubbo Regional (A),lga
+12700,Dungog (A),lga
+12730,Edward River (A),lga
+12750,Eurobodalla (A),lga
+12850,Fairfield (C),lga
+12870,Federation (A),lga
+12900,Forbes (A),lga
+12930,Georges River (A),lga
+12950,Gilgandra (A),lga
+13010,Glen Innes Severn (A),lga
+13310,Goulburn Mulwaree (A),lga
+13340,Greater Hume Shire (A),lga
+13450,Griffith (C),lga
+13550,Gunnedah (A),lga
+13660,Gwydir (A),lga
+13800,Hawkesbury (C),lga
+13850,Hay (A),lga
+13910,Hilltops (A),lga
+14000,Hornsby (A),lga
+14100,Hunters Hill (A),lga
+14170,Inner West (A),lga
+14200,Inverell (A),lga
+14300,Junee (A),lga
+14350,Kempsey (A),lga
+14400,Kiama (A),lga
+14500,Ku-ring-gai (A),lga
+14550,Kyogle (A),lga
+14600,Lachlan (A),lga
+14650,Lake Macquarie (C),lga
+14700,Lane Cove (A),lga
+14750,Leeton (A),lga
+14850,Lismore (C),lga
+14870,Lithgow (C),lga
+14900,Liverpool (C),lga
+14920,Liverpool Plains (A),lga
+14950,Lockhart (A),lga
+15050,Maitland (C),lga
+15240,Mid-Coast (A),lga
+15270,Mid-Western Regional (A),lga
+15300,Moree Plains (A),lga
+15350,Mosman (A),lga
+15520,Murray River (A),lga
+15560,Murrumbidgee (A),lga
+15650,Muswellbrook (A),lga
+15700,Nambucca (A),lga
+15750,Narrabri (A),lga
+15800,Narrandera (A),lga
+15850,Narromine (A),lga
+15900,Newcastle (C),lga
+15950,North Sydney (A),lga
+15990,Northern Beaches (A),lga
+16100,Oberon (A),lga
+16150,Orange (C),lga
+16200,Parkes (A),lga
+16260,Parramatta (C),lga
+16350,Penrith (C),lga
+16380,Port Macquarie-Hastings (A),lga
+16400,Port Stephens (A),lga
+16490,Queanbeyan-Palerang Regional (A),lga
+16550,Randwick (C),lga
+16610,Richmond Valley (A),lga
+16700,Ryde (C),lga
+16900,Shellharbour (C),lga
+16950,Shoalhaven (C),lga
+17000,Singleton (A),lga
+17040,Snowy Monaro Regional (A),lga
+17080,Snowy Valleys (A),lga
+17100,Strathfield (A),lga
+17150,Sutherland Shire (A),lga
+17200,Sydney (C),lga
+17310,Tamworth Regional (A),lga
+17350,Temora (A),lga
+17400,Tenterfield (A),lga
+17420,The Hills Shire (A),lga
+17550,Tweed (A),lga
+17620,Upper Hunter Shire (A),lga
+17640,Upper Lachlan Shire (A),lga
+17650,Uralla (A),lga
+17750,Wagga Wagga (C),lga
+17850,Walcha (A),lga
+17900,Walgett (A),lga
+17950,Warren (A),lga
+18020,Warrumbungle Shire (A),lga
+18050,Waverley (A),lga
+18100,Weddin (A),lga
+18200,Wentworth (A),lga
+18250,Willoughby (C),lga
+18350,Wingecarribee (A),lga
+18400,Wollondilly (A),lga
+18450,Wollongong (C),lga
+18500,Woollahra (A),lga
+18710,Yass Valley (A),lga
+19399,Unincorporated NSW,lga
+20110,Alpine (S),lga
+20260,Ararat (RC),lga
+20570,Ballarat (C),lga
+20660,Banyule (C),lga
+20740,Bass Coast (S),lga
+20830,Baw Baw (S),lga
+20910,Bayside (C),lga
+21010,Benalla (RC),lga
+21110,Boroondara (C),lga
+21180,Brimbank (C),lga
+21270,Buloke (S),lga
+21370,Campaspe (S),lga
+21450,Cardinia (S),lga
+21610,Casey (C),lga
+21670,Central Goldfields (S),lga
+21750,Colac-Otway (S),lga
+21830,Corangamite (S),lga
+21890,Darebin (C),lga
+22110,East Gippsland (S),lga
+22170,Frankston (C),lga
+22250,Gannawarra (S),lga
+22310,Glen Eira (C),lga
+22410,Glenelg (S),lga
+22490,Golden Plains (S),lga
+22620,Greater Bendigo (C),lga
+22670,Greater Dandenong (C),lga
+22750,Greater Geelong (C),lga
+22830,Greater Shepparton (C),lga
+22910,Hepburn (S),lga
+22980,Hindmarsh (S),lga
+23110,Hobsons Bay (C),lga
+23190,Horsham (RC),lga
+23270,Hume (C),lga
+23350,Indigo (S),lga
+23430,Kingston (C) (Vic.),lga
+23670,Knox (C),lga
+23810,Latrobe (C) (Vic.),lga
+23940,Loddon (S),lga
+24130,Macedon Ranges (S),lga
+24210,Manningham (C),lga
+24250,Mansfield (S),lga
+24330,Maribyrnong (C),lga
+24410,Maroondah (C),lga
+24600,Melbourne (C),lga
+24650,Melton (C),lga
+24780,Mildura (RC),lga
+24850,Mitchell (S),lga
+24900,Moira (S),lga
+24970,Monash (C),lga
+25060,Moonee Valley (C),lga
+25150,Moorabool (S),lga
+25250,Moreland (C),lga
+25340,Mornington Peninsula (S),lga
+25430,Mount Alexander (S),lga
+25490,Moyne (S),lga
+25620,Murrindindi (S),lga
+25710,Nillumbik (S),lga
+25810,Northern Grampians (S),lga
+25900,Port Phillip (C),lga
+25990,Pyrenees (S),lga
+26080,Queenscliffe (B),lga
+26170,South Gippsland (S),lga
+26260,Southern Grampians (S),lga
+26350,Stonnington (C),lga
+26430,Strathbogie (S),lga
+26490,Surf Coast (S),lga
+26610,Swan Hill (RC),lga
+26670,Towong (S),lga
+26700,Wangaratta (RC),lga
+26730,Warrnambool (C),lga
+26810,Wellington (S),lga
+26890,West Wimmera (S),lga
+26980,Whitehorse (C),lga
+27070,Whittlesea (C),lga
+27170,Wodonga (C),lga
+27260,Wyndham (C),lga
+27350,Yarra (C),lga
+27450,Yarra Ranges (S),lga
+27630,Yarriambiack (S),lga
+29399,Unincorporated Vic,lga
+30250,Aurukun (S),lga
+30300,Balonne (S),lga
+30370,Banana (S),lga
+30410,Barcaldine (R),lga
+30450,Barcoo (S),lga
+30760,Blackall-Tambo (R),lga
+30900,Boulia (S),lga
+31000,Brisbane (C),lga
+31750,Bulloo (S),lga
+31820,Bundaberg (R),lga
+31900,Burdekin (S),lga
+31950,Burke (S),lga
+32080,Cairns (R),lga
+32250,Carpentaria (S),lga
+32260,Cassowary Coast (R),lga
+32270,Central Highlands (R) (Qld),lga
+32310,Charters Towers (R),lga
+32330,Cherbourg (S),lga
+32450,Cloncurry (S),lga
+32500,Cook (S),lga
+32600,Croydon (S),lga
+32750,Diamantina (S),lga
+32770,Doomadgee (S),lga
+32810,Douglas (S),lga
+33100,Etheridge (S),lga
+33200,Flinders (S) (Qld),lga
+33220,Fraser Coast (R),lga
+33360,Gladstone (R),lga
+33430,Gold Coast (C),lga
+33610,Goondiwindi (R),lga
+33620,Gympie (R),lga
+33800,Hinchinbrook (S),lga
+33830,Hope Vale (S),lga
+33960,Ipswich (C),lga
+33980,Isaac (R),lga
+34420,Kowanyama (S),lga
+34530,Livingstone (S),lga
+34570,Lockhart River (S),lga
+34580,Lockyer Valley (R),lga
+34590,Logan (C),lga
+34710,Longreach (R),lga
+34770,Mackay (R),lga
+34800,McKinlay (S),lga
+34830,Mapoon (S),lga
+34860,Maranoa (R),lga
+34880,Mareeba (S),lga
+35010,Moreton Bay (R),lga
+35250,Mornington (S),lga
+35300,Mount Isa (C),lga
+35600,Murweh (S),lga
+35670,Napranum (S),lga
+35740,Noosa (S),lga
+35760,North Burnett (R),lga
+35780,Northern Peninsula Area (R),lga
+35790,Palm Island (S),lga
+35800,Paroo (S),lga
+36070,Pormpuraaw (S),lga
+36150,Quilpie (S),lga
+36250,Redland (C),lga
+36300,Richmond (S),lga
+36370,Rockhampton (R),lga
+36510,Scenic Rim (R),lga
+36580,Somerset (R),lga
+36630,South Burnett (R),lga
+36660,Southern Downs (R),lga
+36720,Sunshine Coast (R),lga
+36820,Tablelands (R),lga
+36910,Toowoomba (R),lga
+36950,Torres (S),lga
+36960,Torres Strait Island (R),lga
+37010,Townsville (C),lga
+37300,Weipa (T),lga
+37310,Western Downs (R),lga
+37340,Whitsunday (R),lga
+37400,Winton (S),lga
+37550,Woorabinda (S),lga
+37570,Wujal Wujal (S),lga
+37600,Yarrabah (S),lga
+40070,Adelaide (C),lga
+40120,Adelaide Hills (DC),lga
+40150,Adelaide Plains (DC),lga
+40220,Alexandrina (DC),lga
+40250,Anangu Pitjantjatjara (AC),lga
+40310,Barossa (DC),lga
+40430,Barunga West (DC),lga
+40520,Berri and Barmera (DC),lga
+40700,Burnside (C),lga
+40910,Campbelltown (C) (SA),lga
+41010,Ceduna (DC),lga
+41060,Charles Sturt (C),lga
+41140,Clare and Gilbert Valleys (DC),lga
+41190,Cleve (DC),lga
+41330,Coober Pedy (DC),lga
+41560,Copper Coast (DC),lga
+41750,Elliston (DC),lga
+41830,Flinders Ranges (DC),lga
+41960,Franklin Harbour (DC),lga
+42030,Gawler (T),lga
+42110,Goyder (DC),lga
+42250,Grant (DC),lga
+42600,Holdfast Bay (C),lga
+42750,Kangaroo Island (DC),lga
+43080,Karoonda East Murray (DC),lga
+43220,Kimba (DC),lga
+43360,Kingston (DC) (SA),lga
+43650,Light (RegC),lga
+43710,Lower Eyre Peninsula (DC),lga
+43790,Loxton Waikerie (DC),lga
+44000,Maralinga Tjarutja (AC),lga
+44060,Marion (C),lga
+44210,Mid Murray (DC),lga
+44340,Mitcham (C),lga
+44550,Mount Barker (DC),lga
+44620,Mount Gambier (C),lga
+44830,Mount Remarkable (DC),lga
+45040,Murray Bridge (RC),lga
+45090,Naracoorte and Lucindale (DC),lga
+45120,Northern Areas (DC),lga
+45290,Norwood Payneham St Peters (C),lga
+45340,Onkaparinga (C),lga
+45400,Orroroo/Carrieton (DC),lga
+45540,Peterborough (DC),lga
+45680,Playford (C),lga
+45890,Port Adelaide Enfield (C),lga
+46090,Port Augusta (C),lga
+46300,Port Lincoln (C),lga
+46450,Port Pirie City and Dists (M),lga
+46510,Prospect (C),lga
+46670,Renmark Paringa (DC),lga
+46860,Robe (DC),lga
+46970,Roxby Downs (M),lga
+47140,Salisbury (C),lga
+47290,Southern Mallee (DC),lga
+47490,Streaky Bay (DC),lga
+47630,Tatiara (DC),lga
+47700,Tea Tree Gully (C),lga
+47800,The Coorong (DC),lga
+47910,Tumby Bay (DC),lga
+47980,Unley (C),lga
+48050,Victor Harbor (C),lga
+48130,Wakefield (DC),lga
+48260,Walkerville (M),lga
+48340,Wattle Range (DC),lga
+48410,West Torrens (C),lga
+48540,Whyalla (C),lga
+48640,Wudinna (DC),lga
+48750,Yankalilla (DC),lga
+48830,Yorke Peninsula (DC),lga
+49399,Unincorporated SA,lga
+50080,Albany (C),lga
+50210,Armadale (C),lga
+50250,Ashburton (S),lga
+50280,Augusta-Margaret River (S),lga
+50350,Bassendean (T),lga
+50420,Bayswater (C),lga
+50490,Belmont (C),lga
+50560,Beverley (S),lga
+50630,Boddington (S),lga
+50770,Boyup Brook (S),lga
+50840,Bridgetown-Greenbushes (S),lga
+50910,Brookton (S),lga
+50980,Broome (S),lga
+51080,Broomehill-Tambellup (S),lga
+51120,Bruce Rock (S),lga
+51190,Bunbury (C),lga
+51260,Busselton (C),lga
+51310,Cambridge (T),lga
+51330,Canning (C),lga
+51400,Capel (S),lga
+51470,Carnamah (S),lga
+51540,Carnarvon (S),lga
+51610,Chapman Valley (S),lga
+51680,Chittering (S),lga
+51750,Claremont (T),lga
+51820,Cockburn (C),lga
+51890,Collie (S),lga
+51960,Coolgardie (S),lga
+52030,Coorow (S),lga
+52100,Corrigin (S),lga
+52170,Cottesloe (T),lga
+52240,Cranbrook (S),lga
+52310,Cuballing (S),lga
+52380,Cue (S),lga
+52450,Cunderdin (S),lga
+52520,Dalwallinu (S),lga
+52590,Dandaragan (S),lga
+52660,Dardanup (S),lga
+52730,Denmark (S),lga
+52800,Derby-West Kimberley (S),lga
+52870,Donnybrook-Balingup (S),lga
+52940,Dowerin (S),lga
+53010,Dumbleyung (S),lga
+53080,Dundas (S),lga
+53150,East Fremantle (T),lga
+53220,East Pilbara (S),lga
+53290,Esperance (S),lga
+53360,Exmouth (S),lga
+53430,Fremantle (C),lga
+53570,Gingin (S),lga
+53640,Gnowangerup (S),lga
+53710,Goomalling (S),lga
+53780,Gosnells (C),lga
+53800,Greater Geraldton (C),lga
+53920,Halls Creek (S),lga
+53990,Harvey (S),lga
+54060,Irwin (S),lga
+54130,Jerramungup (S),lga
+54170,Joondalup (C),lga
+54200,Kalamunda (C),lga
+54280,Kalgoorlie/Boulder (C),lga
+54310,Karratha (C),lga
+54340,Katanning (S),lga
+54410,Kellerberrin (S),lga
+54480,Kent (S),lga
+54550,Kojonup (S),lga
+54620,Kondinin (S),lga
+54690,Koorda (S),lga
+54760,Kulin (S),lga
+54830,Kwinana (C),lga
+54900,Lake Grace (S),lga
+54970,Laverton (S),lga
+55040,Leonora (S),lga
+55110,Mandurah (C),lga
+55180,Manjimup (S),lga
+55250,Meekatharra (S),lga
+55320,Melville (C),lga
+55390,Menzies (S),lga
+55460,Merredin (S),lga
+55530,Mingenew (S),lga
+55600,Moora (S),lga
+55670,Morawa (S),lga
+55740,Mosman Park (T),lga
+55810,Mount Magnet (S),lga
+55880,Mount Marshall (S),lga
+55950,Mukinbudin (S),lga
+56090,Mundaring (S),lga
+56160,Murchison (S),lga
+56230,Murray (S),lga
+56300,Nannup (S),lga
+56370,Narembeen (S),lga
+56460,Narrogin (S),lga
+56580,Nedlands (C),lga
+56620,Ngaanyatjarraku (S),lga
+56730,Northam (S),lga
+56790,Northampton (S),lga
+56860,Nungarin (S),lga
+56930,Peppermint Grove (S),lga
+57000,Perenjori (S),lga
+57080,Perth (C),lga
+57140,Pingelly (S),lga
+57210,Plantagenet (S),lga
+57280,Port Hedland (T),lga
+57350,Quairading (S),lga
+57420,Ravensthorpe (S),lga
+57490,Rockingham (C),lga
+57630,Sandstone (S),lga
+57700,Serpentine-Jarrahdale (S),lga
+57770,Shark Bay (S),lga
+57840,South Perth (C),lga
+57910,Stirling (C),lga
+57980,Subiaco (C),lga
+58050,Swan (C),lga
+58190,Tammin (S),lga
+58260,Three Springs (S),lga
+58330,Toodyay (S),lga
+58400,Trayning (S),lga
+58470,Upper Gascoyne (S),lga
+58510,Victoria Park (T),lga
+58540,Victoria Plains (S),lga
+58570,Vincent (C),lga
+58610,Wagin (S),lga
+58680,Wandering (S),lga
+58760,Wanneroo (C),lga
+58820,Waroona (S),lga
+58890,West Arthur (S),lga
+59030,Westonia (S),lga
+59100,Wickepin (S),lga
+59170,Williams (S),lga
+59250,Wiluna (S),lga
+59310,Wongan-Ballidu (S),lga
+59320,Woodanilling (S),lga
+59330,Wyalkatchem (S),lga
+59340,Wyndham-East Kimberley (S),lga
+59350,Yalgoo (S),lga
+59360,Yilgarn (S),lga
+59370,York (S),lga
+60210,Break O'Day (M),lga
+60410,Brighton (M),lga
+60610,Burnie (C),lga
+60810,Central Coast (M) (Tas.),lga
+61010,Central Highlands (M) (Tas.),lga
+61210,Circular Head (M),lga
+61410,Clarence (C),lga
+61510,Derwent Valley (M),lga
+61610,Devonport (C),lga
+61810,Dorset (M),lga
+62010,Flinders (M) (Tas.),lga
+62210,George Town (M),lga
+62410,Glamorgan/Spring Bay (M),lga
+62610,Glenorchy (C),lga
+62810,Hobart (C),lga
+63010,Huon Valley (M),lga
+63210,Kentish (M),lga
+63410,King Island (M),lga
+63610,Kingborough (M),lga
+63810,Latrobe (M) (Tas.),lga
+64010,Launceston (C),lga
+64210,Meander Valley (M),lga
+64610,Northern Midlands (M),lga
+64810,Sorell (M),lga
+65010,Southern Midlands (M),lga
+65210,Tasman (M),lga
+65410,Waratah/Wynyard (M),lga
+65610,West Coast (M),lga
+65810,West Tamar (M),lga
+70200,Alice Springs (T),lga
+70420,Barkly (R),lga
+70540,Belyuen (S),lga
+70620,Central Desert (R),lga
+70700,Coomalie (S),lga
+71000,Darwin (C),lga
+71300,East Arnhem (R),lga
+72200,Katherine (T),lga
+72300,Litchfield (M),lga
+72330,MacDonnell (R),lga
+72800,Palmerston (C),lga
+73600,Roper Gulf (R),lga
+74050,Tiwi Islands (R),lga
+74550,Victoria Daly (R),lga
+74560,Wagait (S),lga
+74660,West Arnhem (R),lga
+74680,West Daly (R),lga
+79399,Unincorporated NT,lga
+89399,Unincorporated ACT,lga
+99399,Unincorp. Other Territories,lga
+101021007,Braidwood,sa2
+101021008,Karabar,sa2
+101021009,Queanbeyan,sa2
+101021010,Queanbeyan - East,sa2
+101021011,Queanbeyan Region,sa2
+101021012,Queanbeyan West - Jerrabomberra,sa2
+101031013,Bombala,sa2
+101031014,Cooma,sa2
+101031015,Cooma Region,sa2
+101031016,Jindabyne - Berridale,sa2
+101041017,Batemans Bay,sa2
+101041018,Batemans Bay - South,sa2
+101041019,Bega - Tathra,sa2
+101041020,Bega-Eden Hinterland,sa2
+101041021,Broulee - Tomakin,sa2
+101041022,Deua - Wadbilliga,sa2
+101041023,Eden,sa2
+101041024,Eurobodalla Hinterland,sa2
+101041025,Merimbula - Tura Beach,sa2
+101041026,Moruya - Tuross Head,sa2
+101041027,Narooma - Bermagui,sa2
+101051539,Goulburn,sa2
+101051540,Goulburn Region,sa2
+101061541,Yass,sa2
+101061542,Yass Region,sa2
+101061543,Young,sa2
+101061544,Young Region,sa2
+102011028,Avoca Beach - Copacabana,sa2
+102011029,Box Head - MacMasters Beach,sa2
+102011030,Calga - Kulnura,sa2
+102011031,Erina - Green Point,sa2
+102011032,Gosford - Springfield,sa2
+102011033,Kariong,sa2
+102011034,Kincumber - Picketts Valley,sa2
+102011035,Narara,sa2
+102011036,Niagara Park - Lisarow,sa2
+102011037,Point Clare - Koolewong,sa2
+102011038,Saratoga - Davistown,sa2
+102011039,Terrigal - North Avoca,sa2
+102011040,Umina - Booker Bay - Patonga,sa2
+102011041,Wamberal - Forresters Beach,sa2
+102011042,Woy Woy - Blackwall,sa2
+102011043,Wyoming,sa2
+102021044,Bateau Bay - Killarney Vale,sa2
+102021045,Blue Haven - San Remo,sa2
+102021046,Budgewoi - Buff Point - Halekulani,sa2
+102021047,Chittaway Bay - Tumbi Umbi,sa2
+102021048,Gorokan - Kanwal - Charmhaven,sa2
+102021049,Jilliby - Yarramalong,sa2
+102021050,Lake Munmorah - Mannering Park,sa2
+102021051,Ourimbah - Fountaindale,sa2
+102021052,Summerland Point - Gwandalan,sa2
+102021053,The Entrance,sa2
+102021054,Toukley - Norah Head,sa2
+102021055,Tuggerah - Kangy Angy,sa2
+102021056,Warnervale - Wadalba,sa2
+102021057,Wyong,sa2
+103011058,Bathurst,sa2
+103011059,Bathurst - East,sa2
+103011060,Bathurst Region,sa2
+103011061,Oberon,sa2
+103021062,Condobolin,sa2
+103021063,Cowra,sa2
+103021064,Cowra Region,sa2
+103021065,Forbes,sa2
+103021066,Grenfell,sa2
+103021067,Parkes (NSW),sa2
+103021068,Parkes Region,sa2
+103021069,West Wyalong,sa2
+103031070,Lithgow,sa2
+103031071,Lithgow Region,sa2
+103031072,Mudgee,sa2
+103031073,Mudgee Region - East,sa2
+103031074,Mudgee Region - West,sa2
+103031075,Wollangambe - Wollemi,sa2
+103041076,Blayney,sa2
+103041077,Orange,sa2
+103041078,Orange - North,sa2
+103041079,Orange Region,sa2
+104011080,Grafton,sa2
+104011081,Grafton Region,sa2
+104011082,Maclean - Yamba - Iluka,sa2
+104021083,Bellingen,sa2
+104021084,Coffs Harbour - North,sa2
+104021085,Coffs Harbour - South,sa2
+104021086,Coramba - Nana Glen - Bucca,sa2
+104021087,Dorrigo,sa2
+104021088,Korora - Emerald Beach,sa2
+104021089,Sawtell - Boambee,sa2
+104021090,Urunga,sa2
+104021091,Woolgoolga - Arrawarra,sa2
+105011092,Bourke - Brewarrina,sa2
+105011093,Cobar,sa2
+105011094,Coonamble,sa2
+105011095,Nyngan - Warren,sa2
+105011096,Walgett - Lightning Ridge,sa2
+105021097,Broken Hill,sa2
+105021098,Far West,sa2
+105031099,Coonabarabran,sa2
+105031100,Dubbo - East,sa2
+105031101,Dubbo - South,sa2
+105031102,Dubbo - West,sa2
+105031103,Dubbo Region,sa2
+105031104,Gilgandra,sa2
+105031105,Narromine,sa2
+105031106,Wellington,sa2
+106011107,Branxton - Greta - Pokolbin,sa2
+106011108,Cessnock,sa2
+106011109,Cessnock Region,sa2
+106011110,Dungog,sa2
+106011111,Kurri Kurri - Abermain,sa2
+106011112,Singleton,sa2
+106011113,Singleton Region,sa2
+106021114,Maitland,sa2
+106021115,Maitland - East,sa2
+106021116,Maitland - North,sa2
+106021117,Maitland - West,sa2
+106021118,Thornton - Millers Forest,sa2
+106031119,Anna Bay,sa2
+106031120,Lemon Tree Passage - Tanilba Bay,sa2
+106031121,Nelson Bay Peninsula,sa2
+106031122,Raymond Terrace,sa2
+106031123,Seaham - Woodville,sa2
+106031124,Tea Gardens - Hawks Nest,sa2
+106031125,Williamtown - Medowie - Karuah,sa2
+106041126,Muswellbrook,sa2
+106041127,Muswellbrook Region,sa2
+106041128,Scone,sa2
+106041129,Scone Region,sa2
+107011131,Dapto - Avondale,sa2
+107011132,Horsley - Kembla Grange,sa2
+107011133,Port Kembla Industrial,sa2
+107011134,Unanderra - Mount Kembla,sa2
+107011545,Berkeley - Lake Heights - Cringila,sa2
+107011546,Port Kembla - Warrawong,sa2
+107011547,Windang - Primbee,sa2
+107021135,Illawarra Catchment Reserve,sa2
+107031136,Albion Park - Macquarie Pass,sa2
+107031137,Albion Park Rail,sa2
+107031138,Kiama,sa2
+107031139,Kiama Downs - Minnamurra,sa2
+107031140,Kiama Hinterland - Gerringong,sa2
+107031141,Shellharbour - Flinders,sa2
+107031142,Shellharbour - Oak Flats,sa2
+107031143,Warilla,sa2
+107041144,Balgownie - Fairy Meadow,sa2
+107041145,Corrimal - Tarrawanna - Bellambi,sa2
+107041146,Figtree - Keiraville,sa2
+107041147,Helensburgh,sa2
+107041148,Thirroul - Austinmer - Coalcliff,sa2
+107041150,Woonona - Bulli - Russell Vale,sa2
+107041548,Wollongong - East,sa2
+107041549,Wollongong - West,sa2
+108011151,Bulahdelah - Stroud,sa2
+108011152,Forster,sa2
+108011153,Forster-Tuncurry Region,sa2
+108011154,Tuncurry,sa2
+108021155,Kempsey,sa2
+108021156,Kempsey Region,sa2
+108021157,Macksville - Scotts Head,sa2
+108021158,Nambucca Heads,sa2
+108021159,Nambucca Heads Region,sa2
+108021160,South West Rocks,sa2
+108031161,Lord Howe Island,sa2
+108041162,Laurieton - Bonny Hills,sa2
+108041163,Port Macquarie - East,sa2
+108041164,Port Macquarie - West,sa2
+108041165,Port Macquarie Region,sa2
+108041166,Wauchope,sa2
+108051167,Gloucester,sa2
+108051168,Old Bar - Manning Point - Red Head,sa2
+108051169,Taree,sa2
+108051170,Taree Region,sa2
+108051171,Wingham,sa2
+109011172,Albury - East,sa2
+109011173,Albury - North,sa2
+109011174,Albury - South,sa2
+109011175,Albury Region,sa2
+109011176,Lavington,sa2
+109021177,Hay,sa2
+109021178,Wentworth - Buronga,sa2
+109021179,Wentworth-Balranald Region,sa2
+109031180,Corowa,sa2
+109031181,Corowa Region,sa2
+109031182,Deniliquin,sa2
+109031183,Deniliquin Region,sa2
+109031184,Moama,sa2
+109031185,Tocumwal - Finley - Jerilderie,sa2
+110011186,Armidale,sa2
+110011187,Armidale Region - North,sa2
+110011188,Armidale Region - South,sa2
+110011189,Walcha,sa2
+110021190,Glen Innes,sa2
+110021191,Inverell,sa2
+110021192,Inverell Region - East,sa2
+110021193,Inverell Region - West,sa2
+110021194,Tenterfield,sa2
+110031195,Moree,sa2
+110031196,Moree Region,sa2
+110031197,Narrabri,sa2
+110031198,Narrabri Region,sa2
+110041199,Gunnedah,sa2
+110041200,Gunnedah Region,sa2
+110041201,Quirindi,sa2
+110041202,Tamworth - East,sa2
+110041203,Tamworth - North,sa2
+110041204,Tamworth - West,sa2
+110041205,Tamworth Region,sa2
+111011206,Belmont - Bennetts Green,sa2
+111011207,Belmont South - Blacksmiths,sa2
+111011208,Charlestown - Dudley,sa2
+111011209,Glendale - Cardiff - Hillsborough,sa2
+111011210,Mount Hutton - Windale,sa2
+111011211,Redhead,sa2
+111011212,Swansea - Caves Beach,sa2
+111011213,Valentine - Eleebana,sa2
+111011214,Warners Bay - Boolaroo,sa2
+111021215,Bolton Point - Teralba,sa2
+111021216,Bonnells Bay - Silverwater,sa2
+111021217,Edgeworth - Cameron Park,sa2
+111021218,Morisset - Cooranbong,sa2
+111021219,Toronto - Awaba,sa2
+111021220,Wangi Wangi - Rathmines,sa2
+111021221,West Wallsend - Barnsley - Killingworth,sa2
+111031222,Adamstown - Kotara,sa2
+111031223,Beresfield - Hexham,sa2
+111031224,Hamilton - Broadmeadow,sa2
+111031225,Lambton - New Lambton,sa2
+111031226,Maryland - Fletcher - Minmi,sa2
+111031227,Mayfield - Warabrook,sa2
+111031228,Merewether - The Junction,sa2
+111031229,Newcastle - Cooks Hill,sa2
+111031230,Newcastle Port - Kooragang,sa2
+111031231,Shortland - Jesmond,sa2
+111031232,Stockton - Fullerton Cove,sa2
+111031233,Wallsend - Elermore Vale,sa2
+111031234,Waratah - North Lambton,sa2
+111031235,Wickham - Carrington - Tighes Hill,sa2
+112011236,Ballina,sa2
+112011237,Ballina Region,sa2
+112011238,Bangalow,sa2
+112011239,Brunswick Heads - Ocean Shores,sa2
+112011240,Byron Bay,sa2
+112011241,Evans Head,sa2
+112011242,Lennox Head - Skennars Head,sa2
+112011243,Mullumbimby,sa2
+112021244,Casino,sa2
+112021245,Casino Region,sa2
+112021246,Goonellabah,sa2
+112021247,Kyogle,sa2
+112021248,Lismore,sa2
+112021249,Lismore Region,sa2
+112031250,Kingscliff - Fingal Head,sa2
+112031251,Murwillumbah,sa2
+112031252,Murwillumbah Region,sa2
+112031253,Pottsville,sa2
+112031254,Tweed Heads,sa2
+112031550,Banora Point,sa2
+112031551,Terranora - North Tumblegum,sa2
+112031552,Tweed Heads South,sa2
+113011256,Griffith (NSW),sa2
+113011257,Griffith Region,sa2
+113011258,Leeton,sa2
+113011259,Narrandera,sa2
+113021260,Tumbarumba,sa2
+113021261,Tumut,sa2
+113021262,Tumut Region,sa2
+113031263,Cootamundra,sa2
+113031264,Gundagai,sa2
+113031265,Junee,sa2
+113031266,Temora,sa2
+113031267,Wagga Wagga - East,sa2
+113031268,Wagga Wagga - North,sa2
+113031269,Wagga Wagga - South,sa2
+113031270,Wagga Wagga - West,sa2
+113031271,Wagga Wagga Region,sa2
+114011272,Berry - Kangaroo Valley,sa2
+114011273,Callala Bay - Currarong,sa2
+114011274,Culburra Beach,sa2
+114011275,Ettrema - Sassafras - Budawang,sa2
+114011276,Huskisson - Vincentia,sa2
+114011277,North Nowra - Bomaderry,sa2
+114011278,Nowra,sa2
+114011279,St Georges Basin - Erowal Bay,sa2
+114011280,Sussex Inlet - Berrara,sa2
+114011281,Tomerong - Wandandian - Woollamia,sa2
+114011282,Ulladulla,sa2
+114011283,Ulladulla Region,sa2
+114021284,Bowral,sa2
+114021285,Hill Top - Colo Vale,sa2
+114021286,Mittagong,sa2
+114021287,Moss Vale - Berrima,sa2
+114021288,Robertson - Fitzroy Falls,sa2
+114021289,Southern Highlands,sa2
+115011290,Baulkham Hills (East),sa2
+115011291,Baulkham Hills (West) - Bella Vista,sa2
+115011294,Glenhaven,sa2
+115011296,West Pennant Hills,sa2
+115011553,Castle Hill - Central,sa2
+115011554,Castle Hill - East,sa2
+115011555,Castle Hill - North,sa2
+115011556,Castle Hill - South,sa2
+115011557,Castle Hill - West,sa2
+115011558,Cherrybrook,sa2
+115011559,Kellyville,sa2
+115021297,Dural - Kenthurst - Wisemans Ferry,sa2
+115021298,Galston - Laughtondale,sa2
+115031299,Bilpin - Colo - St Albans,sa2
+115031300,Kurrajong Heights - Ebenezer,sa2
+115041301,Pitt Town - McGraths Hill,sa2
+115041302,Rouse Hill - Beaumont Hills,sa2
+116011303,Blacktown (East) - Kings Park,sa2
+116011304,Blacktown (North) - Marayong,sa2
+116011306,Doonside - Woodcroft,sa2
+116011307,Lalor Park - Kings Langley,sa2
+116011308,Seven Hills - Toongabbie,sa2
+116011560,Blacktown (South),sa2
+116011561,Blacktown (West),sa2
+116021309,Glenwood,sa2
+116021310,Parklea - Kellyville Ridge,sa2
+116021312,Riverstone - Marsden Park,sa2
+116021562,Acacia Gardens,sa2
+116021563,Quakers Hill,sa2
+116031313,Bidwill - Hebersham - Emerton,sa2
+116031314,Glendenning - Dean Park,sa2
+116031315,Hassall Grove - Plumpton,sa2
+116031316,Lethbridge Park - Tregear,sa2
+116031317,Mount Druitt - Whalan,sa2
+116031318,Prospect Reservoir,sa2
+116031319,Rooty Hill - Minchinbury,sa2
+117011320,Banksmeadow,sa2
+117011321,Botany,sa2
+117011322,Mascot - Eastlakes,sa2
+117011323,Pagewood - Hillsdale - Daceyville,sa2
+117011324,Port Botany Industrial,sa2
+117011325,Sydney Airport,sa2
+117021326,Marrickville,sa2
+117021327,Petersham - Stanmore,sa2
+117021328,Sydenham - Tempe - St Peters,sa2
+117031329,Darlinghurst,sa2
+117031330,Erskineville - Alexandria,sa2
+117031331,Glebe - Forest Lodge,sa2
+117031332,Newtown - Camperdown - Darlington,sa2
+117031333,Potts Point - Woolloomooloo,sa2
+117031334,Pyrmont - Ultimo,sa2
+117031335,Redfern - Chippendale,sa2
+117031336,Surry Hills,sa2
+117031337,Sydney - Haymarket - The Rocks,sa2
+117031338,Waterloo - Beaconsfield,sa2
+118011339,Bondi - Tamarama - Bronte,sa2
+118011340,Bondi Beach - North Bondi,sa2
+118011341,Bondi Junction - Waverly,sa2
+118011342,Centennial Park,sa2
+118011343,Double Bay - Bellevue Hill,sa2
+118011344,Dover Heights,sa2
+118011345,Paddington - Moore Park,sa2
+118011346,Rose Bay - Vaucluse - Watsons Bay,sa2
+118011347,Woollahra,sa2
+118021348,Coogee - Clovelly,sa2
+118021350,Malabar - La Perouse - Chifley,sa2
+118021564,Kensington (NSW),sa2
+118021565,Kingsford,sa2
+118021566,Maroubra - North,sa2
+118021567,Maroubra - South,sa2
+118021568,Maroubra - West,sa2
+118021569,Randwick - North,sa2
+118021570,Randwick - South,sa2
+119011354,Bass Hill - Georges Hall,sa2
+119011355,Chullora,sa2
+119011356,Condell Park,sa2
+119011357,Greenacre - Mount Lewis,sa2
+119011358,Padstow,sa2
+119011359,Panania - Milperra - Picnic Point,sa2
+119011360,Revesby,sa2
+119011361,Yagoona - Birrong,sa2
+119011571,Bankstown - North,sa2
+119011572,Bankstown - South,sa2
+119021362,Belmore - Belfield,sa2
+119021363,Canterbury (South) - Campsie,sa2
+119021364,Kingsgrove (North) - Earlwood,sa2
+119021366,Punchbowl,sa2
+119021367,Roselands,sa2
+119021573,Lakemba,sa2
+119021574,Wiley Park,sa2
+119031368,Hurstville,sa2
+119031369,Mortdale - Penshurst,sa2
+119031370,Narwee - Beverly Hills,sa2
+119031371,Oatley - Hurstville Grove,sa2
+119031372,Peakhurst - Lugarno,sa2
+119031373,Riverwood,sa2
+119031374,South Hurstville - Blakehurst,sa2
+119041375,Arncliffe - Bardwell Valley,sa2
+119041376,Bexley,sa2
+119041377,Kingsgrove (South) - Bardwell Park,sa2
+119041378,Kogarah,sa2
+119041379,Kogarah Bay - Carlton - Allawah,sa2
+119041380,Monterey - Brighton-le-Sands - Kyeemagh,sa2
+119041381,Rockdale - Banksia,sa2
+119041382,Sans Souci - Ramsgate,sa2
+120011383,Concord - Mortlake - Cabarita,sa2
+120011384,Concord West - North Strathfield,sa2
+120011385,Drummoyne - Rodd Point,sa2
+120011386,Five Dock - Abbotsford,sa2
+120021387,Balmain,sa2
+120021388,Leichhardt - Annandale,sa2
+120021389,Lilyfield - Rozelle,sa2
+120031390,Ashfield,sa2
+120031391,Burwood - Croydon,sa2
+120031392,Canterbury (North) - Ashbury,sa2
+120031393,Croydon Park - Enfield,sa2
+120031394,Dulwich Hill - Lewisham,sa2
+120031395,Haberfield - Summer Hill,sa2
+120031396,Homebush,sa2
+120031575,Strathfield,sa2
+120031576,Strathfield South,sa2
+121011398,Chatswood (East) - Artarmon,sa2
+121011399,Chatswood (West) - Lane Cove North,sa2
+121011400,Lane Cove - Greenwich,sa2
+121011401,St Leonards - Naremburn,sa2
+121011402,Willoughby - Castle Cove - Northbridge,sa2
+121021403,Asquith - Mount Colah,sa2
+121021404,Berowra - Brooklyn - Cowan,sa2
+121021406,Normanhurst - Thornleigh - Westleigh,sa2
+121021577,Hornsby - East,sa2
+121021578,Hornsby - West,sa2
+121021579,Waitara - Wahroonga (West),sa2
+121031407,Gordon - Killara,sa2
+121031408,Lindfield - Roseville,sa2
+121031409,Pymble,sa2
+121031410,St Ives,sa2
+121031411,Turramurra,sa2
+121031412,Wahroonga (East) - Warrawee,sa2
+121041413,Cremorne - Cammeray,sa2
+121041414,Crows Nest - Waverton,sa2
+121041415,Mosman,sa2
+121041416,Neutral Bay - Kirribilli,sa2
+121041417,North Sydney - Lavender Bay,sa2
+122011418,Balgowlah - Clontarf - Seaforth,sa2
+122011419,Manly - Fairlight,sa2
+122021420,Avalon - Palm Beach,sa2
+122021421,Bayview - Elanora Heights,sa2
+122021422,Newport - Bilgola,sa2
+122021423,Warriewood - Mona Vale,sa2
+122031424,Beacon Hill - Narraweena,sa2
+122031425,Cromer,sa2
+122031426,Dee Why - North Curl Curl,sa2
+122031427,Forestville - Killarney Heights,sa2
+122031428,Frenchs Forest - Belrose,sa2
+122031429,Freshwater - Brookvale,sa2
+122031430,Manly Vale - Allambie Heights,sa2
+122031431,Narrabeen - Collaroy,sa2
+122031432,Terrey Hills - Duffys Forest,sa2
+123011433,Camden - Ellis Lane,sa2
+123011434,Elderslie - Harrington Park,sa2
+123011435,Mount Annan - Currans Hill,sa2
+123021436,Bradbury - Wedderburn,sa2
+123021437,Campbelltown - Woodbine,sa2
+123021438,Claymore - Eagle Vale - Raby,sa2
+123021439,Holsworthy Military Area,sa2
+123021440,Ingleburn - Denham Court,sa2
+123021441,Leumeah - Minto Heights,sa2
+123021442,Macquarie Fields - Glenfield,sa2
+123021443,Minto - St Andrews,sa2
+123021444,Rosemeadow - Glen Alpine,sa2
+123031445,Bargo,sa2
+123031446,Douglas Park - Appin,sa2
+123031447,Picton - Tahmoor - Buxton,sa2
+123031448,The Oaks - Oakdale,sa2
+124011449,Blackheath - Megalong Valley,sa2
+124011450,Blaxland - Warrimoo - Lapstone,sa2
+124011451,Blue Mountains - North,sa2
+124011452,Katoomba - Leura,sa2
+124011453,Lawson - Hazelbrook - Linden,sa2
+124011454,Springwood - Winmalee,sa2
+124011455,Wentworth Falls,sa2
+124021456,Blue Mountains - South,sa2
+124031457,Cambridge Park,sa2
+124031458,Castlereagh - Cranebrook,sa2
+124031459,Emu Plains - Leonay,sa2
+124031460,Glenmore Park - Regentville,sa2
+124031461,Jamisontown - South Penrith,sa2
+124031462,Kingswood - Werrington,sa2
+124031463,Mulgoa - Luddenham - Orchard Hills,sa2
+124031464,Penrith,sa2
+124031465,Warragamba - Silverdale,sa2
+124041466,Richmond - Clarendon,sa2
+124041467,Windsor - Bligh Park,sa2
+124041468,Yarramundi - Londonderry,sa2
+124051469,Erskine Park,sa2
+124051470,St Clair,sa2
+124051580,Colyton - Oxley Park,sa2
+124051581,St Marys - North St Marys,sa2
+125011473,Homebush Bay - Silverwater,sa2
+125011475,Rookwood Cemetery,sa2
+125011582,Auburn - Central,sa2
+125011583,Auburn - North,sa2
+125011584,Auburn - South,sa2
+125011585,Berala,sa2
+125011586,Lidcombe,sa2
+125011587,Regents Park,sa2
+125021476,Carlingford,sa2
+125021477,Ermington - Rydalmere,sa2
+125021478,Oatlands - Dundas Valley,sa2
+125031479,Chester Hill - Sefton,sa2
+125031480,Fairfield - East,sa2
+125031481,Granville - Clyde,sa2
+125031482,Greystanes - Pemulwuy,sa2
+125031483,Guildford - South Granville,sa2
+125031484,Guildford West - Merrylands West,sa2
+125031485,Merrylands - Holroyd,sa2
+125031486,Smithfield Industrial,sa2
+125031487,Yennora Industrial,sa2
+125041489,North Parramatta,sa2
+125041490,North Rocks,sa2
+125041491,Northmead,sa2
+125041492,Parramatta - Rosehill,sa2
+125041493,Toongabbie - Constitution Hill,sa2
+125041494,Winston Hills,sa2
+125041588,Pendle Hill - Girraween,sa2
+125041589,Wentworthville - Westmead,sa2
+126011495,Epping - North Epping,sa2
+126011496,Pennant Hills - Cheltenham,sa2
+126021497,Eastwood - Denistone,sa2
+126021498,Gladesville - Huntleys Point,sa2
+126021499,Hunters Hill - Woolwich,sa2
+126021500,Macquarie Park - Marsfield,sa2
+126021501,North Ryde - East Ryde,sa2
+126021503,West Ryde - Meadowbank,sa2
+126021590,Putney,sa2
+126021591,Ryde,sa2
+127011504,Ashcroft - Busby - Miller,sa2
+127011505,Austral - Greendale,sa2
+127011506,Cobbitty - Leppington,sa2
+127011592,Badgerys Creek,sa2
+127011593,Cecil Hills,sa2
+127011594,Green Valley,sa2
+127011595,Hinchinbrook,sa2
+127011596,Hoxton Park - Carnes Hill - Horningsea Park,sa2
+127011597,West Hoxton - Middleton Grange,sa2
+127021509,Bonnyrigg Heights - Bonnyrigg,sa2
+127021510,Bossley Park - Abbotsbury,sa2
+127021511,Cabramatta - Lansvale,sa2
+127021512,Cabramatta West - Mount Pritchard,sa2
+127021513,Canley Vale - Canley Heights,sa2
+127021514,Edensor Park,sa2
+127021515,Fairfield,sa2
+127021516,Fairfield - West,sa2
+127021517,Greenfield Park - Prairiewood,sa2
+127021518,Horsley Park - Kemps Creek,sa2
+127021519,Smithfield - Wetherill Park,sa2
+127021520,St Johns Park - Wakeley,sa2
+127021521,Wetherill Park Industrial,sa2
+127031522,Casula,sa2
+127031523,Chipping Norton - Moorebank,sa2
+127031524,Holsworthy - Wattle Grove,sa2
+127031598,Liverpool,sa2
+127031599,Lurnea - Cartwright,sa2
+127031600,Prestons - Edmondson Park,sa2
+127031601,Warwick Farm,sa2
+128011529,Gymea - Grays Point,sa2
+128011530,Miranda - Yowie Bay,sa2
+128011531,Sylvania - Taren Point,sa2
+128011602,Caringbah,sa2
+128011603,Caringbah South,sa2
+128011604,Cronulla - Kurnell - Bundeena,sa2
+128011605,Lilli Pilli - Port Hacking - Dolans Bay,sa2
+128011606,Woolaware - Burraneer,sa2
+128021533,Heathcote - Waterfall,sa2
+128021534,Illawong - Alfords Point,sa2
+128021535,Menai - Lucas Heights - Woronora,sa2
+128021536,Oyster Bay - Como - Jannali,sa2
+128021537,Royal National Park,sa2
+128021538,Sutherland - Kirrawee,sa2
+128021607,Engadine,sa2
+128021608,Loftus - Yarrawarrah,sa2
+128021609,Woronora Heights,sa2
+201011001,Alfredton,sa2
+201011002,Ballarat,sa2
+201011003,Ballarat - North,sa2
+201011004,Ballarat - South,sa2
+201011005,Buninyong,sa2
+201011006,Delacombe,sa2
+201011007,Smythes Creek,sa2
+201011008,Wendouree - Miners Rest,sa2
+201021009,Bacchus Marsh Region,sa2
+201021010,Creswick - Clunes,sa2
+201021011,Daylesford,sa2
+201021012,Gordon (Vic.),sa2
+201031013,Avoca,sa2
+201031014,Beaufort,sa2
+201031015,Golden Plains - North,sa2
+201031016,Maryborough (Vic.),sa2
+201031017,Maryborough Region,sa2
+202011018,Bendigo,sa2
+202011019,California Gully - Eaglehawk,sa2
+202011020,East Bendigo - Kennington,sa2
+202011021,Flora Hill - Spring Gully,sa2
+202011022,Kangaroo Flat - Golden Square,sa2
+202011023,Maiden Gully,sa2
+202011024,Strathfieldsaye,sa2
+202011025,White Hills - Ascot,sa2
+202021026,Bendigo Region - South,sa2
+202021027,Castlemaine,sa2
+202021028,Castlemaine Region,sa2
+202021029,Heathcote,sa2
+202021030,Kyneton,sa2
+202021031,Woodend,sa2
+202031032,Bendigo Region - North,sa2
+202031033,Loddon,sa2
+203011034,Bannockburn,sa2
+203011035,Golden Plains - South,sa2
+203011036,Winchelsea,sa2
+203021037,Belmont,sa2
+203021038,Corio - Norlane,sa2
+203021039,Geelong,sa2
+203021040,Geelong West - Hamlyn Heights,sa2
+203021041,Grovedale,sa2
+203021042,Highton,sa2
+203021043,Lara,sa2
+203021044,Leopold,sa2
+203021045,Newcomb - Moolap,sa2
+203021046,Newtown (Vic.),sa2
+203021047,North Geelong - Bell Park,sa2
+203031048,Clifton Springs,sa2
+203031049,Lorne - Anglesea,sa2
+203031050,Ocean Grove - Barwon Heads,sa2
+203031051,Portarlington,sa2
+203031052,Point Lonsdale - Queenscliff,sa2
+203031053,Torquay,sa2
+204011054,Alexandra,sa2
+204011055,Euroa,sa2
+204011056,Kilmore - Broadford,sa2
+204011057,Mansfield (Vic.),sa2
+204011058,Nagambie,sa2
+204011059,Seymour,sa2
+204011060,Seymour Region,sa2
+204011061,Upper Yarra Valley,sa2
+204011062,Yea,sa2
+204021063,Benalla,sa2
+204021064,Benalla Region,sa2
+204021065,Rutherglen,sa2
+204021066,Wangaratta,sa2
+204021067,Wangaratta Region,sa2
+204031068,Beechworth,sa2
+204031069,Bright - Mount Beauty,sa2
+204031070,Chiltern - Indigo Valley,sa2
+204031071,Myrtleford,sa2
+204031072,Towong,sa2
+204031073,West Wodonga,sa2
+204031074,Wodonga,sa2
+204031075,Yackandandah,sa2
+205011076,Drouin,sa2
+205011077,Mount Baw Baw Region,sa2
+205011078,Trafalgar (Vic.),sa2
+205011079,Warragul,sa2
+205021080,Alps - East,sa2
+205021081,Bairnsdale,sa2
+205021082,Bruthen - Omeo,sa2
+205021083,Lake King,sa2
+205021084,Lakes Entrance,sa2
+205021085,Orbost,sa2
+205021086,Paynesville,sa2
+205031087,Foster,sa2
+205031088,French Island,sa2
+205031089,Korumburra,sa2
+205031090,Leongatha,sa2
+205031091,Phillip Island,sa2
+205031092,Wilsons Promontory,sa2
+205031093,Wonthaggi - Inverloch,sa2
+205041094,Churchill,sa2
+205041095,Moe - Newborough,sa2
+205041096,Morwell,sa2
+205041097,Traralgon,sa2
+205041098,Yallourn North - Glengarry,sa2
+205051099,Alps - West,sa2
+205051100,Longford - Loch Sport,sa2
+205051101,Maffra,sa2
+205051102,Rosedale,sa2
+205051103,Sale,sa2
+205051104,Yarram,sa2
+206011105,Brunswick,sa2
+206011106,Brunswick East,sa2
+206011107,Brunswick West,sa2
+206011108,Coburg,sa2
+206011109,Pascoe Vale South,sa2
+206021110,Alphington - Fairfield,sa2
+206021111,Northcote,sa2
+206021112,Thornbury,sa2
+206031113,Ascot Vale,sa2
+206031114,Essendon - Aberfeldie,sa2
+206031115,Flemington,sa2
+206031116,Moonee Ponds,sa2
+206041117,Carlton,sa2
+206041118,Docklands,sa2
+206041119,East Melbourne,sa2
+206041120,Flemington Racecourse,sa2
+206041121,Kensington (Vic.),sa2
+206041122,Melbourne,sa2
+206041123,North Melbourne,sa2
+206041124,Parkville,sa2
+206041125,South Yarra - West,sa2
+206041126,Southbank,sa2
+206041127,West Melbourne,sa2
+206051128,Albert Park,sa2
+206051129,Elwood,sa2
+206051130,Port Melbourne,sa2
+206051131,Port Melbourne Industrial,sa2
+206051132,South Melbourne,sa2
+206051133,St Kilda,sa2
+206051134,St Kilda East,sa2
+206061135,Armadale,sa2
+206061136,Prahran - Windsor,sa2
+206061137,South Yarra - East,sa2
+206061138,Toorak,sa2
+206071139,Abbotsford,sa2
+206071140,Carlton North - Princes Hill,sa2
+206071141,Collingwood,sa2
+206071142,Fitzroy,sa2
+206071143,Fitzroy North,sa2
+206071144,Richmond (Vic.),sa2
+206071145,Yarra - North,sa2
+207011146,Ashburton (Vic.),sa2
+207011147,Balwyn,sa2
+207011148,Balwyn North,sa2
+207011149,Camberwell,sa2
+207011150,Glen Iris - East,sa2
+207011151,Hawthorn,sa2
+207011152,Hawthorn East,sa2
+207011153,Kew,sa2
+207011154,Kew East,sa2
+207011155,Surrey Hills (West) - Canterbury,sa2
+207021156,Bulleen,sa2
+207021157,Doncaster,sa2
+207021159,Templestowe,sa2
+207021160,Templestowe Lower,sa2
+207021424,Doncaster East (North),sa2
+207021425,Doncaster East (South),sa2
+207031161,Blackburn,sa2
+207031162,Blackburn South,sa2
+207031163,Box Hill,sa2
+207031164,Box Hill North,sa2
+207031165,Burwood,sa2
+207031166,Burwood East,sa2
+207031167,Surrey Hills (East) - Mont Albert,sa2
+208011168,Beaumaris,sa2
+208011169,Brighton (Vic.),sa2
+208011170,Brighton East,sa2
+208011171,Cheltenham - Highett (West),sa2
+208011172,Hampton,sa2
+208011173,Sandringham - Black Rock,sa2
+208021174,Bentleigh - McKinnon,sa2
+208021176,Carnegie,sa2
+208021177,Caulfield - North,sa2
+208021178,Caulfield - South,sa2
+208021179,Elsternwick,sa2
+208021180,Hughesdale,sa2
+208021181,Murrumbeena,sa2
+208021182,Ormond - Glen Huntly,sa2
+208021426,Bentleigh East (North),sa2
+208021427,Bentleigh East (South),sa2
+208031183,Aspendale Gardens - Waterways,sa2
+208031184,Braeside,sa2
+208031185,Carrum - Patterson Lakes,sa2
+208031186,Chelsea - Bonbeach,sa2
+208031187,Chelsea Heights,sa2
+208031188,Cheltenham - Highett (East),sa2
+208031189,Edithvale - Aspendale,sa2
+208031190,Mentone,sa2
+208031191,Moorabbin - Heatherton,sa2
+208031192,Moorabbin Airport,sa2
+208031193,Mordialloc - Parkdale,sa2
+208041194,Malvern - Glen Iris,sa2
+208041195,Malvern East,sa2
+209011196,Bundoora - East,sa2
+209011197,Greensborough,sa2
+209011198,Heidelberg - Rosanna,sa2
+209011199,Heidelberg West,sa2
+209011200,Ivanhoe,sa2
+209011201,Ivanhoe East - Eaglemont,sa2
+209011202,Montmorency - Briar Hill,sa2
+209011203,Viewbank - Yallambie,sa2
+209011204,Watsonia,sa2
+209021205,Kingsbury,sa2
+209021207,Reservoir - East,sa2
+209021208,Reservoir - West,sa2
+209021428,Preston - East,sa2
+209021429,Preston - West,sa2
+209031209,Eltham,sa2
+209031210,Hurstbridge,sa2
+209031211,Kinglake,sa2
+209031212,Panton Hill - St Andrews,sa2
+209031213,Plenty - Yarrambat,sa2
+209031214,Research - North Warrandyte,sa2
+209031215,Wattle Glen - Diamond Creek,sa2
+209041216,Bundoora - North,sa2
+209041217,Bundoora - West,sa2
+209041219,Lalor,sa2
+209041220,Mill Park - North,sa2
+209041221,Mill Park - South,sa2
+209041223,Thomastown,sa2
+209041224,Wallan,sa2
+209041225,Whittlesea,sa2
+209041430,Doreen,sa2
+209041431,Epping - East,sa2
+209041432,Epping - South,sa2
+209041433,Epping - West,sa2
+209041434,Mernda,sa2
+209041435,South Morang (North),sa2
+209041436,South Morang (South),sa2
+209041437,Wollert,sa2
+210011226,Airport West,sa2
+210011227,Essendon Airport,sa2
+210011228,Keilor,sa2
+210011229,Keilor East,sa2
+210011230,Niddrie - Essendon West,sa2
+210011231,Strathmore,sa2
+210021232,Gisborne,sa2
+210021233,Macedon,sa2
+210021234,Riddells Creek,sa2
+210021235,Romsey,sa2
+210031236,Coburg North,sa2
+210031237,Fawkner,sa2
+210031239,Pascoe Vale,sa2
+210031438,Glenroy,sa2
+210031439,Gowanbrae,sa2
+210031440,Hadfield,sa2
+210041240,Sunbury,sa2
+210041241,Sunbury - South,sa2
+210051242,Broadmeadows,sa2
+210051243,Campbellfield - Coolaroo,sa2
+210051245,Gladstone Park - Westmeadows,sa2
+210051246,Greenvale - Bulla,sa2
+210051247,Meadow Heights,sa2
+210051248,Melbourne Airport,sa2
+210051249,Roxburgh Park - Somerton,sa2
+210051250,Tullamarine,sa2
+210051441,Craigieburn - Central,sa2
+210051442,Craigieburn - North,sa2
+210051443,Craigieburn - South,sa2
+210051444,Craigieburn - West,sa2
+210051445,Mickleham - Yuroke,sa2
+211011251,Bayswater,sa2
+211011254,Knoxfield - Scoresby,sa2
+211011255,Lysterfield,sa2
+211011256,Rowville - Central,sa2
+211011257,Rowville - North,sa2
+211011258,Rowville - South,sa2
+211011259,Wantirna,sa2
+211011260,Wantirna South,sa2
+211011446,Boronia,sa2
+211011447,Ferntree Gully (North),sa2
+211011448,Ferntree Gully (South) - Upper Ferntree Gully,sa2
+211011449,The Basin,sa2
+211021261,Donvale - Park Orchards,sa2
+211021262,Warrandyte - Wonga Park,sa2
+211031263,Bayswater North,sa2
+211031265,Croydon Hills - Warranwood,sa2
+211031266,Ringwood,sa2
+211031267,Ringwood East,sa2
+211031268,Ringwood North,sa2
+211031450,Croydon - East,sa2
+211031451,Croydon - West,sa2
+211031452,Croydon South,sa2
+211041269,Forest Hill,sa2
+211041270,Mitcham (Vic.),sa2
+211041271,Nunawading,sa2
+211041272,Vermont,sa2
+211041273,Vermont South,sa2
+211051274,Belgrave - Selby,sa2
+211051275,Chirnside Park,sa2
+211051276,Healesville - Yarra Glen,sa2
+211051277,Kilsyth,sa2
+211051278,Lilydale - Coldstream,sa2
+211051279,Monbulk - Silvan,sa2
+211051280,Montrose,sa2
+211051281,Mooroolbark,sa2
+211051282,Mount Dandenong - Olinda,sa2
+211051283,Mount Evelyn,sa2
+211051284,Upwey - Tecoma,sa2
+211051285,Wandin - Seville,sa2
+211051286,Yarra Valley,sa2
+212011287,Beaconsfield - Officer,sa2
+212011288,Bunyip - Garfield,sa2
+212011289,Emerald - Cockatoo,sa2
+212011290,Koo Wee Rup,sa2
+212011291,Pakenham - North,sa2
+212011292,Pakenham - South,sa2
+212021293,Berwick - North,sa2
+212021294,Berwick - South,sa2
+212021295,Doveton,sa2
+212021297,Hallam,sa2
+212021299,Narre Warren North,sa2
+212021453,Endeavour Hills - North,sa2
+212021454,Endeavour Hills - South,sa2
+212021455,Narre Warren - North East,sa2
+212021456,Narre Warren - South West,sa2
+212031300,Cranbourne,sa2
+212031301,Cranbourne East,sa2
+212031302,Cranbourne North,sa2
+212031303,Cranbourne South,sa2
+212031304,Cranbourne West,sa2
+212031305,Hampton Park - Lynbrook,sa2
+212031306,Lynbrook - Lyndhurst,sa2
+212031308,Pearcedale - Tooradin,sa2
+212031457,Narre Warren South (East),sa2
+212031458,Narre Warren South (West),sa2
+212041309,Clarinda - Oakleigh South,sa2
+212041310,Clayton South,sa2
+212041311,Dandenong,sa2
+212041312,Dandenong North,sa2
+212041313,Dingley Village,sa2
+212041314,Keysborough,sa2
+212041316,Noble Park North,sa2
+212041317,Springvale,sa2
+212041318,Springvale South,sa2
+212041459,Noble Park - East,sa2
+212041460,Noble Park - West,sa2
+212051319,Ashwood - Chadstone,sa2
+212051320,Clayton,sa2
+212051321,Glen Waverley - East,sa2
+212051322,Glen Waverley - West,sa2
+212051323,Mount Waverley - North,sa2
+212051324,Mount Waverley - South,sa2
+212051325,Mulgrave,sa2
+212051326,Oakleigh - Huntingdale,sa2
+212051327,Wheelers Hill,sa2
+213011328,Ardeer - Albion,sa2
+213011329,Cairnlea,sa2
+213011330,Deer Park - Derrimut,sa2
+213011331,Delahey,sa2
+213011332,Keilor Downs,sa2
+213011333,Kings Park (Vic.),sa2
+213011334,St Albans - North,sa2
+213011335,St Albans - South,sa2
+213011336,Sunshine,sa2
+213011337,Sunshine North,sa2
+213011338,Sunshine West,sa2
+213011339,Sydenham,sa2
+213011340,Taylors Lakes,sa2
+213021341,Altona,sa2
+213021342,Altona Meadows,sa2
+213021343,Altona North,sa2
+213021344,Newport,sa2
+213021345,Seabrook,sa2
+213021346,Williamstown,sa2
+213031347,Braybrook,sa2
+213031348,Footscray,sa2
+213031349,Maribyrnong,sa2
+213031350,Seddon - Kingsville,sa2
+213031351,West Footscray - Tottenham,sa2
+213031352,Yarraville,sa2
+213041353,Bacchus Marsh,sa2
+213041355,Hillside,sa2
+213041356,Melton,sa2
+213041357,Melton South,sa2
+213041358,Melton West,sa2
+213041359,Rockbank - Mount Cottrell,sa2
+213041360,Taylors Hill,sa2
+213041461,Burnside,sa2
+213041462,Burnside Heights,sa2
+213041463,Caroline Springs,sa2
+213051361,Hoppers Crossing - North,sa2
+213051362,Hoppers Crossing - South,sa2
+213051363,Laverton,sa2
+213051365,Tarneit,sa2
+213051366,Truganina,sa2
+213051368,Werribee - South,sa2
+213051369,Wyndham Vale,sa2
+213051464,Point Cook - East,sa2
+213051465,Point Cook - North,sa2
+213051466,Point Cook - South,sa2
+213051467,Werribee - East,sa2
+213051468,Werribee - West,sa2
+214011370,Carrum Downs,sa2
+214011371,Frankston,sa2
+214011372,Frankston North,sa2
+214011373,Frankston South,sa2
+214011374,Langwarrin,sa2
+214011375,Seaford (Vic.),sa2
+214011376,Skye - Sandhurst,sa2
+214021377,Dromana,sa2
+214021378,Flinders,sa2
+214021379,Hastings - Somers,sa2
+214021380,Mornington,sa2
+214021381,Mount Eliza,sa2
+214021382,Mount Martha,sa2
+214021383,Point Nepean,sa2
+214021384,Rosebud - McCrae,sa2
+214021385,Somerville,sa2
+215011386,Ararat,sa2
+215011387,Ararat Region,sa2
+215011388,Horsham,sa2
+215011389,Horsham Region,sa2
+215011390,Nhill Region,sa2
+215011391,St Arnaud,sa2
+215011392,Stawell,sa2
+215011393,West Wimmera,sa2
+215011394,Yarriambiack,sa2
+215021395,Irymple,sa2
+215021396,Merbein,sa2
+215021398,Mildura Region,sa2
+215021399,Red Cliffs,sa2
+215021469,Mildura - North,sa2
+215021470,Mildura - South,sa2
+215031400,Buloke,sa2
+215031401,Gannawarra,sa2
+215031402,Kerang,sa2
+215031403,Robinvale,sa2
+215031404,Swan Hill,sa2
+215031405,Swan Hill Region,sa2
+216011406,Echuca,sa2
+216011407,Kyabram,sa2
+216011408,Lockington - Gunbower,sa2
+216011409,Rochester,sa2
+216011410,Rushworth,sa2
+216021411,Cobram,sa2
+216021412,Moira,sa2
+216021413,Numurkah,sa2
+216021414,Yarrawonga,sa2
+216031415,Mooroopna,sa2
+216031416,Shepparton - North,sa2
+216031417,Shepparton - South,sa2
+216031418,Shepparton Region - East,sa2
+216031419,Shepparton Region - West,sa2
+217011420,Glenelg (Vic.),sa2
+217011421,Hamilton (Vic.),sa2
+217011422,Portland,sa2
+217011423,Southern Grampians,sa2
+217031471,Camperdown,sa2
+217031472,Colac,sa2
+217031473,Colac Region,sa2
+217031474,Corangamite - North,sa2
+217031475,Corangamite - South,sa2
+217031476,Otway,sa2
+217041477,Moyne - East,sa2
+217041478,Moyne - West,sa2
+217041479,Warrnambool - North,sa2
+217041480,Warrnambool - South,sa2
+301011001,Alexandra Hills,sa2
+301011002,Belmont - Gumdale,sa2
+301011003,Birkdale,sa2
+301011004,Capalaba,sa2
+301011005,Thorneside,sa2
+301011006,Wellington Point,sa2
+301021007,Cleveland,sa2
+301021008,Ormiston,sa2
+301021009,Redland Bay,sa2
+301021011,Sheldon - Mount Cotton,sa2
+301021012,Thornlands,sa2
+301021013,Victoria Point,sa2
+301021527,Redland Islands,sa2
+301031014,Brisbane Port - Lytton,sa2
+301031015,Manly - Lota,sa2
+301031016,Manly West,sa2
+301031017,Murarrie,sa2
+301031018,Tingalpa,sa2
+301031019,Wakerley,sa2
+301031020,Wynnum,sa2
+301031021,Wynnum West - Hemmant,sa2
+302011022,Bald Hills,sa2
+302011023,Bridgeman Downs,sa2
+302011024,Carseldine,sa2
+302011025,Everton Park,sa2
+302011026,McDowall,sa2
+302021027,Aspley,sa2
+302021028,Chermside,sa2
+302021029,Chermside West,sa2
+302021030,Geebung,sa2
+302021031,Kedron - Gordon Park,sa2
+302021032,Stafford,sa2
+302021033,Stafford Heights,sa2
+302021034,Wavell Heights,sa2
+302031035,Boondall,sa2
+302031036,Brisbane Airport,sa2
+302031037,Eagle Farm - Pinkenba,sa2
+302031038,Northgate - Virginia,sa2
+302031039,Nudgee - Banyo,sa2
+302031040,Nundah,sa2
+302041041,Bracken Ridge,sa2
+302041042,Brighton (Qld),sa2
+302041043,Deagon,sa2
+302041044,Sandgate - Shorncliffe,sa2
+302041045,Taigum - Fitzgibbon,sa2
+302041046,Zillmere,sa2
+303011047,Camp Hill,sa2
+303011048,Cannon Hill,sa2
+303011049,Carina,sa2
+303011050,Carina Heights,sa2
+303011051,Carindale,sa2
+303021052,Annerley,sa2
+303021053,Coorparoo,sa2
+303021054,Fairfield - Dutton Park,sa2
+303021055,Greenslopes,sa2
+303021056,Holland Park,sa2
+303021057,Holland Park West,sa2
+303021058,Woolloongabba,sa2
+303021059,Yeronga,sa2
+303031060,Eight Mile Plains,sa2
+303031061,Macgregor (Qld),sa2
+303031062,Mansfield (Qld),sa2
+303031063,Mount Gravatt,sa2
+303031064,Rochedale - Burbank,sa2
+303031065,Upper Mount Gravatt,sa2
+303031066,Wishart,sa2
+303041067,Coopers Plains,sa2
+303041068,Moorooka,sa2
+303041069,Robertson,sa2
+303041070,Salisbury - Nathan,sa2
+303041071,Tarragindi,sa2
+303051072,Algester,sa2
+303051073,Calamvale - Stretton,sa2
+303051074,Pallara - Willawong,sa2
+303051075,Parkinson - Drewvale,sa2
+303051076,Rocklea - Acacia Ridge,sa2
+303061077,Kuraby,sa2
+303061078,Runcorn,sa2
+303061079,Sunnybank,sa2
+303061080,Sunnybank Hills,sa2
+304011081,Jindalee - Mount Ommaney,sa2
+304011082,Middle Park - Jamboree Heights,sa2
+304011083,Riverhills,sa2
+304011084,Seventeen Mile Rocks - Sinnamon Park,sa2
+304011085,Westlake,sa2
+304021086,Bellbowrie - Moggill,sa2
+304021087,Brookfield - Kenmore Hills,sa2
+304021088,Chapel Hill,sa2
+304021089,Fig Tree Pocket,sa2
+304021090,Kenmore,sa2
+304021091,Pinjarra Hills - Pullenvale,sa2
+304031092,Chelmer - Graceville,sa2
+304031093,Corinda,sa2
+304031094,Indooroopilly,sa2
+304031095,Sherwood,sa2
+304031096,St Lucia,sa2
+304031097,Taringa,sa2
+304041098,Enoggera,sa2
+304041099,Enoggera Reservoir,sa2
+304041100,Keperra,sa2
+304041101,Mitchelton,sa2
+304041102,Mount Coot-tha,sa2
+304041103,The Gap,sa2
+304041104,Upper Kedron - Ferny Grove,sa2
+305011105,Brisbane City,sa2
+305011106,Fortitude Valley,sa2
+305011107,Highgate Hill,sa2
+305011108,Kangaroo Point,sa2
+305011109,New Farm,sa2
+305011110,South Brisbane,sa2
+305011111,Spring Hill,sa2
+305011112,West End,sa2
+305021113,Balmoral,sa2
+305021114,Bulimba,sa2
+305021115,East Brisbane,sa2
+305021116,Hawthorne,sa2
+305021117,Morningside - Seven Hills,sa2
+305021118,Norman Park,sa2
+305031119,Albion,sa2
+305031120,Alderley,sa2
+305031121,Ascot,sa2
+305031122,Clayfield,sa2
+305031123,Grange,sa2
+305031124,Hamilton (Qld),sa2
+305031125,Hendra,sa2
+305031126,Kelvin Grove - Herston,sa2
+305031127,Newmarket,sa2
+305031128,Newstead - Bowen Hills,sa2
+305031129,Wilston,sa2
+305031130,Windsor,sa2
+305031131,Wooloowin - Lutwyche,sa2
+305041132,Ashgrove,sa2
+305041133,Auchenflower,sa2
+305041134,Bardon,sa2
+305041135,Paddington - Milton,sa2
+305041136,Red Hill (Qld),sa2
+305041137,Toowong,sa2
+306011138,Brinsmead,sa2
+306011139,Clifton Beach - Kewarra Beach,sa2
+306011140,Freshwater - Stratford,sa2
+306011141,Redlynch,sa2
+306011142,Trinity Beach - Smithfield,sa2
+306011143,Yorkeys Knob - Machans Beach,sa2
+306021144,Bentley Park,sa2
+306021145,Cairns City,sa2
+306021146,Earlville - Bayview Heights,sa2
+306021147,Edmonton,sa2
+306021148,Gordonvale - Trinity,sa2
+306021149,Kanimbla - Mooroobool,sa2
+306021150,Lamb Range,sa2
+306021151,Manoora,sa2
+306021152,Manunda,sa2
+306021153,Mount Sheridan,sa2
+306021154,Westcourt - Bungalow,sa2
+306021155,White Rock,sa2
+306021156,Whitfield - Edge Hill,sa2
+306021157,Woree,sa2
+306031158,Babinda,sa2
+306031159,Innisfail,sa2
+306031160,Johnstone,sa2
+306031161,Tully,sa2
+306031162,Wooroonooran,sa2
+306031163,Yarrabah,sa2
+306041164,Daintree,sa2
+306041165,Port Douglas,sa2
+306051166,Atherton,sa2
+306051167,Herberton,sa2
+306051168,Kuranda,sa2
+306051169,Malanda - Yungaburra,sa2
+306051170,Mareeba,sa2
+307011171,Balonne,sa2
+307011172,Chinchilla,sa2
+307011173,Goondiwindi,sa2
+307011174,Inglewood - Waggamba,sa2
+307011175,Miles - Wandoan,sa2
+307011176,Roma,sa2
+307011177,Roma Region,sa2
+307011178,Tara,sa2
+307021179,Crows Nest - Rosalie,sa2
+307021180,Jondaryan,sa2
+307021181,Millmerran,sa2
+307021182,Pittsworth,sa2
+307021183,Wambo,sa2
+307031184,Clifton - Greenmount,sa2
+307031185,Southern Downs - East,sa2
+307031186,Southern Downs - West,sa2
+307031187,Stanthorpe,sa2
+307031188,Stanthorpe Region,sa2
+307031189,Warwick,sa2
+308011190,Central Highlands - East,sa2
+308011191,Central Highlands - West,sa2
+308011192,Emerald,sa2
+308031205,Berserker,sa2
+308031206,Bouldercombe,sa2
+308031207,Emu Park,sa2
+308031208,Frenchville - Mount Archer,sa2
+308031209,Glenlee - Rockyview,sa2
+308031210,Gracemere,sa2
+308031211,Lakes Creek,sa2
+308031212,Mount Morgan,sa2
+308031213,Norman Gardens,sa2
+308031214,Park Avenue,sa2
+308031215,Parkhurst - Kawana,sa2
+308031216,Rockhampton - West,sa2
+308031217,Rockhampton City,sa2
+308031218,Rockhampton Region - East,sa2
+308031219,Rockhampton Region - North,sa2
+308031220,Rockhampton Region - West,sa2
+308031221,Shoalwater Bay,sa2
+308031222,The Range - Allenstown,sa2
+308031223,Yeppoon,sa2
+308041528,Banana,sa2
+308041529,Biloela,sa2
+308051530,Agnes Water - Miriam Vale,sa2
+308051531,Boyne Island - Tannum Sands,sa2
+308051532,Callemondah,sa2
+308051533,Clinton - New Auckland,sa2
+308051534,Gladstone,sa2
+308051535,Gladstone Hinterland,sa2
+308051536,Kin Kora - Sun Valley,sa2
+308051537,South Trees,sa2
+308051538,Telina - Toolooa,sa2
+308051539,West Gladstone,sa2
+309011224,Broadbeach Waters,sa2
+309011225,Burleigh Heads,sa2
+309011226,Burleigh Waters,sa2
+309011227,Mermaid Beach - Broadbeach,sa2
+309011228,Mermaid Waters,sa2
+309011229,Miami,sa2
+309021230,Coolangatta,sa2
+309021231,Currumbin - Tugun,sa2
+309021232,Currumbin Waters,sa2
+309021233,Elanora,sa2
+309021234,Palm Beach,sa2
+309031235,Arundel,sa2
+309031236,Biggera Waters,sa2
+309031237,Coombabah,sa2
+309031238,Labrador,sa2
+309031239,Paradise Point - Hollywell,sa2
+309031240,Runaway Bay,sa2
+309041241,Guanaba - Springbrook,sa2
+309041242,Tamborine - Canungra,sa2
+309051243,Currumbin Valley - Tallebudgera,sa2
+309051244,Mudgeeraba - Bonogin,sa2
+309051245,Reedy Creek - Andrews,sa2
+309061246,Carrara,sa2
+309061247,Highland Park,sa2
+309061248,Nerang - Mount Nathan,sa2
+309061249,Pacific Pines - Gaven,sa2
+309061250,Worongary - Tallai,sa2
+309071251,Coomera,sa2
+309071252,Helensvale,sa2
+309071253,Hope Island,sa2
+309071254,Jacobs Well - Alberton,sa2
+309071255,Ormeau - Yatala,sa2
+309071256,Oxenford - Maudsland,sa2
+309071257,Pimpama,sa2
+309071258,Upper Coomera - Willow Vale,sa2
+309081259,Clear Island Waters,sa2
+309081260,Merrimac,sa2
+309081261,Robina,sa2
+309081262,Varsity Lakes,sa2
+309091263,Ashmore,sa2
+309091264,Molendinar,sa2
+309091265,Parkwood,sa2
+309091540,Southport - North,sa2
+309091541,Southport - South,sa2
+309101267,Benowa,sa2
+309101268,Bundall,sa2
+309101269,Main Beach,sa2
+309101270,Surfers Paradise,sa2
+310011271,Darra - Sumner,sa2
+310011272,Durack,sa2
+310011273,Forest Lake - Doolandella,sa2
+310011274,Inala - Richlands,sa2
+310011275,Oxley (Qld),sa2
+310011276,Wacol,sa2
+310021277,Boonah,sa2
+310021278,Esk,sa2
+310021279,Lake Manchester - England Creek,sa2
+310021280,Lockyer Valley - East,sa2
+310021281,Lowood,sa2
+310021282,Rosewood,sa2
+310031283,Brassall,sa2
+310031284,Bundamba,sa2
+310031285,Churchill - Yamanto,sa2
+310031286,Ipswich - Central,sa2
+310031287,Ipswich - East,sa2
+310031288,Ipswich - North,sa2
+310031289,Karalee - Barellan Point,sa2
+310031290,Karana Downs,sa2
+310031291,Leichhardt - One Mile,sa2
+310031292,North Ipswich - Tivoli,sa2
+310031293,Raceview,sa2
+310031294,Ripley,sa2
+310031295,Riverview,sa2
+310041296,Bellbird Park - Brookwater,sa2
+310041297,Camira - Gailes,sa2
+310041298,Carole Park,sa2
+310041299,Collingwood Park - Redbank,sa2
+310041300,Goodna,sa2
+310041301,New Chum,sa2
+310041302,Redbank Plains,sa2
+310041303,Springfield,sa2
+310041304,Springfield Lakes,sa2
+311011305,Beaudesert,sa2
+311021306,Beenleigh,sa2
+311021307,Eagleby,sa2
+311021308,Edens Landing - Holmview,sa2
+311021309,Mount Warren Park,sa2
+311021310,Wolffdene - Bahrs Scrub,sa2
+311031311,Boronia Heights - Park Ridge,sa2
+311031312,Browns Plains,sa2
+311031313,Chambers Flat - Logan Reserve,sa2
+311031314,Crestmead,sa2
+311031315,Greenbank Military Camp,sa2
+311031316,Hillcrest,sa2
+311031317,Marsden,sa2
+311031318,Munruben - Park Ridge South,sa2
+311031319,Regents Park - Heritage Park,sa2
+311041320,Greenbank,sa2
+311041321,Jimboomba,sa2
+311041322,Logan Village,sa2
+311051323,Bethania - Waterford,sa2
+311051324,Cornubia - Carbrook,sa2
+311051325,Loganholme - Tanah Merah,sa2
+311051326,Loganlea,sa2
+311051327,Shailer Park,sa2
+311051328,Waterford West,sa2
+311061329,Daisy Hill,sa2
+311061330,Kingston (Qld.),sa2
+311061331,Logan Central,sa2
+311061332,Rochedale South - Priestdale,sa2
+311061333,Slacks Creek,sa2
+311061334,Springwood,sa2
+311061335,Underwood,sa2
+311061336,Woodridge,sa2
+312011337,Bowen,sa2
+312011338,Broadsound - Nebo,sa2
+312011339,Clermont,sa2
+312011340,Collinsville,sa2
+312011341,Moranbah,sa2
+312021342,Andergrove - Beaconsfield,sa2
+312021343,East Mackay,sa2
+312021344,Eimeo - Rural View,sa2
+312021345,Eungella Hinterland,sa2
+312021346,Mackay,sa2
+312021347,Mackay Harbour,sa2
+312021348,Mount Pleasant - Glenella,sa2
+312021349,North Mackay,sa2
+312021350,Ooralea - Bakers Creek,sa2
+312021351,Pioneer Valley,sa2
+312021352,Sarina,sa2
+312021353,Seaforth - Calen,sa2
+312021354,Shoal Point - Bucasia,sa2
+312021355,Slade Point,sa2
+312021356,South Mackay,sa2
+312021357,Walkerston - Eton,sa2
+312021358,West Mackay,sa2
+312031359,Airlie - Whitsundays,sa2
+312031360,Cape Conway,sa2
+312031361,Proserpine,sa2
+313011362,Beachmere - Sandstone Point,sa2
+313011363,Bribie Island,sa2
+313021364,Burpengary - East,sa2
+313021365,Caboolture,sa2
+313021366,Caboolture - South,sa2
+313021367,Elimbah,sa2
+313021368,Morayfield - East,sa2
+313021369,Wamuran,sa2
+313031370,Kilcoy,sa2
+313031371,Woodford - D'Aguilar,sa2
+313041372,Burpengary,sa2
+313041373,Deception Bay,sa2
+313041374,Morayfield,sa2
+313041375,Narangba,sa2
+313041376,Upper Caboolture,sa2
+313051377,Clontarf,sa2
+313051378,Margate - Woody Point,sa2
+313051379,Redcliffe,sa2
+313051380,Rothwell - Kippa-Ring,sa2
+313051542,Scarborough - Newport - Moreton Island,sa2
+314011382,Albany Creek,sa2
+314011383,Cashmere,sa2
+314011384,Dayboro,sa2
+314011385,Eatons Hill,sa2
+314011386,The Hills District,sa2
+314011387,Samford Valley,sa2
+314021388,Dakabin - Kallangur,sa2
+314021389,Murrumba Downs - Griffin,sa2
+314021390,North Lakes - Mango Hill,sa2
+314031391,Bray Park,sa2
+314031392,Lawnton,sa2
+314031393,Petrie,sa2
+314031394,Strathpine - Brendale,sa2
+315011395,Aurukun,sa2
+315011396,Cape York,sa2
+315011397,Croydon - Etheridge,sa2
+315011398,Kowanyama - Pormpuraaw,sa2
+315011399,Northern Peninsula,sa2
+315011400,Tablelands,sa2
+315011401,Torres,sa2
+315011402,Torres Strait Islands,sa2
+315011403,Weipa,sa2
+315021404,Carpentaria,sa2
+315021405,Mount Isa,sa2
+315021406,Mount Isa Region,sa2
+315021407,Northern Highlands,sa2
+315031408,Barcaldine - Blackall,sa2
+315031409,Charleville,sa2
+315031410,Far Central West,sa2
+315031411,Far South West,sa2
+315031412,Longreach,sa2
+316011413,Buderim - North,sa2
+316011414,Buderim - South,sa2
+316011415,Mountain Creek,sa2
+316011416,Sippy Downs,sa2
+316021417,Aroona - Currimundi,sa2
+316021418,Buddina - Minyama,sa2
+316021419,Caloundra - Kings Beach,sa2
+316021420,Caloundra - West,sa2
+316021421,Golden Beach - Pelican Waters,sa2
+316021422,Moffat Beach - Battery Hill,sa2
+316021423,Parrearra - Warana,sa2
+316021424,Wurtulla - Birtinya,sa2
+316031425,Coolum Beach,sa2
+316031426,Marcoola - Mudjimba,sa2
+316031427,Maroochydore - Kuluin,sa2
+316031428,Mooloolaba - Alexandra Headland,sa2
+316051434,Noosa Heads,sa2
+316051435,Noosaville,sa2
+316051437,Sunshine Beach,sa2
+316051438,Tewantin,sa2
+316051543,Peregian Beach - Marcus Beach,sa2
+316051544,Peregian Springs,sa2
+316061439,Beerwah,sa2
+316061440,Caloundra Hinterland,sa2
+316061441,Glass House Mountains,sa2
+316061442,Landsborough,sa2
+316061443,Maroochy Hinterland,sa2
+316061444,Palmwoods,sa2
+316071545,Bli Bli,sa2
+316071546,Diddillibah - Rosemount,sa2
+316071547,Eumundi - Yandina,sa2
+316071548,Nambour,sa2
+316081549,Noosa Hinterland,sa2
+317011445,Cambooya - Wyreema,sa2
+317011446,Darling Heights,sa2
+317011447,Drayton - Harristown,sa2
+317011448,Gatton,sa2
+317011449,Gowrie (Qld),sa2
+317011450,Highfields,sa2
+317011451,Lockyer Valley - West,sa2
+317011452,Middle Ridge,sa2
+317011453,Newtown (Qld),sa2
+317011454,North Toowoomba - Harlaxton,sa2
+317011455,Rangeville,sa2
+317011456,Toowoomba - Central,sa2
+317011457,Toowoomba - East,sa2
+317011458,Toowoomba - West,sa2
+317011459,Wilsonton,sa2
+318011460,Ayr,sa2
+318011461,Burdekin,sa2
+318011462,Charters Towers,sa2
+318011463,Dalrymple,sa2
+318011464,Ingham,sa2
+318011465,Ingham Region,sa2
+318011466,Palm Island,sa2
+318021467,Aitkenvale,sa2
+318021468,Annandale,sa2
+318021469,Belgian Gardens - Pallarenda,sa2
+318021470,Bohle Plains,sa2
+318021471,Condon - Rasmussen,sa2
+318021472,Cranbrook,sa2
+318021473,Deeragun,sa2
+318021474,Douglas,sa2
+318021475,Garbutt - West End,sa2
+318021476,Gulliver - Currajong - Vincent,sa2
+318021477,Heatley,sa2
+318021478,Hermit Park - Rosslea,sa2
+318021479,Hyde Park - Pimlico,sa2
+318021480,Kelso,sa2
+318021481,Kirwan - East,sa2
+318021482,Kirwan - West,sa2
+318021483,Magnetic Island,sa2
+318021484,Mount Louisa,sa2
+318021485,Mundingburra,sa2
+318021486,Northern Beaches,sa2
+318021487,Oonoonba,sa2
+318021488,South Townsville - Railway Estate,sa2
+318021489,Townsville - South,sa2
+318021490,Townsville City - North Ward,sa2
+318021491,Wulguru - Roseneath,sa2
+319011492,Ashfield - Kepnock,sa2
+319011493,Bargara - Burnett Heads,sa2
+319011494,Branyan - Kensington,sa2
+319011495,Bundaberg,sa2
+319011496,Bundaberg East - Kalkie,sa2
+319011497,Bundaberg North - Gooburrum,sa2
+319011498,Bundaberg Region - North,sa2
+319011499,Bundaberg Region - South,sa2
+319011500,Millbank - Avoca,sa2
+319011501,Svensson Heights - Norville,sa2
+319011502,Walkervale - Avenell Heights,sa2
+319021503,Gayndah - Mundubbera,sa2
+319021504,Gin Gin,sa2
+319021505,Kingaroy,sa2
+319021506,Kingaroy Region - North,sa2
+319021507,Kingaroy Region - South,sa2
+319021508,Monto - Eidsvold,sa2
+319021509,Nanango,sa2
+319021510,North Burnett,sa2
+319031511,Cooloola,sa2
+319031512,Gympie - North,sa2
+319031513,Gympie - South,sa2
+319031514,Gympie Region,sa2
+319031515,Kilkivan,sa2
+319041516,Booral - River Heads,sa2
+319041517,Craignish - Dundowran Beach,sa2
+319041518,Pialba - Eli Waters,sa2
+319041519,Point Vernon,sa2
+319041520,Torquay - Scarness - Kawungan,sa2
+319041521,Urangan - Wondunna,sa2
+319051522,Burrum - Fraser,sa2
+319051523,Granville,sa2
+319051524,Maryborough (Qld),sa2
+319051525,Maryborough Region - South,sa2
+319051526,Tinana,sa2
+401011001,Adelaide,sa2
+401011002,North Adelaide,sa2
+401021003,Adelaide Hills,sa2
+401021004,Aldgate - Stirling,sa2
+401021005,Hahndorf - Echunga,sa2
+401021006,Lobethal - Woodside,sa2
+401021007,Mount Barker,sa2
+401021008,Mount Barker Region,sa2
+401021009,Nairne,sa2
+401021010,Uraidla - Summertown,sa2
+401031011,Burnside - Wattle Park,sa2
+401031012,Glenside - Beaumont,sa2
+401031013,Toorak Gardens,sa2
+401041014,Athelstone,sa2
+401041015,Paradise - Newton,sa2
+401041016,Rostrevor - Magill,sa2
+401051017,Norwood (SA),sa2
+401051018,Payneham - Felixstow,sa2
+401051019,St Peters - Marden,sa2
+401061020,Nailsworth - Broadview,sa2
+401061021,Prospect,sa2
+401061022,Walkerville,sa2
+401071023,Goodwood - Millswood,sa2
+401071024,Unley - Parkside,sa2
+402011025,Gawler - North,sa2
+402011026,Gawler - South,sa2
+402011027,Lewiston - Two Wells,sa2
+402021028,Craigmore - Blakeview,sa2
+402021029,Davoren Park,sa2
+402021030,Elizabeth,sa2
+402021031,Elizabeth East,sa2
+402021032,Munno Para West - Angle Vale,sa2
+402021033,One Tree Hill,sa2
+402021034,Smithfield - Elizabeth North,sa2
+402021035,Virginia - Waterloo Corner,sa2
+402031036,Enfield - Blair Athol,sa2
+402031037,Northgate - Oakden - Gilles Plains,sa2
+402031038,Windsor Gardens,sa2
+402041039,Dry Creek - North,sa2
+402041040,Ingle Farm,sa2
+402041041,Para Hills,sa2
+402041042,Parafield,sa2
+402041043,Parafield Gardens,sa2
+402041044,Paralowie,sa2
+402041046,Salisbury,sa2
+402041047,Salisbury East,sa2
+402041048,Salisbury North,sa2
+402041171,Mawson Lakes - Globe Derby Park,sa2
+402041172,Pooraka - Cavan,sa2
+402051049,Golden Grove,sa2
+402051050,Greenwith,sa2
+402051051,Highbury - Dernancourt,sa2
+402051052,Hope Valley - Modbury,sa2
+402051053,Modbury Heights,sa2
+402051054,Redwood Park,sa2
+402051055,St Agnes - Ridgehaven,sa2
+403011056,Brighton (SA),sa2
+403011057,Glenelg (SA),sa2
+403021058,Edwardstown,sa2
+403021059,Hallett Cove,sa2
+403021060,Marino - Seaview Downs,sa2
+403021061,Mitchell Park,sa2
+403021062,Morphettville,sa2
+403021063,Sheidow Park - Trott Park,sa2
+403021064,Warradale,sa2
+403031065,Belair,sa2
+403031066,Bellevue Heights,sa2
+403031067,Blackwood,sa2
+403031068,Colonel Light Gardens,sa2
+403031069,Mitcham (SA),sa2
+403031070,Panorama,sa2
+403041071,Aberfoyle Park,sa2
+403041072,Aldinga,sa2
+403041073,Christie Downs,sa2
+403041074,Christies Beach,sa2
+403041075,Clarendon,sa2
+403041076,Coromandel Valley,sa2
+403041077,Flagstaff Hill,sa2
+403041078,Hackham - Onkaparinga Hills,sa2
+403041079,Hackham West - Huntfield Heights,sa2
+403041080,Happy Valley,sa2
+403041081,Happy Valley Reservoir,sa2
+403041082,Lonsdale,sa2
+403041083,McLaren Vale,sa2
+403041084,Morphett Vale - East,sa2
+403041085,Morphett Vale - West,sa2
+403041086,Reynella,sa2
+403041087,Seaford (SA),sa2
+403041088,Willunga,sa2
+403041089,Woodcroft,sa2
+404011090,Beverley,sa2
+404011091,Flinders Park,sa2
+404011092,Henley Beach,sa2
+404011093,Hindmarsh - Brompton,sa2
+404011094,Royal Park - Hendon - Albert Park,sa2
+404011095,Seaton - Grange,sa2
+404011096,West Lakes,sa2
+404011097,Woodville - Cheltenham,sa2
+404021098,Dry Creek - South,sa2
+404021099,Largs Bay - Semaphore,sa2
+404021100,North Haven,sa2
+404021101,Port Adelaide,sa2
+404021102,The Parks,sa2
+404021103,Torrens Island,sa2
+404031104,Adelaide Airport,sa2
+404031105,Fulham,sa2
+404031106,Lockleys,sa2
+404031107,Plympton,sa2
+404031108,Richmond (SA),sa2
+404031109,West Beach,sa2
+405011110,Barossa - Angaston,sa2
+405011111,Light,sa2
+405011112,Lyndoch,sa2
+405011113,Mallala,sa2
+405011114,Nuriootpa,sa2
+405011115,Tanunda,sa2
+405021116,Clare,sa2
+405021117,Gilbert Valley,sa2
+405021118,Goyder,sa2
+405021119,Wakefield - Barunga West,sa2
+405031120,Jamestown,sa2
+405031121,Peterborough - Mount Remarkable,sa2
+405031122,Port Pirie,sa2
+405031123,Port Pirie Region,sa2
+405041124,Kadina,sa2
+405041125,Moonta,sa2
+405041126,Wallaroo,sa2
+405041127,Yorke Peninsula - North,sa2
+405041128,Yorke Peninsula - South,sa2
+406011129,Ceduna,sa2
+406011130,Eyre Peninsula,sa2
+406011131,Kimba - Cleve - Franklin Harbour,sa2
+406011132,Le Hunte - Elliston,sa2
+406011133,Port Lincoln,sa2
+406011134,West Coast (SA),sa2
+406011135,Western,sa2
+406011136,Whyalla,sa2
+406011137,Whyalla - North,sa2
+406021138,APY Lands,sa2
+406021139,Coober Pedy,sa2
+406021140,Quorn - Lake Gilles,sa2
+406021141,Outback,sa2
+406021142,Port Augusta,sa2
+406021143,Roxby Downs,sa2
+407011144,Goolwa - Port Elliot,sa2
+407011145,Kangaroo Island,sa2
+407011146,Strathalbyn,sa2
+407011147,Strathalbyn Region,sa2
+407011148,Victor Harbor,sa2
+407011149,Yankalilla,sa2
+407021150,Grant,sa2
+407021151,Kingston - Robe,sa2
+407021152,Millicent,sa2
+407021154,Naracoorte,sa2
+407021155,Naracoorte Region,sa2
+407021156,Penola,sa2
+407021157,Tatiara,sa2
+407021158,Wattle Range,sa2
+407021173,Mount Gambier - East,sa2
+407021174,Mount Gambier - West,sa2
+407031159,Barmera,sa2
+407031160,Berri,sa2
+407031161,Karoonda - Lameroo,sa2
+407031162,Loxton,sa2
+407031163,Loxton Region,sa2
+407031164,Mannum,sa2
+407031165,Murray Bridge,sa2
+407031166,Murray Bridge Region,sa2
+407031167,Renmark,sa2
+407031168,Renmark Region,sa2
+407031169,The Coorong,sa2
+407031170,Waikerie,sa2
+501011001,Augusta,sa2
+501011002,Busselton,sa2
+501011003,Busselton Region,sa2
+501011004,Margaret River,sa2
+501021005,Australind - Leschenault,sa2
+501021007,Capel,sa2
+501021008,College Grove - Carey Park,sa2
+501021009,Collie,sa2
+501021010,Dardanup,sa2
+501021011,Davenport,sa2
+501021012,Eaton - Pelican Point,sa2
+501021014,Harvey,sa2
+501021015,East Bunbury - Glen Iris,sa2
+501021016,Waroona,sa2
+501021251,Dalyellup,sa2
+501021252,Gelorup - Stratham,sa2
+501021253,South Bunbury - Bunbury,sa2
+501021254,Withers - Usher,sa2
+501031017,Bridgetown - Boyup Brook,sa2
+501031018,Donnybrook - Balingup,sa2
+501031019,Manjimup,sa2
+501031020,Pemberton,sa2
+502011021,Dawesville - Bouvard,sa2
+502011022,Falcon - Wannanup,sa2
+502011023,Greenfields,sa2
+502011024,Halls Head - Erskine,sa2
+502011025,Mandurah,sa2
+502011026,Mandurah - East,sa2
+502011027,Mandurah - North,sa2
+502011028,Mandurah - South,sa2
+502011029,Pinjarra,sa2
+503011030,City Beach,sa2
+503011031,Claremont (WA),sa2
+503011032,Cottesloe,sa2
+503011033,Floreat,sa2
+503011034,Mosman Park - Peppermint Grove,sa2
+503011035,Nedlands - Dalkeith - Crawley,sa2
+503011036,Swanbourne - Mount Claremont,sa2
+503021037,Kings Park (WA),sa2
+503021038,Mount Hawthorn - Leederville,sa2
+503021039,Mount Lawley - Inglewood,sa2
+503021040,North Perth,sa2
+503021041,Perth City,sa2
+503021042,Subiaco - Shenton Park,sa2
+503021043,Wembley - West Leederville - Glendalough,sa2
+504011044,Bassendean - Eden Hill - Ashfield,sa2
+504011045,Bayswater - Embleton - Bedford,sa2
+504011046,Maylands,sa2
+504011047,Morley,sa2
+504011048,Noranda,sa2
+504021049,Chidlow,sa2
+504021050,Glen Forrest - Darlington,sa2
+504021051,Helena Valley - Koongamia,sa2
+504021052,Malmalling - Reservoir,sa2
+504021053,Mundaring,sa2
+504021054,Swan View - Greenmount - Midvale,sa2
+504031055,Avon Valley National Park,sa2
+504031056,Ballajura,sa2
+504031057,Beechboro,sa2
+504031058,Bullsbrook,sa2
+504031059,Ellenbrook,sa2
+504031060,Gidgegannup,sa2
+504031061,Hazelmere - Guildford,sa2
+504031062,Lockridge - Kiara,sa2
+504031063,Malaga,sa2
+504031064,Melaleuca - Lexia,sa2
+504031065,Middle Swan - Herne Hill,sa2
+504031066,Midland - Guildford,sa2
+504031067,Stratton - Jane Brook,sa2
+504031068,The Vines,sa2
+504031069,Walyunga National Park,sa2
+505011070,Craigie - Beldon,sa2
+505011071,Currambine - Kinross,sa2
+505011072,Duncraig,sa2
+505011073,Greenwood - Warwick,sa2
+505011074,Heathridge - Connolly,sa2
+505011075,Hillarys,sa2
+505011076,Iluka - Burns Beach,sa2
+505011077,Joondalup - Edgewater,sa2
+505011078,Kingsley,sa2
+505011079,Mullaloo - Kallaroo,sa2
+505011080,Ocean Reef,sa2
+505011081,Padbury,sa2
+505011082,Sorrento - Marmion,sa2
+505011083,Woodvale,sa2
+505021084,Balcatta - Hamersley,sa2
+505021085,Balga - Mirrabooka,sa2
+505021086,Dianella,sa2
+505021087,Herdsman,sa2
+505021088,Innaloo - Doubleview,sa2
+505021089,Karrinyup - Gwelup - Carine,sa2
+505021090,Nollamara - Westminster,sa2
+505021091,Osborne Park Industrial,sa2
+505021092,Scarborough,sa2
+505021093,Stirling - Osborne Park,sa2
+505021094,Trigg - North Beach - Watermans Bay,sa2
+505021095,Tuart Hill - Joondanna,sa2
+505021096,Wembley Downs - Churchlands - Woodlands,sa2
+505021097,Yokine - Coolbinia - Menora,sa2
+505031098,Alexander Heights - Koondoola,sa2
+505031099,Butler - Merriwa - Ridgewood,sa2
+505031100,Carramar,sa2
+505031101,Clarkson,sa2
+505031102,Girrawheen,sa2
+505031103,Madeley - Darch - Landsdale,sa2
+505031104,Marangaroo,sa2
+505031105,Mindarie - Quinns Rocks - Jindalee,sa2
+505031106,Neerabup National Park,sa2
+505031107,Tapping - Ashby - Sinagra,sa2
+505031108,Wanneroo,sa2
+505031255,Alkimos - Eglinton,sa2
+505031256,Carabooda - Pinjar,sa2
+505031257,Two Rocks,sa2
+505031258,Yanchep,sa2
+506011110,Armadale - Wungong - Brookdale,sa2
+506011111,Ashendon - Lesley,sa2
+506011112,Camillo - Champion Lakes,sa2
+506011113,Forrestdale - Harrisdale - Piara Waters,sa2
+506011114,Kelmscott,sa2
+506011115,Mount Nasura - Mount Richon - Bedfordale,sa2
+506011116,Roleystone,sa2
+506011117,Seville Grove,sa2
+506021118,Belmont - Ascot - Redcliffe,sa2
+506021119,East Victoria Park - Carlisle,sa2
+506021120,Kewdale Commercial,sa2
+506021121,Perth Airport,sa2
+506021122,Rivervale - Kewdale - Cloverdale,sa2
+506021123,Victoria Park - Lathlain - Burswood,sa2
+506031124,Bentley - Wilson - St James,sa2
+506031125,Canning Vale - West,sa2
+506031126,Canning Vale Commercial,sa2
+506031127,Cannington - Queens Park,sa2
+506031128,Parkwood - Ferndale - Lynwood,sa2
+506031129,Riverton - Shelley - Rossmoyne,sa2
+506031130,Welshpool,sa2
+506031131,Willetton,sa2
+506041132,Beckenham - Kenwick - Langford,sa2
+506041133,Canning Vale - East,sa2
+506041134,Gosnells,sa2
+506041135,Huntingdale - Southern River,sa2
+506041136,Maddington - Orange Grove - Martin,sa2
+506041137,Thornlie,sa2
+506051138,Forrestfield - Wattle Grove,sa2
+506051139,High Wycombe,sa2
+506051140,Kalamunda - Maida Vale - Gooseberry Hill,sa2
+506051141,Lesmurdie - Bickley - Carmel,sa2
+506061142,Byford,sa2
+506061143,Mundijong,sa2
+506061144,Serpentine - Jarrahdale,sa2
+506071145,Como,sa2
+506071146,Manning - Waterford,sa2
+506071147,South Perth - Kensington,sa2
+507011148,Banjup,sa2
+507011150,Bibra Industrial,sa2
+507011151,Bibra Lake,sa2
+507011152,Coogee,sa2
+507011153,Coolbellup,sa2
+507011154,Hamilton Hill,sa2
+507011155,Henderson,sa2
+507011158,North Coogee,sa2
+507011159,South Lake - Cockburn Central,sa2
+507011160,Spearwood,sa2
+507011161,Success - Hammond Park,sa2
+507011163,Yangebup,sa2
+507011259,Beeliar - Wattleup,sa2
+507011260,Jandakot,sa2
+507021164,East Fremantle,sa2
+507021165,Fremantle,sa2
+507021166,Fremantle - South,sa2
+507021167,O'Connor (WA),sa2
+507031169,Bertram - Wellard (West),sa2
+507031170,Calista,sa2
+507031172,Hope Valley - Postans,sa2
+507031173,Kwinana Industrial,sa2
+507031174,Parmelia - Orelia,sa2
+507031261,Casuarina - Wandi,sa2
+507041175,Applecross - Ardross,sa2
+507041176,Bateman,sa2
+507041177,Bicton - Palmyra,sa2
+507041178,Booragoon,sa2
+507041179,Bull Creek,sa2
+507041180,Leeming,sa2
+507041181,Melville,sa2
+507041182,Murdoch - Kardinya,sa2
+507041183,Willagee,sa2
+507041184,Winthrop,sa2
+507051185,Baldivis,sa2
+507051186,Cooloongup,sa2
+507051187,Port Kennedy,sa2
+507051188,Rockingham,sa2
+507051189,Rockingham Lakes,sa2
+507051190,Safety Bay - Shoalwater,sa2
+507051191,Singleton - Golden Bay - Secret Harbour,sa2
+507051192,Waikiki,sa2
+507051193,Warnbro,sa2
+509011225,Albany,sa2
+509011226,Albany Region,sa2
+509011227,Bayonet Head - Lower King,sa2
+509011228,Denmark,sa2
+509011229,Gnowangerup,sa2
+509011230,Katanning,sa2
+509011231,Kojonup,sa2
+509011232,Little Grove - Elleker,sa2
+509011233,McKail - Willyung,sa2
+509011234,Plantagenet,sa2
+509011235,Stirling Range National Park,sa2
+509021236,Chittering,sa2
+509021237,Cunderdin,sa2
+509021238,Dowerin,sa2
+509021239,Gingin - Dandaragan,sa2
+509021240,Merredin,sa2
+509021241,Moora,sa2
+509021242,Mukinbudin,sa2
+509021243,Northam,sa2
+509021244,Toodyay,sa2
+509021245,York - Beverley,sa2
+509031246,Brookton,sa2
+509031247,Kulin,sa2
+509031248,Murray,sa2
+509031249,Narrogin,sa2
+509031250,Wagin,sa2
+510011262,Broome,sa2
+510011263,Derby - West Kimberley,sa2
+510011264,Halls Creek,sa2
+510011265,Kununurra,sa2
+510011266,Roebuck,sa2
+510021267,East Pilbara,sa2
+510021268,Newman,sa2
+510021269,Port Hedland,sa2
+510021270,South Hedland,sa2
+510031271,Ashburton (WA),sa2
+510031272,Karratha,sa2
+510031273,Roebourne,sa2
+511011274,Esperance,sa2
+511011275,Esperance Region,sa2
+511021276,Carnarvon,sa2
+511021277,Exmouth,sa2
+511031278,Boulder,sa2
+511031279,Kalgoorlie,sa2
+511031280,Kalgoorlie - North,sa2
+511031281,Kalgoorlie Airport,sa2
+511031282,Kambalda - Coolgardie - Norseman,sa2
+511031283,Leinster - Leonora,sa2
+511031284,Trafalgar (WA),sa2
+511041285,Geraldton,sa2
+511041286,Geraldton - East,sa2
+511041287,Geraldton - North,sa2
+511041288,Geraldton - South,sa2
+511041289,Irwin,sa2
+511041290,Meekatharra,sa2
+511041291,Morawa,sa2
+511041292,Northampton - Mullewa - Greenough,sa2
+601011001,Bridgewater - Gagebrook,sa2
+601011002,Brighton - Pontville,sa2
+601011003,Old Beach - Otago,sa2
+601021004,Bellerive - Rosny,sa2
+601021005,Cambridge,sa2
+601021006,Geilston Bay - Risdon,sa2
+601021007,Howrah - Tranmere,sa2
+601021008,Lindisfarne - Rose Bay,sa2
+601021009,Mornington - Warrane,sa2
+601021010,Risdon Vale,sa2
+601021011,Rokeby,sa2
+601021012,South Arm,sa2
+601031013,Austins Ferry - Granton,sa2
+601031014,Berriedale - Chigwell,sa2
+601031015,Claremont (Tas.),sa2
+601031016,Derwent Park - Lutana,sa2
+601031017,Glenorchy,sa2
+601031018,Montrose - Rosetta,sa2
+601031019,Moonah,sa2
+601031020,New Norfolk,sa2
+601031021,West Moonah,sa2
+601041022,Kingston - Huntingfield,sa2
+601041023,Kingston Beach - Blackmans Bay,sa2
+601041024,Margate - Snug,sa2
+601041025,Mount Wellington,sa2
+601041026,Taroona - Bonnet Hill,sa2
+601051027,Hobart,sa2
+601051028,Lenah Valley - Mount Stuart,sa2
+601051029,Mount Nelson - Dynnyrne,sa2
+601051030,New Town,sa2
+601051031,Sandy Bay,sa2
+601051032,South Hobart - Fern Tree,sa2
+601051033,West Hobart,sa2
+601061034,Dodges Ferry - Lewisham,sa2
+601061035,Sorell - Richmond,sa2
+602011036,Invermay,sa2
+602011037,Kings Meadows - Punchbowl,sa2
+602011038,Launceston,sa2
+602011039,Legana,sa2
+602011040,Mowbray,sa2
+602011041,Newnham - Mayfield,sa2
+602011042,Newstead,sa2
+602011043,Norwood (Tas.),sa2
+602011044,Prospect Vale - Blackstone,sa2
+602011045,Ravenswood,sa2
+602011046,Riverside,sa2
+602011047,South Launceston,sa2
+602011048,Summerhill - Prospect,sa2
+602011049,Trevallyn,sa2
+602011050,Waverley - St Leonards,sa2
+602011051,West Launceston,sa2
+602011052,Youngtown - Relbia,sa2
+602021053,Beauty Point - Beaconsfield,sa2
+602021054,Deloraine,sa2
+602021055,Grindelwald - Lanena,sa2
+602021056,Hadspen - Carrick,sa2
+602021057,Westbury,sa2
+602031058,Dilston - Lilydale,sa2
+602031059,George Town,sa2
+602031060,Longford,sa2
+602031061,Northern Midlands,sa2
+602031062,Perth - Evandale,sa2
+602031064,St Helens - Scamander,sa2
+602031099,Flinders and Cape Barren Islands,sa2
+602031100,Scottsdale - Bridport,sa2
+603011065,Central Highlands,sa2
+603011066,Derwent Valley,sa2
+603011067,Southern Midlands,sa2
+603011068,Wilderness - East,sa2
+603021069,Bruny Island - Kettering,sa2
+603021070,Cygnet,sa2
+603021071,Geeveston - Dover,sa2
+603021072,Huonville - Franklin,sa2
+603031073,Forestier - Tasman,sa2
+603031074,Triabunna - Bicheno,sa2
+604011075,Acton - Upper Burnie,sa2
+604011076,Burnie - Ulverstone Region,sa2
+604011077,Burnie - Wivenhoe,sa2
+604011078,Parklands - Camdale,sa2
+604011079,Penguin - Sulphur Creek,sa2
+604011080,Romaine - Havenview,sa2
+604011081,Somerset,sa2
+604011082,Ulverstone,sa2
+604011083,West Ulverstone,sa2
+604011084,Wynyard,sa2
+604021085,Devonport,sa2
+604021086,East Devonport,sa2
+604021087,Latrobe,sa2
+604021088,Miandetta - Don,sa2
+604021089,Port Sorell,sa2
+604021090,Quoiba - Spreyton,sa2
+604021091,Sheffield - Railton,sa2
+604021092,Turners Beach - Forth,sa2
+604031093,King Island,sa2
+604031094,North West,sa2
+604031095,Smithton,sa2
+604031096,Waratah,sa2
+604031097,West Coast (Tas.),sa2
+604031098,Wilderness - West,sa2
+701011001,Darwin Airport,sa2
+701011002,Darwin City,sa2
+701011003,East Point,sa2
+701011004,Fannie Bay - The Gardens,sa2
+701011005,Larrakeyah,sa2
+701011006,Ludmilla - The Narrows,sa2
+701011007,Parap,sa2
+701011008,Stuart Park,sa2
+701011009,Woolner - Bayview - Winnellie,sa2
+701021010,Alawa,sa2
+701021011,Anula,sa2
+701021012,Berrimah,sa2
+701021013,Brinkin - Nakara,sa2
+701021014,Buffalo Creek,sa2
+701021015,Charles Darwin,sa2
+701021016,Coconut Grove,sa2
+701021017,East Arm,sa2
+701021018,Jingili,sa2
+701021019,Karama,sa2
+701021020,Leanyer,sa2
+701021021,Lyons (NT),sa2
+701021022,Malak - Marrara,sa2
+701021023,Millner,sa2
+701021024,Moil,sa2
+701021025,Nightcliff,sa2
+701021026,Rapid Creek,sa2
+701021027,Tiwi,sa2
+701021028,Wagaman,sa2
+701021029,Wanguri,sa2
+701021030,Wulagi,sa2
+701031031,Howard Springs,sa2
+701031032,Humpty Doo,sa2
+701031033,Koolpinyah,sa2
+701031034,Virginia,sa2
+701031035,Weddell,sa2
+701041036,Bakewell,sa2
+701041037,Driver,sa2
+701041038,Durack - Marlow Lagoon,sa2
+701041039,Gray,sa2
+701041040,Moulden,sa2
+701041041,Palmerston - North,sa2
+701041042,Palmerston - South,sa2
+701041043,Rosebery - Bellamack,sa2
+701041044,Woodroffe,sa2
+702011045,Charles,sa2
+702011046,East Side,sa2
+702011047,Flynn (NT),sa2
+702011048,Larapinta,sa2
+702011049,Mount Johns,sa2
+702011050,Petermann - Simpson,sa2
+702011051,Ross,sa2
+702011052,Sandover - Plenty,sa2
+702011053,Tanami,sa2
+702011054,Yuendumu - Anmatjere,sa2
+702021055,Barkly,sa2
+702021056,Tennant Creek,sa2
+702031057,Alligator,sa2
+702031058,Daly,sa2
+702031059,Thamarrurr,sa2
+702031060,Tiwi Islands,sa2
+702031061,West Arnhem,sa2
+702041062,Anindilyakwa,sa2
+702041063,East Arnhem,sa2
+702041064,Nhulunbuy,sa2
+702051065,Elsey,sa2
+702051066,Gulf,sa2
+702051067,Katherine,sa2
+702051068,Victoria River,sa2
+801011001,Aranda,sa2
+801011002,Belconnen,sa2
+801011003,Bruce,sa2
+801011004,Charnwood,sa2
+801011005,Cook,sa2
+801011006,Dunlop,sa2
+801011007,Evatt,sa2
+801011008,Florey,sa2
+801011009,Flynn (ACT),sa2
+801011010,Fraser,sa2
+801011011,Giralang,sa2
+801011012,Gooromon,sa2
+801011013,Hawker,sa2
+801011014,Higgins,sa2
+801011015,Holt,sa2
+801011016,Kaleen,sa2
+801011017,Latham,sa2
+801011018,Lawson,sa2
+801011019,Macgregor (ACT),sa2
+801011020,Macquarie,sa2
+801011021,McKellar,sa2
+801011022,Melba,sa2
+801011023,Page,sa2
+801011024,Scullin,sa2
+801011025,Spence,sa2
+801011026,Weetangera,sa2
+801011111,Molonglo Corridor,sa2
+801011112,West Belconnen,sa2
+801031031,Hume,sa2
+801031032,Kowen,sa2
+801031113,Canberra East,sa2
+801031114,Canberra Airport,sa2
+801031115,Majura,sa2
+801041034,Amaroo,sa2
+801041035,Bonner,sa2
+801041036,Casey,sa2
+801041037,Crace,sa2
+801041038,Forde,sa2
+801041039,Franklin,sa2
+801041040,Gungahlin,sa2
+801041043,Hall,sa2
+801041044,Harrison,sa2
+801041045,Mitchell,sa2
+801041046,Ngunnawal,sa2
+801041047,Nicholls,sa2
+801041048,Palmerston,sa2
+801041116,Gungahlin - East,sa2
+801041117,Gungahlin - West,sa2
+801041118,Jacka,sa2
+801041119,Kenny,sa2
+801041120,Moncrieff,sa2
+801041121,Taylor,sa2
+801041122,Throsby,sa2
+801051049,Acton,sa2
+801051050,Ainslie,sa2
+801051051,Braddon,sa2
+801051053,Civic,sa2
+801051054,Dickson,sa2
+801051055,Downer,sa2
+801051056,Hackett,sa2
+801051057,Lyneham,sa2
+801051058,O'Connor (ACT),sa2
+801051060,Turner,sa2
+801051061,Watson,sa2
+801051123,Black Mountain,sa2
+801051124,Campbell,sa2
+801051125,Duntroon,sa2
+801051126,Parkes (ACT) - North,sa2
+801051127,Reid,sa2
+801051128,Russell,sa2
+801061062,Deakin,sa2
+801061063,Forrest,sa2
+801061064,Griffith (ACT),sa2
+801061066,Lake Burley Griffin,sa2
+801061067,Narrabundah,sa2
+801061068,Parkes (ACT) - South,sa2
+801061069,Red Hill (ACT),sa2
+801061070,Yarralumla,sa2
+801061129,Barton,sa2
+801061130,Fyshwick,sa2
+801061131,Kingston (ACT),sa2
+801071071,Banks,sa2
+801071072,Bonython,sa2
+801071073,Calwell,sa2
+801071074,Chisholm,sa2
+801071075,Conder,sa2
+801071076,Fadden,sa2
+801071077,Gilmore,sa2
+801071078,Gordon (ACT),sa2
+801071079,Gowrie (ACT),sa2
+801071080,Greenway,sa2
+801071081,Isabella Plains,sa2
+801071082,Kambah,sa2
+801071083,Macarthur,sa2
+801071084,Monash,sa2
+801071085,Mount Taylor,sa2
+801071086,Oxley (ACT),sa2
+801071087,Richardson,sa2
+801071088,Theodore,sa2
+801071089,Tuggeranong,sa2
+801071090,Wanniassa,sa2
+801071132,Tuggeranong - West,sa2
+801081091,Chapman,sa2
+801081092,Duffy,sa2
+801081093,Fisher,sa2
+801081094,Holder,sa2
+801081095,Rivett,sa2
+801081096,Stirling,sa2
+801081097,Waramanga,sa2
+801081098,Weston,sa2
+801081133,Scrivener,sa2
+801091099,Chifley,sa2
+801091100,Curtin,sa2
+801091101,Farrer,sa2
+801091102,Garran,sa2
+801091103,Hughes,sa2
+801091104,Isaacs,sa2
+801091105,Lyons (ACT),sa2
+801091106,Mawson,sa2
+801091107,O'Malley,sa2
+801091108,Pearce,sa2
+801091109,Phillip,sa2
+801091110,Torrens,sa2
+801101134,Arboretum,sa2
+801101135,Coombs,sa2
+801101136,Denman Prospect,sa2
+801101137,Molonglo,sa2
+801101138,Molonglo - North,sa2
+801101139,Wright,sa2
+801111140,ACT - South West,sa2
+801111141,Namadgi,sa2
+901011001,Christmas Island,sa2
+901021002,Cocos (Keeling) Islands,sa2
+901031003,Jervis Bay,sa2
+901041004,Norfolk Island,sa2

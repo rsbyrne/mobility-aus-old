@@ -442,6 +442,7 @@ def load_lgas():
     lgas = lgas.set_index('LGA_CODE19')
     lgas = lgas.dropna()
     lgas['name'] = lgas['LGA_NAME19']
+    lgas['area'] = lgas['AREASQKM19']
     return lgas
 
 def load_aus():
@@ -467,6 +468,7 @@ def load_SA(level):
     frm = frm.loc[frm['AREASQKM16'] > 0.]
     frm = frm.dropna()
     frm['name'] = frm['SA{0}_NAME16'.format(str(level))]
+    frm['area'] = frm['AREASQKM16']
     return frm
 def load_SA4(): return load_SA(4)
 def load_SA3(): return load_SA(3)

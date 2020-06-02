@@ -9,6 +9,7 @@ aggTypes = {
     'lga', 'sa2',
     }
 
+absLookup = produce.get_abs_lookup(aggTypes)
 for region in regions:
     for aggType in aggTypes:
         try:
