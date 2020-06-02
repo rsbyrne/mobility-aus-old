@@ -23,6 +23,7 @@ Don't forget to [***read the guide***](https://rsbyrne.github.io/mobility-aus/gu
 - [X] Summary plots
 - [X] Additional regions
 - [X] Additional aggregations
+- [ ] Improved summary plots
 - [ ] Frequently Asked Questions
 - [ ] Analysis spotlights
 
@@ -52,7 +53,7 @@ The areas in question are given by standard ABS LGA codes; the associated geomet
 
 [Adelaide](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.png))
 
-### Facebook Mobility by ABS Statistical Area 2
+### Facebook Mobility by ABS Statistical Area (Level 2)
 
 These datas area as above, but aggregated by ABS Statistical Areas (Level 2) rather than local councils.
 Statistical Areas may be more convenient than councils for experienced researchers.
