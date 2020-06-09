@@ -1,10 +1,8 @@
 #!/bin/bash
-CREDENTIALS=` cat .credentials.txt `
-SCRIPT='./../fbapi/fb_pull.sh'
-URLROOT='https://www.facebook.com/geoinsights-portal/downloads/?id='
-cat fbids.txt | while read line
-do
-chmod -R 777 *
-sh $SCRIPT $URLROOT$line $CREDENTIALS $PWD'/data/'$line
-chmod -R 777 *
-done
+MOUNTFROM=$PWD
+MOUNTTO='/home/morpheus/workspace/mount'
+IMAGE='rsbyrne/mobility-aus'
+SOCK='/var/run/docker.sock'
+sudo chmod -R 777 'data'
+docker run -v $MOUNTFROM:$MOUNTTO -v $SOCK:$SOCK --shm-size 2g $IMAGE sudo python3 '/home/morpheus/workspace/mount/pull.py'
+sudo chmod -R 777 'data'
