@@ -12,6 +12,7 @@ transient/
 
 *.log
 .credentials.*
+.ssh
 
 # R
 
