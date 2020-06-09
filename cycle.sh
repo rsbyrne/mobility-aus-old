@@ -4,11 +4,11 @@ cd "$(dirname "$0")"
 if [[ $* == *-u* ]]
 then
    echo 'Pulling new data...'
-   sudo ./pull.sh
+   ./pull.sh
    echo 'Pulled.'
 fi
 echo 'Updating products...'
-sudo ./update.sh
+./update.sh
 echo 'Updated.'
 echo 'Pushing to cloud...'
 sudo chmod -R 700 ./.ssh
