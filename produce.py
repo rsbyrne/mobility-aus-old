@@ -38,7 +38,7 @@ def make_abs_lookup(sources):
     frms = []
     for source in sources:
         frm = load.load_generic(source)
-        frm = frm[['name']]
+        frm = frm[['name', 'area']]
         frm['type'] = source
         frm.index.name = 'code'
         frms.append(frm)
