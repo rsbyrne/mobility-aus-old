@@ -48,10 +48,11 @@ def make_abs_lookup(sources):
 
 def make_mob_plots(frm, region, aggType = 'lga'):
 
-    frm = frm.reset_index()
-    func = lambda x: (x['stay'] * x['weight']).sum()
-    dateAvs = frm.groupby('date')[['weight', 'stay']].apply(func)
-    regionAvs = frm.groupby('code')[['weight', 'stay']].apply(func)
+    agg = lambda key: frm.reset_index().groupby('key').apply(
+        lambda x: (x['stay'] * x['weight'] / x['weight'].sum()).sum()
+        )
+    dateAvs = agg('date')
+    regionAvs = agg('region')
 
     fig, ax = plt.subplots(2)
     dateAvs.plot(
@@ -115,7 +116,8 @@ def make_mob_date(region, aggType = 'lga', get = False, override = False):
         )
     frm['stay'] /= frm['n']
     frm['km'] = frm['km'] / (frm['n'] * (1. - frm['stay']))
-    frm['weight'] = frm['n'] / frm.reset_index().groupby('date')['n'].aggregate(sum)
+#     frm['weight'] = frm['n'] / frm.reset_index().groupby('date')['n'].aggregate(sum)
+    frm['weight'] = frm['n'] / frm['n'].sum()
     frm['visit'] = visit
     frm['visit'] = frm['visit'].fillna(0.)
     frm = frm.drop('n', axis = 1)
