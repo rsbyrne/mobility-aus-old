@@ -48,7 +48,7 @@ def make_abs_lookup(sources):
 
 def make_mob_plots(frm, region, aggType = 'lga'):
 
-    agg = lambda key: frm.reset_index().groupby('key').apply(
+    agg = lambda key: frm.reset_index().groupby(key).apply(
         lambda x: (x['stay'] * x['weight'] / x['weight'].sum()).sum()
         )
     dateAvs = agg('date')
