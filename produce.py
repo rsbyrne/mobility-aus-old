@@ -52,7 +52,7 @@ def make_mob_plots(frm, region, aggType = 'lga'):
         lambda x: (x['stay'] * x['weight'] / x['weight'].sum()).sum()
         )
     dateAvs = agg('date')
-    regionAvs = agg('region')
+    regionAvs = agg('code')
 
     fig, ax = plt.subplots(2)
     dateAvs.plot(

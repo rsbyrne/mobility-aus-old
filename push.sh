@@ -4,6 +4,7 @@ cd "$(dirname "$0")"
 chmod 700 $PWD/.ssh/*
 eval `ssh-agent -s`
 ssh-add $PWD/.ssh/*.key
+git remote set-url origin git+ssh://git@github.com/rsbyrne/mobility-aus
 git add .
 git commit -m "Automatic push."
 git fetch
