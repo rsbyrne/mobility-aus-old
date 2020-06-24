@@ -22,8 +22,8 @@ The columns of the provided data are as labelled:
 - *stay*: the proportion of records for that date and region which show zero kilometres of movement.
 - *km*: answers the question 'of the records that show a starting position within this region, what was the *average distance* in kilometres travelled?'
 (Note: this metric includes journeys of zero distance, i.e. 'stay' records.)
-- *weight*: the proportion of all records available for that day which registered a start position
-somewhere inside the region.
+- *weight*: the proportion of all records in the full dataset which registered a start position
+somewhere inside that ABS region sometime on that day.
 - *visit*: answers the question 'of the records that show travel *between regions*,
 how many had destinations within this region?'
 
