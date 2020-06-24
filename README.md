@@ -6,6 +6,10 @@ The site was established on the 12 May 2020 and will be updated at midnight dail
 
 Don't forget to [***read the guide***](https://rsbyrne.github.io/mobility-aus/guide) for these datas.
 
+*CHANGES - 24 June 2020*
+
+- Changed the 'weight' metric so it is a now a proportion of the whole dataset, not just a particular day.
+
 *CHANGES - 2 June 2020*
 
 - Aggregations by Statistical Area have been added. Accordingly, the 'LGA' column has been renamed 'code'.
