@@ -89,6 +89,7 @@ def make_mob_date(region, aggType = 'lga', get = False, override = False):
 
     agg = aggregate.aggregate_mob_tiles_to_abs(mob, region, aggType)
     agg = aggregate.aggregate_by_date(agg)
+    assert len(agg)
 
     frm = agg.copy()
     frm = frm.reset_index()
