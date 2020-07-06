@@ -158,17 +158,21 @@ def match_regions_by_majority_area(fromFrm, toFrm):
         return x
     print("Disambiguating...")
     frm = groupby.apply(group_func)
-    frm = frm.reset_index()
-    frm = frm.drop('level_1', axis = 1)
-    frm = frm.set_index(fromIndices)
-    outFrm = fromFrm.copy()
-    if len(toFrm.index.names) == 1:
-        name = toFrm.index.name
-    else:
-        name = '_'.join(toFrm.index.names)
-    outFrm[name] = frm['index_right']
-    print("Done.")
-    return outFrm
+    return dict(zip(fromFrm.index, frm['index_right']))
+
+#     assert len(frm)
+#     frm = frm.reset_index()
+#     try: frm = frm.drop('level_1', axis = 1)
+#     except KeyError: pass
+#     frm = frm.set_index(fromIndices)
+#     outFrm = fromFrm.copy()
+#     if len(toFrm.index.names) == 1:
+#         name = toFrm.index.name
+#     else:
+#         name = '_'.join(toFrm.index.names)
+#     outFrm[name] = frm['index_right']
+#     print("Done.")
+#     return outFrm
 
 def aggregate_identicals(frm, **kwargs):
     frm = frm.sort_index()

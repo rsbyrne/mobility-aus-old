@@ -13,6 +13,26 @@ import utils
 
 repoPath = os.path.abspath(os.path.dirname(__file__))
 
+def get_majority_area_lookup(fromFrm, toFrm, override = False, name = None, **kwargs):
+    if name is None:
+        name = '_'.join([
+            utils.make_hash(str(pickle.dumps(frm)) + ':' + str(kwargs))
+                for frm in [fromFrm, toFrm]
+            ])
+    filename = '_'.join(['majorityAreaLookup', name]) + '.pkl'
+    filePath = os.path.join(repoPath, 'resources', filename)
+    if os.path.isfile(filePath) and not override:
+        with open(filePath, 'rb') as f:
+            return pickle.load(f)
+    else:
+        out = make_majority_area_lookup(fromFrm, toFrm)
+        with open(filePath, 'wb') as f:
+            pickle.dump(out, f)
+        return out
+def make_majority_area_lookup(fromFrm, toFrm):
+    import aggregate
+    return aggregate.match_regions_by_majority_area(fromFrm, toFrm)
+
 def get_intersection_weights(fromFrm, toFrm, override = False, name = None, **kwargs):
     if name is None:
         name = '_'.join([

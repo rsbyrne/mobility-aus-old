@@ -9,6 +9,7 @@ import pandas as pd
 df = pd.DataFrame
 import geopandas as gpd
 gdf = gpd.GeoDataFrame
+sjoin = gpd.tools.sjoin
 import shapely
 import mercantile
 import rasterio
@@ -447,12 +448,16 @@ def load_lgas():
     return lgas
 
 def load_postcodes():
+#     import get
     paths = [repoPath, 'resources', 'POA_2016_AUST.shp']
     frm = gpd.read_file(os.path.join(*paths))
     frm = frm.set_index('POA_CODE16')
     frm = frm.dropna()
     frm['name'] = frm['POA_NAME16']
     frm['area'] = frm['AREASQKM16']
+    states = load_states()
+    #     statesLookup = get.get_majority_area_lookup(frm, states)
+#     frm['STE_NAME16'] = [statesLookup[i] for i in frm.index]
     return frm
 
 def load_aus():
