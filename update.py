@@ -6,7 +6,7 @@ regions = {
     'wa', 'per', 'tas', 'qld', 'nt', 'aus',
     }
 aggTypes = {
-    'lga', 'sa2',
+    'lga', 'sa2', 'postcodes',
     }
 
 absLookup = produce.get_abs_lookup(aggTypes, refresh = True)

@@ -431,6 +431,7 @@ def load_generic(option, **kwargs):
     optionsDict = {
         'lga': load_lgas,
         'sa2': lambda: load_SA(2),
+        'postcodes': load_postcodes,
         }
     return optionsDict[option](**kwargs)
 
@@ -444,6 +445,15 @@ def load_lgas():
     lgas['name'] = lgas['LGA_NAME19']
     lgas['area'] = lgas['AREASQKM19']
     return lgas
+
+def load_postcodes():
+    paths = [repoPath, 'resources', 'POA_2016_AUST.shp']
+    frm = gpd.read_file(os.path.join(*paths))
+    frm = frm.set_index('POA_CODE16')
+    frm = frm.dropna()
+    frm['name'] = frm['POA_NAME16']
+    frm['area'] = frm['AREASQKM16']
+    return frm
 
 def load_aus():
     paths = [repoPath, 'resources', 'AUS_2016_AUST.shp']
