@@ -101,6 +101,7 @@ def aggregate_mob_tiles_to_regions(
         **{name: np.repeat(frm[name].values, lens) for name in frm.columns}, 
         **{name: val for name, val in zip(['start', 'stop', 'weight'], journeys)}
         })
+    frm['weight'] = frm['weight'].astype(float)
     dropKeys = {'quadkey', 'end_key', 'level_0', 'possible_journeys'}
     frm = frm.drop(dropKeys, axis = 1)
 #     frm['start'], frm['stop'] = frm['start'].astype(int), frm['stop'].astype(int)
