@@ -33,3 +33,5 @@ for region in regions:
                 )
         except NoData:
             print("No data currently available for:", region)
+        except:
+            print("Something went wrong with:", region, aggType)
