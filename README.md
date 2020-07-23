@@ -1,28 +1,12 @@
 # Crisis Mobility Data Portal
 
+See our [special report on the Melbourne COVID-19 outbreak](https://rsbyrne.github.io/mobility-aus/reports/mobilityreport.html)
+
 This repository has been established to provide free and easy access to aggregated mobility data products from Facebook and other sources. The data held here is authorised for general release to the public to support research activities related to the COVID-19 epidemic.
 
 The site was established on the 12 May 2020 and will be updated at midnight daily for the foreseeable future.
 
 Don't forget to [***read the guide***](https://rsbyrne.github.io/mobility-aus/guide) for these datas.
-
-*CHANGES - 7 July 2020*
-
-- Added aggregation by postcodes.
-
-*CHANGES - 24 June 2020*
-
-- Changed the 'weight' metric so it is a now a proportion of the whole dataset, not just a particular day.
-
-*CHANGES - 2 June 2020*
-
-- Aggregations by Statistical Area have been added. Accordingly, the 'LGA' column has been renamed 'code'.
-- The file *abs_lookup.csv* has been added to Products, providing a quick reference for ABS codes.
-
-*CHANGES - 29 May 2020*
-
-- Maps now allow selection of multiple datasets and have improved tooltips.
-- The 'km' metric now ***excludes stay-at-home records***; please factor this in when refreshing your data.
 
 ## Products
 
