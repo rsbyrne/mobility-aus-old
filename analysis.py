@@ -1,5 +1,6 @@
 import string
 import os
+import re
 
 import numpy as np
 import pandas as pd
@@ -9,6 +10,9 @@ from window.data import Data
 
 dirPath = os.path.abspath(os.path.dirname(__file__))
 dataDir = os.path.join(dirPath, 'products')
+
+def remove_brackets(x):
+    return re.sub("[\(\[].*?[\)\]]", "", x).strip()
 
 def events_annotate(ax, series, region):
     eventsFrm = pd.read_csv(os.path.join(dataDir, f'events_{region}.csv'))
@@ -51,6 +55,30 @@ def get_owid_cases(region):
     cases = cases.loc[cases.index <= dataFrm['date'].max()]
     return cases
 
+def reweight(frm):
+    frm['weight'] /= frm['weight'].sum()
+    frm['dateweight'] = frm.groupby(frm.index.get_level_values('date'))['weight'].apply(lambda s: s / s.sum())
+    frm['codeweight'] = frm.groupby(frm.index.get_level_values('code'))['weight'].apply(lambda s: s / s.sum())
+
+def make_casesFrm(region = 'vic'):
+    if not region == 'vic':
+        raise Exception
+    cases = pd.read_json("https://covidlive.com.au/covid-live-loc.json")
+    cases = cases.rename(
+        dict(
+            REPORT_DATE = 'date',
+            LOCALITY_NAME = 'name',
+            CASE_CNT = 'cases',
+            ACTIVE_CASE_CNT = 'active',
+            ),
+        axis = 1
+        )
+    cases = cases.drop(['ID', 'LOCALITY_TYPE', 'CODE'], axis = 1)
+    cases['date'] = cases['date'].astype(np.datetime64)
+    cases = cases.set_index(['date', 'name'])
+    cases = cases.sort_index()
+    return cases
+
 def make_dataFrm(region, dropna = False):
     
     dataName = f'mob_lga_{region}.csv'
@@ -69,9 +97,12 @@ def make_dataFrm(region, dropna = False):
     lookupFrm['code'] = lookupFrm['code'].astype(str)
 
     dataFrm = dataFrm.reset_index()
-    codeFrm = lookupFrm.set_index('code').loc[dataFrm['code']][['name', 'area']]
+    codeFrm = lookupFrm.set_index('code').loc[dataFrm['code']][['name', 'area', 'pop']]
     dataFrm = dataFrm.set_index('code')
-    dataFrm[['name', 'area']] = codeFrm
+    dataFrm[['name', 'area', 'pop']] = codeFrm
+    dataFrm['name'] = dataFrm['name'].apply(remove_brackets)
+    dataFrm['density'] = dataFrm['pop'] / dataFrm['area']
+    dataFrm['tiles'] = dataFrm['area'] / dataFrm['km'].min() ** 2
     dataFrm = dataFrm.reset_index()
     dataFrm = dataFrm.drop('index', axis = 1)
     dataFrm['day'] = [int(d.strftime('%w')) for d in dataFrm['date'].tolist()]
@@ -85,13 +116,13 @@ def make_dataFrm(region, dropna = False):
                 todrop.append(code)
         for code in todrop:
             dataFrm = dataFrm.loc[dataFrm['code'] != code]
-    dataFrm['weight'] /= dataFrm['weight'].sum()
 
-    dataFrm['dateweight'] = dataFrm.groupby('date')['weight'].apply(lambda s: s / s.sum())
-    dataFrm['codeweight'] = dataFrm.groupby('code')['weight'].apply(lambda s: s / s.sum())
+    dataFrm = dataFrm.set_index(['date', 'code']).sort_index()
+    reweight(dataFrm)
 
 #     dataFrm = dataFrm.loc[dataFrm['date'] >= '2020-04-05']
 
+    dataFrm = dataFrm.reset_index()
     filt = dataFrm.groupby('code')['stay'].apply(lambda s: s.max() != s.min())
     dataFrm = dataFrm.set_index('code').loc[filt.index].reset_index()
 
