@@ -20,8 +20,8 @@ The columns of the provided data are as labelled:
 - *date*: The local date.
 - *code*: The Australian Bureau of Statistics code for the ABS region in question.
 - *stay*: the proportion of records for that date and region which show zero kilometres of movement.
-- *km*: answers the question 'of the records that show a starting position within this region, what was the *average distance* in kilometres travelled?'
-(Note: this metric includes journeys of zero distance, i.e. 'stay' records.)
+- *km*: answers the question 'of the people in this region who were observed travelling,
+what was the average distance travelled?'
 - *weight*: the proportion of all records in the full dataset which registered a start position
 somewhere inside that ABS region sometime on that day.
 - *visit*: answers the question 'of the records that show travel *between regions*,
