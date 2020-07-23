@@ -44,6 +44,14 @@ def make_abs_lookup(sources):
         frms.append(frm)
     frm = pd.concat(frms)
     frm = frm.sort_index()
+    pops = []
+    if 'lga' in sources:
+        pops.append(load.load_lga_pop().rename(dict(LGA_code_2018 = 'code'), axis = 1).set_index('code')['ERP_2018'])
+    if 'sa2' in sources:
+        pops.append(load.load_sa2_pop().rename(dict(SA2_maincode_2016 = 'code'), axis = 1).set_index('code')['ERP_2018'])
+    if len(pops):
+        popCodes = pd.concat(pops)
+        frm['pop'] = popCodes
     return frm
 
 def make_mob_plots(frm, region, aggType = 'lga'):

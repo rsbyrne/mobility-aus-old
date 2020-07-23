@@ -540,6 +540,14 @@ def load_mb_all():
     states = {'vic', 'nsw', 'qld', 'nt', 'sa', 'act', 'wa', 'tas'}
     return pd.concat([load_mb(state) for state in states])
 
+def load_lga_pop():
+    filePath = os.path.join(repoPath, 'resources', 'LGA ERP GeoPackage 2018.gpkg')
+    return gdf.from_file(filePath)
+
+def load_sa2_pop():
+    filePath = os.path.join(repoPath, 'resources', 'SA2 ERP GeoPackage 2018.gpkg')
+    return gdf.from_file(filePath)
+
 def load_aus_pop():
     filePath = os.path.join(repoPath, 'resources', 'aus_pop_16.shp')
     if not os.path.isfile(filePath):
