@@ -14,8 +14,13 @@ dataDir = os.path.join(dirPath, 'products')
 def remove_brackets(x):
     return re.sub("[\(\[].*?[\)\]]", "", x).strip()
 
-def events_annotate(ax, series, region):
+def events_annotate(ax, series, region, lims = (None, None), points = None):
     eventsFrm = pd.read_csv(os.path.join(dataDir, f'events_{region}.csv'))
+    eventsFrm['date'] = eventsFrm['date'].astype(np.datetime64)
+    if not lims[0] is None:
+        eventsFrm = eventsFrm.loc[eventsFrm['date'] >= lims[0]]
+    if not lims[1] is None:
+        eventsFrm = eventsFrm.loc[eventsFrm['date'] <= lims[1]]
     events = list(zip(eventsFrm['date'], eventsFrm['event']))
     letterOptions = [l for l in string.ascii_lowercase]
     for l in string.ascii_lowercase:
@@ -25,14 +30,14 @@ def events_annotate(ax, series, region):
     for i, (date, label) in enumerate(events):
         letter = letterOptions[i]
         keys.append((letter, label))
-        xtarget = np.datetime64(date)
-        if xtarget < series.index.min():
-            ytarget = series.loc[series.index.min()]
-        elif xtarget > series.index.max():
-            ytarget = series.loc[series.index.max()]
-        else:
+        xtarget = date
+        if xtarget in series.index:
             ytarget = series.loc[xtarget]
-        ax.annotate(xtarget, ytarget, letter, points = 10)
+        else:
+            diffSeries = pd.Series(abs(series.index - xtarget), series.index)
+            nearest = diffSeries.loc[diffSeries == diffSeries.min()].index
+            ytarget = series.loc[nearest]
+        ax.annotate(xtarget, ytarget, letter, points = points)
     marktable = '| Key | Event | \n | --- | --- | \n'
     for letter, label in keys:
         marktable += f'| {letter} | {label} | \n'
@@ -79,6 +84,30 @@ def make_casesFrm(region = 'vic'):
     cases = cases.sort_index()
     return cases
 
+def make_melvic_dataFrm():
+
+    melFrm = make_dataFrm(region = 'mel', dropna = False)
+    melFrm = melFrm.loc[melFrm['name'] != 'Greater Geelong']
+    vicFrm = make_dataFrm(region = 'vic', dropna = True)
+
+    indices = list(set.intersection(set(melFrm.index), set(vicFrm.index)))
+    melFrm = melFrm.loc[indices].sort_index()
+    vicFrm = vicFrm.loc[indices].sort_index()
+
+    reweight(melFrm)
+    reweight(vicFrm)
+
+    frm = melFrm.copy()
+    frm['stay'] = melFrm['stay'] * vicFrm['stay']
+    frm['mob'] = 1. - frm['stay']
+    frm['adjstay'] = melFrm['adjstay'] * vicFrm['adjstay']
+    frm['adjmob'] = 1. - frm['adjstay']
+    frm['km'] = (melFrm['km'] + vicFrm['km']) / 2
+    frm['stayscore'] = (melFrm['stayscore'] + vicFrm['stayscore']) / 2.
+    frm['mobscore'] = -1. * frm['stayscore']
+
+    return frm
+
 def make_dataFrm(region, dropna = False):
     
     dataName = f'mob_lga_{region}.csv'
@@ -92,6 +121,11 @@ def make_dataFrm(region, dropna = False):
     dataFrm = pd.read_csv(dataPath)
     dataFrm['date'] = dataFrm['date'].astype(np.datetime64) #pd.to_datetime(dataFrm['date'])
     dataFrm['code'] = dataFrm['code'].astype(int).astype(str)
+
+    dataFrm = dataFrm.reset_index()
+    filt = dataFrm.groupby('code')['stay'].apply(lambda s: s.max() != s.min())
+    dataFrm = dataFrm.set_index('code').loc[filt.index]
+    dataFrm = dataFrm.reset_index().set_index(['date', 'code'])
 
     lookupFrm = pd.read_csv(lookupPath)
     lookupFrm['code'] = lookupFrm['code'].astype(str)
@@ -118,29 +152,47 @@ def make_dataFrm(region, dropna = False):
             dataFrm = dataFrm.loc[dataFrm['code'] != code]
 
     dataFrm = dataFrm.set_index(['date', 'code']).sort_index()
-    reweight(dataFrm)
+    dataFrm['km'] = dataFrm['km'].fillna(dataFrm['km'].min() / 2)
+
+    dataFrm['adjstay'] = get_adjstay(dataFrm)
+    dataFrm['stayscore'] = get_stayscore(dataFrm)
+
+    dataFrm['mob'] = 1. - dataFrm['stay']
+    dataFrm['adjmob'] = 1. - dataFrm['mob']
+    dataFrm['mobscore'] = -1. * dataFrm['stayscore']
 
 #     dataFrm = dataFrm.loc[dataFrm['date'] >= '2020-04-05']
 
-    dataFrm = dataFrm.reset_index()
-    filt = dataFrm.groupby('code')['stay'].apply(lambda s: s.max() != s.min())
-    dataFrm = dataFrm.set_index('code').loc[filt.index].reset_index()
-
-    dataFrm = dataFrm.set_index(['date', 'code'])
-    dataFrm['stayscore'] = get_stayscore(dataFrm)
-
     dataFrm = dataFrm.sort_index()
+
+    reweight(dataFrm)
 
     return dataFrm
 
+def get_adjstay(frm):
+    from scipy.special import expit
+    frm = frm.copy()
+    tileArea = frm['km'].min() ** 2
+    popPerTile = frm['pop'] * tileArea / frm['area']
+    mob = (1. - frm['stay'])
+    fbFrac = 1 / 10
+    fbThresh = 10
+    destTiles = frm['km'] ** 2 / tileArea
+    detChance = expit((popPerTile * fbFrac / destTiles - fbThresh) / fbThresh)
+    trav = (mob / detChance).apply(lambda x: min(x, 1.))
+    adjStay = 1. - trav
+    return adjStay
+
 def get_stayscore(frm):
+    frm = frm.copy()
     frm = frm.reset_index()
-    groups = frm.groupby(['code', 'day'])['stay']
-    bests = groups.apply(lambda s: s.nlargest(3).mean())
-    worsts = groups.apply(lambda s: s.nsmallest(3).mean())
+    frm['rawscore'] = frm['adjstay'] #* frm['km']
+    groups = frm.groupby(['code', 'day'])['rawscore']
+    bests = groups.apply(lambda s: s.nlargest(4).mean())
+    worsts = groups.apply(lambda s: s.nsmallest(4).mean())
     frm = frm.set_index(['code', 'day', 'date']).sort_index()
     frm = frm.loc[bests != worsts]
-    scores = ((frm['stay'] - worsts) / (bests - worsts))
+    scores = ((frm['rawscore'] - worsts) / (bests - worsts))
     # scores = scores.apply(lambda s: max(0, min(1, s)))
     scores = scores.sort_index()
     frm['stayscore'] = scores
