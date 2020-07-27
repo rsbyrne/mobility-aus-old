@@ -36,7 +36,7 @@ def events_annotate(ax, series, region, lims = (None, None), points = None):
         else:
             diffSeries = pd.Series(abs(series.index - xtarget), series.index)
             nearest = diffSeries.loc[diffSeries == diffSeries.min()].index
-            ytarget = series.loc[nearest]
+            ytarget = series.loc[nearest].iloc[0]
         ax.annotate(xtarget, ytarget, letter, points = points)
     marktable = '| Key | Event | \n | --- | --- | \n'
     for letter, label in keys:
