@@ -4,12 +4,19 @@ import re
 
 import numpy as np
 import pandas as pd
+df = pd.DataFrame
 
 import window
 from window.data import Data
 
 dirPath = os.path.abspath(os.path.dirname(__file__))
 dataDir = os.path.join(dirPath, 'products')
+
+lookupName = 'abs_lookup.csv'
+lookupPath = os.path.join(dataDir, lookupName)
+assert os.path.exists(lookupPath)
+lookupFrm = pd.read_csv(lookupPath)
+lookupFrm['code'] = lookupFrm['code'].astype(str)
 
 def remove_brackets(x):
     return re.sub("[\(\[].*?[\)\]]", "", x).strip()
@@ -48,6 +55,11 @@ def unit_axis(data):
 
 def average(frm, key):
     func = lambda d: (d[key] * d['dateweight']).sum()
+    return frm.groupby('date').apply(func)
+def pop_average(frm, key):
+    global lookupFrm
+    allPop = lookupFrm.groupby('type')['pop'].sum()['lga']
+    func = lambda d: (d[key] * d['pop'] / allPop).sum()
     return frm.groupby('date').apply(func)
 
 def get_owid_cases(region):
@@ -98,13 +110,11 @@ def make_melvic_dataFrm():
     reweight(vicFrm)
 
     frm = melFrm.copy()
-    frm['stay'] = melFrm['stay'] * vicFrm['stay']
-    frm['mob'] = 1. - frm['stay']
-    frm['adjstay'] = melFrm['adjstay'] * vicFrm['adjstay']
-    frm['adjmob'] = 1. - frm['adjstay']
+    frm['stay'] = melFrm['stay'] * (1. + vicFrm['stay']) / 2.
+    frm['adjstay'] = melFrm['adjstay'] * (1. + vicFrm['adjstay']) / 2.
     frm['km'] = (melFrm['km'] + vicFrm['km']) / 2
-    frm['stayscore'] = (melFrm['stayscore'] + vicFrm['stayscore']) / 2.
-    frm['mobscore'] = -1. * frm['stayscore']
+#     frm['stayscore'] = (melFrm['stayscore'] + vicFrm['stayscore']) / 2.
+    frm['stayscore'] = get_stayscore(frm)
 
     return frm
 
@@ -114,9 +124,7 @@ def make_dataFrm(region, dropna = False):
     dataPath = os.path.join(dataDir, dataName)
     assert os.path.exists(dataPath)
 
-    lookupName = 'abs_lookup.csv'
-    lookupPath = os.path.join(dataDir, lookupName)
-    assert os.path.exists(lookupPath)
+    global lookupFrm
 
     dataFrm = pd.read_csv(dataPath)
     dataFrm['date'] = dataFrm['date'].astype(np.datetime64) #pd.to_datetime(dataFrm['date'])
@@ -126,9 +134,6 @@ def make_dataFrm(region, dropna = False):
     filt = dataFrm.groupby('code')['stay'].apply(lambda s: s.max() != s.min())
     dataFrm = dataFrm.set_index('code').loc[filt.index]
     dataFrm = dataFrm.reset_index().set_index(['date', 'code'])
-
-    lookupFrm = pd.read_csv(lookupPath)
-    lookupFrm['code'] = lookupFrm['code'].astype(str)
 
     dataFrm = dataFrm.reset_index()
     codeFrm = lookupFrm.set_index('code').loc[dataFrm['code']][['name', 'area', 'pop']]
@@ -156,10 +161,6 @@ def make_dataFrm(region, dropna = False):
 
     dataFrm['adjstay'] = get_adjstay(dataFrm)
     dataFrm['stayscore'] = get_stayscore(dataFrm)
-
-    dataFrm['mob'] = 1. - dataFrm['stay']
-    dataFrm['adjmob'] = 1. - dataFrm['mob']
-    dataFrm['mobscore'] = -1. * dataFrm['stayscore']
 
 #     dataFrm = dataFrm.loc[dataFrm['date'] >= '2020-04-05']
 
@@ -198,3 +199,15 @@ def get_stayscore(frm):
     frm['stayscore'] = scores
     frm = frm.reset_index().set_index(['date', 'code'])
     return frm['stayscore']
+
+def get_stayscore_series(series):
+    days = [int(d.strftime('%w')) for d in series.index.tolist()]
+    codes = ['ignore' for d in days]
+    frm = df({
+        'adjstay': series.values,
+        'day': days,
+        'code': codes,
+        'date': series.index
+        }).set_index(['date', 'code'])
+    scores = get_stayscore(frm).xs('ignore', level = 'code').sort_index()
+    return scores
