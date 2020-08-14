@@ -115,7 +115,10 @@ class Driver:
         self.driver.quit()
         if os.path.isfile('geckodriver.log'):
             os.remove('geckodriver.log')
-        return exc_value
+        if exc_type is not None:
+            return False
+        else:
+            return True
 
 class TempDir:
     def __init__(self, path, maxWait = None):
@@ -124,9 +127,13 @@ class TempDir:
     def __enter__(self):
         os.makedirs(self.path, exist_ok = False)
         wait_check(lambda: os.path.isdir(self.path), maxWait = self.maxWait)
-    def __exit__(self, *args):
+    def __exit__(self, exc_type, exc_value, exc_traceback):
         shutil.rmtree(self.path, ignore_errors = True)
         wait_check(lambda: not os.path.isdir(self.path), maxWait = self.maxWait)
+        if exc_type is not None:
+            return False
+        else:
+            return True
 
 def pull_datas(
         dataURL,
@@ -139,8 +146,8 @@ def pull_datas(
         ):
 
     parsed = urlparse(dataURL)
-#     loginURL = '://'.join(parsed[:2])
-    loginURL = 'https://en-gb.facebook.com/'
+    loginURL = '://'.join(parsed[:2])
+#     loginURL = 'https://en-gb.facebook.com/'
 
     outDir = os.path.abspath(outDir)
     if not os.path.isdir(outDir):
@@ -170,18 +177,34 @@ def pull_datas(
             print("Logging in...")
 
             random_sleep(1.)
-            
+
             username = driver.find_element_by_id("email")
             password = driver.find_element_by_id("pass")
-            submit = driver.find_element_by_id("loginbutton")
-            username.send_keys(loginName)
-            password.send_keys(loginPass)
-            submit.click()
             try:
-                loginForm = driver.find_element_by_id("login_form")
-                raise ValueError("Bad login credentials!")
+                submit = driver.find_element_by_id("loginbutton")
+                normalLogin = True
             except exceptions.NoSuchElementException:
-                pass
+                submit = driver.find_element_by_name('login')
+                normalLogin = False
+            if normalLogin:
+                username.send_keys(loginName)
+                password.send_keys(loginPass)
+                submit.click()
+                try:
+                    loginForm = driver.find_element_by_id("login_form")
+                    raise ValueError("Bad login credentials!")
+                except exceptions.NoSuchElementException:
+                    pass
+            else:
+                submit = driver.find_element_by_name('login')
+                username.send_keys(loginName)
+                password.send_keys(loginPass)
+                submit.click()
+                print("Made it this far")
+                errorText = "Sorry, something went wrong."
+                if driver.find_element_by_id("facebook").text.startswith(errorText):
+                    raise ValueError("Bad login credentials!")
+
             print("Logged in.")
 
             random_sleep(1.)
