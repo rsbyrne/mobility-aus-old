@@ -394,10 +394,10 @@ def bokeh_spacetimepop(
     from bokeh.plotting import figure, show
     from bokeh.io import output_notebook
 
-#     frm = frm.reset_index().pivot(index = frm.index.names[0], columns = frm.index.names[1])
+    #     frm = frm.reset_index().pivot(index = frm.index.names[0], columns = frm.index.names[1])
     frm = frm.copy()
     frm = frm.sort_index()
-#     geometry = geometry.copy()
+    #     geometry = geometry.copy()
 
     from bokeh.models import Div
 
@@ -496,14 +496,14 @@ def bokeh_spacetimepop(
         toolbar_location = 'left',
         tools = 'save, pan, box_zoom, reset, xwheel_zoom',
         active_scroll = 'auto',
-#         title = title,
+    #         title = title,
         )
 
     barFig = figure(
         x_range = seriesNames,
         plot_height = int((ph - 100) * 1. / 2.),
         plot_width = pw,
-#         title = "Scores on my birthday",
+    #         title = "Scores on my birthday",
         toolbar_location = None,
         tools = ""
         )
@@ -539,7 +539,7 @@ def bokeh_spacetimepop(
             muted_alpha = 0.3,
             muted = True,
             line_width = 2,
-#             legend_label = seriesName,
+    #             legend_label = seriesName,
             )
 
         from bokeh.models import HoverTool
@@ -597,23 +597,28 @@ def bokeh_spacetimepop(
         )
     mapFig.add_layout(mapColourBar, 'left')
 
-    patches = mapFig.patches(
-        'xs',
-        'ys',
-        source = geoSource,
-        fill_color = dict(
-            field = '_'.join([defaultVar, defaultDate]),
-            transform = mapColourMapper,
-            ),
-        line_color = 'grey', 
-        line_width = 0.25,
-        fill_alpha = 1,
-        name = '_'.join([defaultVar, defaultDate])
-        )
+    patches = []
+    for i, seriesName in enumerate(seriesNames):
+        view = CDSView(source = geoSource, filters = [IndexFilter([i,]),])
+        patch = mapFig.patches(
+            'xs',
+            'ys',
+            source = geoSource,
+            view = view,
+            fill_color = dict(
+                field = '_'.join([defaultVar, defaultDate]),
+                transform = mapColourMapper,
+                ),
+            line_color = 'grey', 
+            line_width = 0.25,
+            fill_alpha = 0.,
+            name = '_'.join([defaultVar, defaultDate])
+            )
+        patches.append(patch)
 
     from bokeh.models import HoverTool
     mapHover = HoverTool(
-        renderers = [patches],
+        renderers = patches,
         tooltips = [
             (seriesMetaName.capitalize(), f'@{seriesMetaName}'),
             ('Value', '@$name'),
@@ -629,7 +634,8 @@ def bokeh_spacetimepop(
         zone = BoxAnnotation(
             left = left,
             right = right,
-            fill_alpha = 0.1, fill_color = 'gray'
+            fill_alpha = 0.1,
+            fill_color = 'gray',
             )
         zoneLabel = Label(
             text = name + ' (end)' if left is None else name,
@@ -651,7 +657,7 @@ def bokeh_spacetimepop(
         location = int(defaultDate),
         dimension = 'height',
         line_color = 'red',
-#         line_dash = 'dashed',
+    #         line_dash = 'dashed',
         line_width = 1
         )
     lineFig.add_layout(span)
@@ -695,13 +701,13 @@ def bokeh_spacetimepop(
             barSource = barSource,
             bars = bars,
             lines = lines,
+            patches = patches,
             select = select,
             slider = slider,
             span = span,
             checkboxes = checkboxes,
             varNote = varNote,
             varNotes = varNotes,
-            patches = patches,
             geoSource = geoSource,
             mapColourMapper = mapColourMapper,
             mins = mins,
@@ -724,16 +730,20 @@ def bokeh_spacetimepop(
                 let checked = checkboxes.active.includes(i)
                 lines[i].muted = !(checked)
                 bars[i].muted = !(checked)
+                var alpha = checked ? 1 : 0;
+                patches[i].glyph.fill_alpha = alpha
             }
             const newCol = select.value + '_' + slider.value
-            patches.glyph.fill_color['field'] = newCol
-            patches.name = newCol
+            for (let i = 0; i < lines.length; i++){
+                patches[i].glyph.fill_color['field'] = newCol
+                patches[i].name = newCol
+            }
             mapColourMapper.low = mins[select.value]
             mapColourMapper.high = maxs[select.value]
             geoSource.change.emit()
             """,
         )
-    
+
     allCheckCallback = CustomJS(
         args = dict(
             lines = lines,
