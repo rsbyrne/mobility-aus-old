@@ -342,7 +342,7 @@ def get_melvic_bokeh_frm():
     frm = frm.reset_index().set_index(['date', 'name'])
     frm = frm[['km', 'adjstay', 'visit', 'stayscore', 'pop']]
     frm = frm.rename(dict(adjstay = 'stay', stayscore = 'score'), axis = 1)
-    frm['active'] = (cases['active'] * 10000 / frm['pop']).fillna(0.)
+    frm['active'] = (cases['ACTIVE_CNT'] * 10000 / frm['pop']).fillna(0.)
     serieses = dict()
     weightKey = 'pop'
     level = 'date'
