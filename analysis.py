@@ -6,11 +6,16 @@ import numpy as np
 import pandas as pd
 df = pd.DataFrame
 
-import window
-from window.data import Data
-
+import sys
+import os
 dirPath = os.path.abspath(os.path.dirname(__file__))
 dataDir = os.path.join(dirPath, 'products')
+parentDir = os.path.dirname(dirPath)
+if not parentDir in sys.path:
+    sys.path.append(parentDir)
+
+import window
+from window.data import Data
 
 lookupName = 'abs_lookup.csv'
 lookupPath = os.path.join(dataDir, lookupName)

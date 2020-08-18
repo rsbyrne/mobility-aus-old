@@ -520,7 +520,7 @@ def bokeh_spacetimepop(
     mapFig.xgrid.grid_line_color = None
     mapFig.ygrid.grid_line_color = None
 
-    from window.plot import get_cmap
+    from matplotlib.pyplot import get_cmap
     from matplotlib.colors import rgb2hex
     cmap = get_cmap('nipy_spectral')
     cs = [rgb2hex(cmap(i / len(seriesNames), alpha = 0.5)) for i in range(len(seriesNames))]
