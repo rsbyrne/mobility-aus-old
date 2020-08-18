@@ -11,8 +11,10 @@ import os
 dirPath = os.path.abspath(os.path.dirname(__file__))
 dataDir = os.path.join(dirPath, 'products')
 parentDir = os.path.dirname(dirPath)
+print(os.listdir(parentDir))
 if not parentDir in sys.path:
     sys.path.append(parentDir)
+print(sys.path)
 
 import window
 from window.data import Data
