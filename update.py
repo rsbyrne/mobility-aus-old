@@ -35,7 +35,4 @@ for region in regions:
             print("No data currently available for:", region)
         except:
             print("Something went wrong with:", region, aggType)
-    try:
-        produce.make_meldash()
-    except:
-        pass
+produce.make_meldash()
