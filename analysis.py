@@ -6,19 +6,9 @@ import numpy as np
 import pandas as pd
 df = pd.DataFrame
 
-import sys
 import os
 dirPath = os.path.abspath(os.path.dirname(__file__))
 dataDir = os.path.join(dirPath, 'products')
-parentDir = os.path.dirname(dirPath)
-print(dirPath)
-print(os.listdir(dirPath))
-if not dirPath in sys.path:
-    sys.path.append(dirPath)
-print(sys.path)
-
-import window
-from window.data import Data
 
 lookupName = 'abs_lookup.csv'
 lookupPath = os.path.join(dataDir, lookupName)
@@ -58,8 +48,8 @@ def events_annotate(ax, series, region, lims = (None, None), points = None):
         marktable += f'| {letter} | {label} | \n'
     return marktable
 
-def unit_axis(data):
-    return window.data.Data(data, lims = (None, 1.), capped = (False, True))
+# def unit_axis(data):
+#     return window.data.Data(data, lims = (None, 1.), capped = (False, True))
 
 def average(frm, key):
     func = lambda d: (d[key] * d['dateweight']).sum()
