@@ -9,8 +9,8 @@ aggTypes = {
     'lga', 'sa2', 'postcodes'
     }
 
-absLookup = produce.get_abs_lookup(aggTypes, refresh = True)
-absLookup = produce.get_abs_lookup({'lga', 'sa2'})
+# absLookup = produce.get_abs_lookup(aggTypes, refresh = True)
+absLookup = produce.get_abs_lookup({'lga', 'sa2'}, refresh = True)
 for region in regions:
     for aggType in aggTypes:
         try:
