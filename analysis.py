@@ -19,7 +19,7 @@ lookupFrm['code'] = lookupFrm['code'].astype(str)
 def remove_brackets(x):
     return re.sub("[\(\[].*?[\)\]]", "", x).strip()
 
-def events_annotate(ax, series, region, lims = (None, None), points = None):
+def events_annotate(ax, series, region, lims = (None, None), points = None, returnTable = False):
     eventsFrm = pd.read_csv(os.path.join(dataDir, f'events_{region}.csv'))
     eventsFrm['date'] = eventsFrm['date'].astype(np.datetime64)
     if not lims[0] is None:
@@ -43,10 +43,13 @@ def events_annotate(ax, series, region, lims = (None, None), points = None):
             nearest = diffSeries.loc[diffSeries == diffSeries.min()].index
             ytarget = series.loc[nearest].iloc[0]
         ax.annotate(xtarget, ytarget, letter, points = points)
-    marktable = '| Key | Event | \n | --- | --- | \n'
-    for letter, label in keys:
-        marktable += f'| {letter} | {label} | \n'
-    return marktable
+    if returnTable:
+        marktable = '| Key | Event | \n | --- | --- | \n'
+        for letter, label in keys:
+            marktable += f'| {letter} | {label} | \n'
+        return marktable
+    else:
+        return keys
 
 # def unit_axis(data):
 #     return window.data.Data(data, lims = (None, 1.), capped = (False, True))
@@ -76,23 +79,63 @@ def reweight(frm):
     frm['codeweight'] = frm.groupby(frm.index.get_level_values('code'))['weight'].apply(lambda s: s / s.sum())
 
 def make_casesFrm(region = 'vic'):
+
     if not region == 'vic':
         raise Exception
-    cases = pd.read_json("https://covidlive.com.au/covid-live-loc.json")
-    cases = cases.rename(
-        dict(
-            REPORT_DATE = 'date',
-            LOCALITY_NAME = 'name',
-            CASE_CNT = 'cases',
-            ACTIVE_CASE_CNT = 'active',
-            ),
-        axis = 1
-        )
-    cases = cases.drop(['ID', 'LOCALITY_TYPE', 'CODE'], axis = 1)
-    cases['date'] = cases['date'].astype(np.datetime64)
-    cases = cases.set_index(['date', 'name'])
-    cases = cases.sort_index()
-    return cases
+
+    # From 'covidlive.com'
+    # cases = pd.read_json("https://covidlive.com.au/covid-live-loc.json")
+    # cases = cases.rename(
+    #     dict(
+    #         REPORT_DATE = 'date',
+    #         LOCALITY_NAME = 'name',
+    #         CASE_CNT = 'cases',
+    #         ACTIVE_CNT = 'active',
+    #         UNKNOWN_CNT = 'unknown',
+    #         ),
+    #     axis = 1
+    #     )
+    # cases = cases.drop(['ID', 'LOCALITY_TYPE', 'CODE'], axis = 1)
+    # cases['date'] = cases['date'].astype(np.datetime64)
+    # cases = cases.set_index(['date', 'name'])
+    # cases = cases.sort_index()
+
+    # From Monash
+    covid = pd.read_csv('https://homepages.inf.ed.ac.uk/ngoddard/covid19/vicdata/lgadata.csv')
+    pop = dict(covid.loc[covid['Date'] == 'Population'].iloc[0].drop('Date'))
+    covid = covid.drop([0, 1, 2])
+    covid['Date'] = covid['Date'].astype('datetime64[ns]')
+    covid = covid.rename(mapper = dict(Date = 'date'), axis = 1)
+    covid = covid.melt('date', var_name = 'name', value_name = 'cumulative')
+    covid = covid.set_index(['date', 'name'])
+    covid = covid.loc[~covid.index.duplicated()]
+    covid = covid.fillna(0).astype(int)
+    covid = covid.sort_index()
+    covid['pop'] = pd.Series(covid.index.get_level_values('name'), covid.index).apply(lambda v: pop[v]).astype(int)
+    covid['new'] = covid['cumulative'].groupby(level = 'name').diff().dropna().astype(int)
+    covid = covid.dropna()
+    covid['new'] = covid['new'] / covid['pop'] * 10000
+    #     averages = covid[['new', 'pop']].groupby(level = 'date').apply(
+    #         lambda d: np.average(d['new'], weights = d['pop'])
+    #         )
+    #     averages.index = pd.MultiIndex.from_product([averages.index, ['average',]], names = ['date', 'name'])
+    #     covid = covid.append(averages).sort_index()
+    covid['new_rolling'] = covid['new'].groupby(level = 'name', group_keys = False).rolling(10).mean().sort_index()
+    serieses = dict()
+    weightKey = 'pop'
+    level = 'date'
+    for key in [key for key in covid if not key == weightKey]:
+        fn = lambda f: np.average(f[key], weights = f[weightKey])
+        series = covid[[key, weightKey]].groupby(level = level).apply(fn)
+        serieses[key] = series
+    avFrm = pd.DataFrame(serieses)
+    avFrm['name'] = 'average'
+    avFrm = avFrm.reset_index().set_index(['date', 'name'])
+    covid = covid.drop(weightKey, axis = 1)
+    covid = covid.append(avFrm)
+    covid = covid.dropna().sort_index()
+
+    return covid
 
 def make_melvic_dataFrm():
 

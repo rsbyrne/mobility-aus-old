@@ -332,8 +332,6 @@ def get_melvic_bokeh_frm():
 
     frm = analysis.make_melvic_dataFrm()
     cases = analysis.make_casesFrm()
-    dates = sorted(set(frm.index.get_level_values('date')))
-    cases = cases.loc[pd.IndexSlice[dates, :]]
     dataFrm = frm
     lgas = load.load_lgas()
     lgas.index = lgas.index.astype(str)
@@ -342,11 +340,11 @@ def get_melvic_bokeh_frm():
     frm = frm.reset_index().set_index(['date', 'name'])
     frm = frm[['km', 'adjstay', 'visit', 'stayscore', 'pop']]
     frm = frm.rename(dict(adjstay = 'stay', stayscore = 'score'), axis = 1)
-    frm['active'] = (cases['ACTIVE_CNT'] * 10000 / frm['pop']).fillna(0.)
+    frm[cases.columns] = cases.loc[frm.index]
     serieses = dict()
     weightKey = 'pop'
     level = 'date'
-    for key in ['km', 'stay', 'visit', 'active']:
+    for key in ['km', 'stay', 'visit', 'cumulative', 'new', 'new_rolling']:
         fn = lambda f: np.average(f[key], weights = f[weightKey])
         series = frm[[key, weightKey]].groupby(level = level).apply(fn)
         serieses[key] = series
@@ -806,10 +804,31 @@ def make_meldash(returnPlot = False):
             <a href="mailto:rohan.byrne@unimelb.edu.au">Rohan Byrne</a>.
             """,
         varNotes = {
-            'active': """
-                This shows the number of active cases in each council
-                as of that day per ten thousand people, according to
-                <a href="https://covidlive.com.au/">COVID LIVE</a>
+#             'active': """
+#                 This shows the number of active cases in each council
+#                 as of that day per ten thousand people, according to
+#                 <a href="https://covidlive.com.au/">COVID LIVE</a>
+#                 """,
+            'cumulative': """
+                This is the cumulative COVID-19 case count per 10,000 people.
+                Be aware that, due to occasional government revisions of estimates,
+                the cumulative cases can sometimes decrease.
+                Sourced from
+                <a href="http://covid19data.com.au/">covid19data.com.au</a>.
+                """,
+            'new': """
+                This is the daily new COVID-19 cases per 10,000 people,
+                derived by subtracting each day's cumulative cases from the previous day's;
+                hence this value may sometimes go into the negative.
+                Sourced from
+                <a href="http://covid19data.com.au/">covid19data.com.au</a>.
+                """,
+            'new_rolling': """
+                Reported cases tend to oscillate due to uneven sampling rates.
+                This 10-day rolling average of the 'new cases' metric
+                attempts to smooth out this effect to provide a better sense of the overall trend.
+                Sourced from
+                <a href="http://covid19data.com.au/">covid19data.com.au</a>.
                 """,
             'km': """
                 This shows the average distance travelled

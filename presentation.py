@@ -1,10 +1,9 @@
-from IPython.display import Markdown
+from IPython.display import Markdown, HTML, display
+
 def markprint(x):
     display(Markdown(x))
     
 def hide_code_button():
-    from IPython.display import HTML, display
-
     display(HTML('''<script>
         code_show=true; 
         function code_toggle() {
