@@ -5,7 +5,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.pyplot import get_cmap
 
-from everest.disk import tempname
+# from everest.disk import tempname
 from ._fig import Fig as _Fig
 from . import analysis
 from .data import Data

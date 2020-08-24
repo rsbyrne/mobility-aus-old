@@ -1,7 +1,7 @@
 import os
 
-from everest import mpi
-from everest import disk
+# from everest import mpi
+# from everest import disk
 
 class Fig:
 
@@ -48,10 +48,10 @@ class Fig:
         name += add
         if ext is None:
             ext = self.ext
-        if mpi.rank == 0:
-            if not os.path.isdir(path):
-                os.makedirs(path)
-            assert os.path.isdir(path)
+#         if mpi.rank == 0:
+        if not os.path.isdir(path):
+            os.makedirs(path)
+        assert os.path.isdir(path)
         filepath = os.path.join(path, name) + '.' + ext
         self._save(filepath)
 
