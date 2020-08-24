@@ -491,7 +491,7 @@ def bokeh_spacetimepop(
     lineFig = figure(
         x_axis_type = 'datetime',
         y_range = (mins[defaultVar], maxs[defaultVar]),
-        plot_height = int((ph - 100) * 1. / 2.),
+        plot_height = int((ph - 100) * 1. / 3.),
         plot_width = pw,
         toolbar_location = 'left',
         tools = 'save, pan, box_zoom, reset, xwheel_zoom',
@@ -782,12 +782,14 @@ def bokeh_spacetimepop(
     return layout
 
 def make_meldash(returnPlot = False):
+    name = 'meldash'
     frm, geometry = get_melvic_bokeh_frm()
+    frm.to_csv(os.path.join(repoPath, 'products', name + '.csv'))
     myplot = bokeh_spacetimepop(
         frm,
         geometry = geometry,
         title = 'Mobility During COVID - Melbourne Councils',
-        preamble = """
+        preamble = f"""
             These plots, based on Facebook location tracking data,
             show the <b>changes in patterns of movement</b>
             of tens of thousands of anonymous Facebook users
@@ -795,6 +797,8 @@ def make_meldash(returnPlot = False):
             The data has been aggregated to <b>Local Government Areas</b>,
             typically city councils,
             and goes back as far as mid-April when collection began.
+            Data featured on this page can be found
+            <a href="https://rsbyrne.github.io/mobility-aus/products/{name}.csv">here</a>.
             Full data, including for other regions, is available
             <a href="https://rsbyrne.github.io/mobility-aus/">here</a>.
             The data are updated daily and the portal is continually being improved.
@@ -804,7 +808,8 @@ def make_meldash(returnPlot = False):
         varNotes = {
             'active': """
                 This shows the number of active cases in each council
-                as of that day per ten thousand people.
+                as of that day per ten thousand people, according to
+                <a href="https://covidlive.com.au/">COVID LIVE</a>
                 """,
             'km': """
                 This shows the average distance travelled
@@ -841,13 +846,11 @@ def make_meldash(returnPlot = False):
             "Second lockdown": ('2020-07-09', None),
             "Stage Four": ('2020-08-02', None),
             },
-        pw = 700,
-        ph = 700,
+        pw = 900,
+        ph = 900,
         )
 
-    import os
     from bokeh.io import output_file, show
-    name = 'meldash'
     outFilename = name + '.html'
     outPath = os.path.join(repoPath, 'products', outFilename)
     if os.path.isfile(outPath):
