@@ -14,7 +14,8 @@ class Fig:
             ):
 
         if name is None:
-            name = disk.tempname()
+#             name = disk.tempname()
+            name = 'default'
         self.name = name
         self.add = add
         self.ext = ext

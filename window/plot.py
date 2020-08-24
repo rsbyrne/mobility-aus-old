@@ -108,7 +108,8 @@ class Ax:
             canvas = Canvas()
 
         if name is None:
-            name = tempname()
+#             name = tempname()
+            name = 'default'
 
         ax = canvas.fig.add_subplot(
             canvas.nrows,
