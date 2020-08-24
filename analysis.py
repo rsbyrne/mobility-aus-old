@@ -252,3 +252,86 @@ def get_stayscore_series(series):
         }).set_index(['date', 'code'])
     scores = get_stayscore(frm).xs('ignore', level = 'code').sort_index()
     return scores
+
+def update_melsummary():
+
+    from matplotlib.pyplot import get_cmap
+    import matplotlib as mpl
+
+    import pandas as pd
+    import window
+    from window.plot import Canvas, Data
+    from functools import partial
+    import produce
+    # from presentation import markprint
+
+    frm, geometry = produce.get_melvic_bokeh_frm()
+    avScore = frm.xs('average', level = 'name')['score']
+    avNew = frm.xs('average', level = 'name')['new_rolling']
+
+    dates = frm.index.get_level_values('date')
+    events_annotate_fn = partial(
+        events_annotate,
+        region = 'vic',
+        lims = (dates.min(), dates.max()),
+        points = (0, 12)
+        )
+
+    def colour_ticks(ax, colourmap):
+        if type(colourmap) is list:
+            cmap = mpl.colors.ListedColormap(colourmap)
+        else:
+            cmap = get_cmap(colourmap)
+        yticklabels = ax.ax.get_yticklabels()
+        ytickvals = ax.ax.get_yticks()
+        norm = mpl.colors.Normalize(min(ytickvals), max(ytickvals))
+        for tickval, ticklabel in zip(ytickvals, yticklabels):
+            ticklabel.set_color(cmap(norm(tickval)))
+            ticklabel.set_fontweight('heavy')
+
+    canvas = Canvas(size = (16, 3.5))
+    ax1 = canvas.make_ax()
+    ax2 = canvas.make_ax()
+    ax1.set_title('Lockdown Compliance: Melbourne average')
+    tweakLims = (
+        dates.min() - pd.DateOffset(days = 0.5),
+        dates.max() + pd.DateOffset(days = 0.5),
+        )
+    ax1.line(
+        Data(avScore.index, label = 'Date', lims = tweakLims),
+        Data(avScore.values, label = 'Lockdown Compliance Score'),
+        c = 'green'
+        )
+    # ax2.line(
+    #     Data(avActive.index, label = 'Date', lims = tweakLims),
+    #     Data(avActive.values, label = 'Active COVID-19 Cases\n(per 10,000 people)', lims = (0., 15), capped = (True, True)),
+    #     c = 'red'
+    #     )
+    ax2.line(
+        Data(avNew.index, label = 'Date', lims = tweakLims),
+        Data(avNew.values, label = 'New cases per 10,000 people\n(10-day rolling average)', lims = (0., 1.)),
+        c = 'red'
+        )
+
+    ax2.swap_sides_axis_y()
+    ax2.toggle_axis_x()
+    ax2.toggle_grid()
+    colour_ticks(ax1, ['saddlebrown', 'chocolate', 'goldenrod', 'limegreen', 'green'])
+    colour_ticks(ax2, ['lightcoral', 'indianred', 'firebrick', 'maroon', 'darkred'])
+
+    keys = events_annotate_fn(ax1, avScore)
+
+    keyTable = pd.DataFrame(keys, columns = ['Key', 'Event']).set_index('Key')
+    canvas.fig.savefig(os.path.join(dataDir, 'melsummary.png'), bbox_inches = "tight")
+    canvas.fig.savefig(os.path.join(dataDir, 'melsummary_hires.png'), bbox_inches = "tight", dpi = 400)
+    keyTable = keyTable.to_html()
+    htmlout = '\n'.join([
+        '<img src="https://rsbyrne.github.io/mobility-aus/products/melsummary.png" alt="Melbourne summary data">',
+        keyTable
+        ])
+    with open(os.path.join(dataDir, 'melsummary.html'), 'w') as f:
+        f.write(htmlout)
+
+    # keystr = events_annotate(ax1, avScore)
+    # markprint(keystr)
+    # display(canvas.fig)

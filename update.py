@@ -1,4 +1,5 @@
 import produce
+import analysis
 from load import NoData
 
 regions = {
@@ -35,4 +36,7 @@ for region in regions:
             print("No data currently available for:", region)
         except:
             print("Something went wrong with:", region, aggType)
+
 produce.make_meldash()
+
+analysis.update_melsummary()
