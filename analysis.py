@@ -290,8 +290,8 @@ def update_melsummary():
             ticklabel.set_fontweight('heavy')
 
     canvas = Canvas(size = (16, 3.5))
-    ax1 = canvas.make_ax()
-    ax2 = canvas.make_ax()
+    ax1 = canvas.make_ax(name = 'Lockdown Score')
+    ax2 = canvas.make_ax(name = 'COVID Cases')
     ax1.set_title('Lockdown Compliance: Melbourne average')
     tweakLims = (
         dates.min() - pd.DateOffset(days = 0.5),
