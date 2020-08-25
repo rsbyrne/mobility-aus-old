@@ -120,7 +120,7 @@ def make_casesFrm(region = 'vic'):
     #         )
     #     averages.index = pd.MultiIndex.from_product([averages.index, ['average',]], names = ['date', 'name'])
     #     covid = covid.append(averages).sort_index()
-    covid['new_rolling'] = covid['new'].groupby(level = 'name', group_keys = False).rolling(10).mean().sort_index()
+    covid['new_rolling'] = covid['new'].groupby(level = 'name', group_keys = False).rolling(7).mean().sort_index()
     serieses = dict()
     weightKey = 'pop'
     level = 'date'
@@ -309,7 +309,7 @@ def update_melsummary():
     #     )
     ax2.line(
         Data(avNew.index, label = 'Date', lims = tweakLims),
-        Data(avNew.values, label = 'New cases per 10,000 people\n(10-day rolling average)', lims = (0., 1.)),
+        Data(avNew.values, label = 'New cases per 10,000 people\n(7-day rolling average)', lims = (0., 1.)),
         c = 'red'
         )
 

@@ -825,7 +825,7 @@ def make_meldash(returnPlot = False):
                 """,
             'new_rolling': """
                 Reported cases tend to oscillate due to uneven sampling rates.
-                This 10-day rolling average of the 'new cases' metric
+                This 7-day rolling average of the 'new cases' metric
                 attempts to smooth out this effect to provide a better sense of the overall trend.
                 Sourced from
                 <a href="http://covid19data.com.au/">covid19data.com.au</a>.
