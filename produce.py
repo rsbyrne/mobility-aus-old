@@ -1,6 +1,7 @@
 import numpy as np
 import math
 import os
+from functools import partial
 
 import pandas as pd
 df = pd.DataFrame
@@ -8,22 +9,21 @@ import geopandas as gpd
 gdf = gpd.GeoDataFrame
 import shapely
 import mercantile
+from matplotlib.pyplot import get_cmap
+import matplotlib as mpl
 
 import load
 import utils
 import processing
 import aggregate
+from window.plot import Canvas, Data
+import analysis
 
-repoPath = os.path.abspath(os.path.dirname(__file__))
-
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
-import os
+dataDir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'products')
 
 def get_abs_lookup(sources, refresh = False):
     filename = 'abs_lookup.csv'
-    filePath = os.path.join(repoPath, 'products', filename)
+    filePath = os.path.join(dataDir, filename)
     if os.path.isfile(filePath) and not refresh:
         out = pd.read_csv(filePath)
         out = out.set_index('code')
@@ -56,13 +56,15 @@ def make_abs_lookup(sources):
 
 def make_mob_plots(frm, region, aggType = 'lga'):
 
+    global dataDir
+
     agg = lambda key: frm.reset_index().groupby(key).apply(
         lambda x: (x['stay'] * x['weight'] / x['weight'].sum()).sum()
         )
     dateAvs = agg('date')
     regionAvs = agg('code')
 
-    fig, ax = plt.subplots(2)
+    fig, ax = mpl.pyplot.subplots(2)
     dateAvs.plot(
         title = 'Net stay-at-home ratio per day',
         ax = ax[0]
@@ -76,12 +78,12 @@ def make_mob_plots(frm, region, aggType = 'lga'):
     fig.set_size_inches(6, 7)
 
     filename = '_'.join(['mob', aggType, region]) + '.png'
-    filePath = os.path.join(repoPath, 'products', filename)
+    filePath = os.path.join(dataDir, filename)
     fig.savefig(filePath)
 
 def get_mob_date(region, aggType = 'lga', refresh = False, get = False, override = False):
     filename = '_'.join(['mob', aggType, region]) + '.csv'
-    filePath = os.path.join(repoPath, 'products', filename)
+    filePath = os.path.join(dataDir, filename)
     if os.path.isfile(filePath) and not refresh:
         out = pd.read_csv(filePath)
         out['date'] = pd.to_datetime(out['date'])
@@ -213,7 +215,7 @@ def make_dateMap(frm, name, title, size = 600, nonVisKeys = {}):
 
     from bokeh.io import output_file
     outFilename = name + '.html'
-    outPath = os.path.join(repoPath, 'products', outFilename)
+    outPath = os.path.join(dataDir, outFilename)
     if os.path.isfile(outPath):
         os.remove(outPath)
     output_file(outPath)
@@ -325,48 +327,6 @@ def make_dateMap(frm, name, title, size = 600, nonVisKeys = {}):
     from bokeh.io import show
 
     show(layout)
-
-def get_melvic_bokeh_frm():
-
-    import analysis
-
-    frm = analysis.make_melvic_dataFrm()
-    cases = analysis.make_casesFrm()
-    dataFrm = frm
-    lgas = load.load_lgas()
-    lgas.index = lgas.index.astype(str)
-
-    frm = dataFrm.copy()
-    frm = frm.reset_index().set_index(['date', 'name'])
-    frm = frm[['km', 'adjstay', 'visit', 'stayscore', 'pop']]
-    frm = frm.rename(dict(adjstay = 'stay', stayscore = 'score'), axis = 1)
-    frm[cases.columns] = cases.loc[frm.index]
-    serieses = dict()
-    weightKey = 'pop'
-    level = 'date'
-    for key in ['km', 'stay', 'visit', 'cumulative', 'new', 'new_rolling']:
-        fn = lambda f: np.average(f[key], weights = f[weightKey])
-        series = frm[[key, weightKey]].groupby(level = level).apply(fn)
-        serieses[key] = series
-    avFrm = df(serieses)
-    avFrm['score'] = analysis.get_stayscore_series(avFrm['stay'])
-    avFrm['name'] = 'average'
-    avFrm = avFrm.reset_index().set_index(['date', 'name'])
-    frm = frm.drop('pop', axis = 1)
-    frm = frm.append(avFrm)
-    frm = frm.sort_index(axis = 0).sort_index(axis = 1)
-    frm.columns.name = 'variables'
-    masterFrm = frm
-
-    geometry = lgas.reset_index() \
-        .rename(dict(LGA_CODE19 = 'code'), axis = 1) \
-        .set_index('code')['geometry']
-    codenames = dict(zip(dataFrm.index.get_level_values(1), dataFrm['name']))
-    geometry = geometry.drop([i for i in geometry.index if not i in codenames])
-    geometry.index = [codenames[i] for i in geometry.index]
-    masterGeometry = geometry
-
-    return masterFrm, masterGeometry
 
 def bokeh_spacetimepop(
         frm,
@@ -781,8 +741,17 @@ def bokeh_spacetimepop(
 
 def make_meldash(returnPlot = False):
     name = 'meldash'
-    frm, geometry = get_melvic_bokeh_frm()
-    frm.to_csv(os.path.join(repoPath, 'products', name + '.csv'))
+    frm = analysis.make_melvicFrm()
+    frm.to_csv(os.path.join(dataDir, name + '.csv'))
+
+    geometry = analysis.make_geometry(frm.index.levels[1], region = 'vic')
+    # Fix Mornington Peninsula, which is a multipolygon:
+    multipoly = geometry['Mornington Peninsula']
+    geofrm = gpd.GeoSeries(list(multipoly))
+    geometry['Mornington Peninsula'] = geofrm[
+        sorted(zip(geofrm.index, geofrm.area), key = lambda s: s[1])[-1][0]
+        ]
+
     myplot = bokeh_spacetimepop(
         frm,
         geometry = geometry,
@@ -871,7 +840,7 @@ def make_meldash(returnPlot = False):
 
     from bokeh.io import output_file, show
     outFilename = name + '.html'
-    outPath = os.path.join(repoPath, 'products', outFilename)
+    outPath = os.path.join(dataDir, outFilename)
     if os.path.isfile(outPath):
         os.remove(outPath)
     output_file(outPath, title = 'Melbourne COVID dashboard')
@@ -879,3 +848,80 @@ def make_meldash(returnPlot = False):
 
     if returnPlot:
         return myplot
+
+def update_melsummary():
+
+    global dataDir
+
+    # from presentation import markprint
+
+    frm = analysis.make_melvicFrm()
+    avScore = frm.xs('average', level = 'name')['score']
+    avNew = frm.xs('average', level = 'name')['new_rolling']
+
+    dates = frm.index.get_level_values('date')
+    events_annotate_fn = partial(
+        analysis.events_annotate,
+        region = 'vic',
+        lims = (dates.min(), dates.max()),
+        points = (0, 12)
+        )
+
+    def colour_ticks(ax, colourmap):
+        if type(colourmap) is list:
+            cmap = mpl.colors.ListedColormap(colourmap)
+        else:
+            cmap = get_cmap(colourmap)
+        yticklabels = ax.ax.get_yticklabels()
+        ytickvals = ax.ax.get_yticks()
+        norm = mpl.colors.Normalize(min(ytickvals), max(ytickvals))
+        for tickval, ticklabel in zip(ytickvals, yticklabels):
+            ticklabel.set_color(cmap(norm(tickval)))
+            ticklabel.set_fontweight('heavy')
+
+    canvas = Canvas(size = (16, 3.5))
+    ax1 = canvas.make_ax(name = 'Lockdown Score')
+    ax2 = canvas.make_ax(name = 'COVID Cases')
+    ax1.set_title('Lockdown Compliance: Melbourne average')
+    tweakLims = (
+        dates.min() - pd.DateOffset(days = 0.5),
+        dates.max() + pd.DateOffset(days = 0.5),
+        )
+    ax1.line(
+        Data(avScore.index, label = 'Date', lims = tweakLims),
+        Data(avScore.values, label = 'Lockdown Compliance Score'),
+        c = 'green'
+        )
+    # ax2.line(
+    #     Data(avActive.index, label = 'Date', lims = tweakLims),
+    #     Data(avActive.values, label = 'Active COVID-19 Cases\n(per 10,000 people)', lims = (0., 15), capped = (True, True)),
+    #     c = 'red'
+    #     )
+    ax2.line(
+        Data(avNew.index, label = 'Date', lims = tweakLims),
+        Data(avNew.values, label = 'New cases per 10,000 people\n(7-day rolling average)', lims = (0., 1.)),
+        c = 'red'
+        )
+
+    ax2.swap_sides_axis_y()
+    ax2.toggle_axis_x()
+    ax2.toggle_grid()
+    colour_ticks(ax1, ['saddlebrown', 'chocolate', 'goldenrod', 'limegreen', 'green'])
+    colour_ticks(ax2, ['lightcoral', 'indianred', 'firebrick', 'maroon', 'darkred'])
+
+    keys = events_annotate_fn(ax1, avScore)
+
+    keyTable = pd.DataFrame(keys, columns = ['Key', 'Event']).set_index('Key')
+    canvas.fig.savefig(os.path.join(dataDir, 'melsummary.png'), bbox_inches = "tight")
+    canvas.fig.savefig(os.path.join(dataDir, 'melsummary_hires.png'), bbox_inches = "tight", dpi = 400)
+    keyTable = keyTable.to_html()
+    htmlout = '\n'.join([
+        '<img src="https://rsbyrne.github.io/mobility-aus/products/melsummary.png" alt="Melbourne summary data">',
+        keyTable
+        ])
+    with open(os.path.join(dataDir, 'melsummary.html'), 'w') as f:
+        f.write(htmlout)
+
+    # keystr = events_annotate(ax1, avScore)
+    # markprint(keystr)
+    # display(canvas.fig)

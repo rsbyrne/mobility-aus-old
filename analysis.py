@@ -4,28 +4,26 @@ import re
 
 import numpy as np
 import pandas as pd
-df = pd.DataFrame
+from scipy.special import expit
 
-import os
+import load
+
 dirPath = os.path.abspath(os.path.dirname(__file__))
 dataDir = os.path.join(dirPath, 'products')
 
-lookupName = 'abs_lookup.csv'
-lookupPath = os.path.join(dataDir, lookupName)
-assert os.path.exists(lookupPath)
-lookupFrm = pd.read_csv(lookupPath)
-lookupFrm['code'] = lookupFrm['code'].astype(str)
-
-def remove_brackets(x):
-    return re.sub("[\(\[].*?[\)\]]", "", x).strip()
-
 def events_annotate(ax, series, region, lims = (None, None), points = None, returnTable = False):
+
+    # Get events data:
     eventsFrm = pd.read_csv(os.path.join(dataDir, f'events_{region}.csv'))
-    eventsFrm['date'] = eventsFrm['date'].astype(np.datetime64)
+    eventsFrm['date'] = eventsFrm['date'].astype('datetime64[ns]')
+
+    # Trim by provided lims:
     if not lims[0] is None:
         eventsFrm = eventsFrm.loc[eventsFrm['date'] >= lims[0]]
     if not lims[1] is None:
         eventsFrm = eventsFrm.loc[eventsFrm['date'] <= lims[1]]
+
+    # Make events/letters lookup table:
     events = list(zip(eventsFrm['date'], eventsFrm['event']))
     letterOptions = [l for l in string.ascii_lowercase]
     for l in string.ascii_lowercase:
@@ -43,6 +41,8 @@ def events_annotate(ax, series, region, lims = (None, None), points = None, retu
             nearest = diffSeries.loc[diffSeries == diffSeries.min()].index
             ytarget = series.loc[nearest].iloc[0]
         ax.annotate(xtarget, ytarget, letter, points = points)
+
+    # Return desired format:
     if returnTable:
         marktable = '| Key | Event | \n | --- | --- | \n'
         for letter, label in keys:
@@ -51,76 +51,51 @@ def events_annotate(ax, series, region, lims = (None, None), points = None, retu
     else:
         return keys
 
-# def unit_axis(data):
-#     return window.data.Data(data, lims = (None, 1.), capped = (False, True))
-
-def average(frm, key):
-    func = lambda d: (d[key] * d['dateweight']).sum()
-    return frm.groupby('date').apply(func)
-def pop_average(frm, key):
-    global lookupFrm
-    allPop = lookupFrm.groupby('type')['pop'].sum()['lga']
-    func = lambda d: (d[key] * d['pop'] / allPop).sum()
-    return frm.groupby('date').apply(func)
-
-def get_owid_cases(region):
-    cases = pd.read_csv('https://covid.ourworldindata.org/data/owid-covid-data.csv')
-    cases = cases.loc[cases['location'] == region]
-    cases = cases[['date', 'new_cases', 'total_cases']]
-    cases['date'] = cases['date'].astype(np.datetime64)
-    cases = cases.set_index('date')
-    cases = cases.loc[cases.index >= dataFrm['date'].min()]
-    cases = cases.loc[cases.index <= dataFrm['date'].max()]
-    return cases
-
-def reweight(frm):
-    frm['weight'] /= frm['weight'].sum()
-    frm['dateweight'] = frm.groupby(frm.index.get_level_values('date'))['weight'].apply(lambda s: s / s.sum())
-    frm['codeweight'] = frm.groupby(frm.index.get_level_values('code'))['weight'].apply(lambda s: s / s.sum())
+def make_lookupFrm():
+    # Load and correct ABS lookup frame:
+    global dataDir
+    lookupName = 'abs_lookup.csv'
+    lookupPath = os.path.join(dataDir, lookupName)
+    assert os.path.exists(lookupPath)
+    lookupFrm = pd.read_csv(lookupPath)
+    lookupFrm['code'] = lookupFrm['code'].astype(str)
+    return lookupFrm
 
 def make_casesFrm(region = 'vic'):
 
-    if not region == 'vic':
+    if not region in {'vic', 'mel'}:
         raise Exception
 
-    # From 'covidlive.com'
-    # cases = pd.read_json("https://covidlive.com.au/covid-live-loc.json")
-    # cases = cases.rename(
-    #     dict(
-    #         REPORT_DATE = 'date',
-    #         LOCALITY_NAME = 'name',
-    #         CASE_CNT = 'cases',
-    #         ACTIVE_CNT = 'active',
-    #         UNKNOWN_CNT = 'unknown',
-    #         ),
-    #     axis = 1
-    #     )
-    # cases = cases.drop(['ID', 'LOCALITY_TYPE', 'CODE'], axis = 1)
-    # cases['date'] = cases['date'].astype(np.datetime64)
-    # cases = cases.set_index(['date', 'name'])
-    # cases = cases.sort_index()
-
     # From Monash
+    # Load data:
     covid = pd.read_csv('https://homepages.inf.ed.ac.uk/ngoddard/covid19/vicdata/lgadata.csv')
     pop = dict(covid.loc[covid['Date'] == 'Population'].iloc[0].drop('Date'))
     covid = covid.drop([0, 1, 2])
     covid['Date'] = covid['Date'].astype('datetime64[ns]')
     covid = covid.rename(mapper = dict(Date = 'date'), axis = 1)
+
+    # Restructure array:
     covid = covid.melt('date', var_name = 'name', value_name = 'cumulative')
     covid = covid.set_index(['date', 'name'])
     covid = covid.loc[~covid.index.duplicated()]
     covid = covid.fillna(0).astype(int)
     covid = covid.sort_index()
-    covid['pop'] = pd.Series(covid.index.get_level_values('name'), covid.index).apply(lambda v: pop[v]).astype(int)
-    covid['new'] = covid['cumulative'].groupby(level = 'name').diff().dropna().astype(int)
+
+    # Correct population figures:
+    covid['pop'] = pd.Series(
+        covid.index.get_level_values('name'),
+        covid.index
+        ).apply(lambda v: pop[v]).astype(int)
+
+    # Derive 'new cases' metric:
+    covid['new'] = covid['cumulative'].groupby(level = 'name') \
+        .diff().dropna().astype(int)
     covid = covid.dropna()
     covid['new'] = covid['new'] / covid['pop'] * 10000
-    #     averages = covid[['new', 'pop']].groupby(level = 'date').apply(
-    #         lambda d: np.average(d['new'], weights = d['pop'])
-    #         )
-    #     averages.index = pd.MultiIndex.from_product([averages.index, ['average',]], names = ['date', 'name'])
-    #     covid = covid.append(averages).sort_index()
-    covid['new_rolling'] = covid['new'].groupby(level = 'name', group_keys = False).rolling(7).mean().sort_index()
+    covid['new_rolling'] = covid['new'].groupby(level = 'name', group_keys = False) \
+        .rolling(7).mean().sort_index()
+
+    # Add averages:
     serieses = dict()
     weightKey = 'pop'
     level = 'date'
@@ -135,85 +110,72 @@ def make_casesFrm(region = 'vic'):
     covid = covid.append(avFrm)
     covid = covid.dropna().sort_index()
 
+    # Return:
     return covid
 
-def make_melvic_dataFrm():
+def remove_brackets(x):
+    # Remove brackets from ABS council names:
+    return re.sub("[\(\[].*?[\)\]]", "", x).strip()
 
-    melFrm = make_dataFrm(region = 'mel', dropna = False)
-    melFrm = melFrm.loc[melFrm['name'] != 'Greater Geelong']
-    vicFrm = make_dataFrm(region = 'vic', dropna = True)
+def calculate_day_scores(series, level = 'date', n = 4):
+    # Takes a series indexed by date
+    # and returns normalised values grouped by date
+    index = series.index.get_level_values(level)
+    series = pd.DataFrame(data = dict(
+        val = series.values,
+        date = index,
+        day = [int(d.strftime('%w')) for d in index.tolist()]
+        )).set_index([level, 'day'])['val']
+    groups = series.groupby(level = 'day')
+    highs = groups.apply(lambda s: s.nlargest(n).mean())
+    lows = groups.apply(lambda s: s.nsmallest(n).mean())
+    series = (series - lows) / (highs - lows)
+    series = pd.Series(series.values, index)
+    return series
 
-    indices = list(set.intersection(set(melFrm.index), set(vicFrm.index)))
-    melFrm = melFrm.loc[indices].sort_index()
-    vicFrm = vicFrm.loc[indices].sort_index()
+def calculate_averages(frm, level = 'date', weightKey = 'pop'):
+    # Get a frame that contains averages by some chosen level
+    serieses = dict()
+    level = 'date'
+    weightKey = 'pop'
+    for key in [col for col in frm.columns if not col == weightKey]:
+        fn = lambda f: np.average(f[key], weights = f[weightKey])
+        series = frm[[key, weightKey]].groupby(level = level).apply(fn)
+        serieses[key] = series
+    return pd.DataFrame(serieses)
 
-    reweight(melFrm)
-    reweight(vicFrm)
+def make_dataFrm(region):
 
-    frm = melFrm.copy()
-    frm['stay'] = melFrm['stay'] * (1. + vicFrm['stay']) / 2.
-    frm['adjstay'] = melFrm['adjstay'] * (1. + vicFrm['adjstay']) / 2.
-    frm['km'] = (melFrm['km'] + vicFrm['km']) / 2
-#     frm['stayscore'] = (melFrm['stayscore'] + vicFrm['stayscore']) / 2.
-    frm['stayscore'] = get_stayscore(frm)
+    global dataDir
 
-    return frm
-
-def make_dataFrm(region, dropna = False):
-    
+    # Load raw data
     dataName = f'mob_lga_{region}.csv'
-    dataPath = os.path.join(dataDir, dataName)
-    assert os.path.exists(dataPath)
+    rawPath = os.path.join(dataDir, dataName)
+    frm = pd.read_csv(rawPath)
+    casesFrm = make_casesFrm()
 
-    global lookupFrm
+    # Correct data types from csv
+    frm['code'] = frm['code'].astype(int).astype(str)
+    frm['date'] = frm['date'].astype('datetime64[ns]')
 
-    dataFrm = pd.read_csv(dataPath)
-    dataFrm['date'] = dataFrm['date'].astype(np.datetime64) #pd.to_datetime(dataFrm['date'])
-    dataFrm['code'] = dataFrm['code'].astype(int).astype(str)
+    # Filter out data with no variation on a key metric
+    filt = frm.groupby('code')['stay'].apply(lambda s: s.max() != s.min())
+    frm = frm.set_index('code').loc[filt.index].reset_index()
 
-    dataFrm = dataFrm.reset_index()
-    filt = dataFrm.groupby('code')['stay'].apply(lambda s: s.max() != s.min())
-    dataFrm = dataFrm.set_index('code').loc[filt.index]
-    dataFrm = dataFrm.reset_index().set_index(['date', 'code'])
+    # Add council information from lookupFrm
+    lookupFrm = make_lookupFrm()
+    codeFrm = lookupFrm.set_index('code').loc[frm['code']][['name', 'area', 'pop']]
+    frm = frm.set_index('code')
+    frm[['name', 'area', 'pop']] = codeFrm
+    frm = frm.reset_index()
 
-    dataFrm = dataFrm.reset_index()
-    codeFrm = lookupFrm.set_index('code').loc[dataFrm['code']][['name', 'area', 'pop']]
-    dataFrm = dataFrm.set_index('code')
-    dataFrm[['name', 'area', 'pop']] = codeFrm
-    dataFrm['name'] = dataFrm['name'].apply(remove_brackets)
-    dataFrm['density'] = dataFrm['pop'] / dataFrm['area']
-    dataFrm['tiles'] = dataFrm['area'] / dataFrm['km'].min() ** 2
-    dataFrm = dataFrm.reset_index()
-    dataFrm = dataFrm.drop('index', axis = 1)
-    dataFrm['day'] = [int(d.strftime('%w')) for d in dataFrm['date'].tolist()]
+    # Trim brackets from council names
+    frm['name'] = frm['name'].apply(remove_brackets)
 
-    if dropna:
-        dataFrm = dataFrm.dropna()
-        todrop = []
-        for code in set(dataFrm['code']):
-            codeFrm = dataFrm.loc[dataFrm['code'] == code]
-            if not len(codeFrm) == len(set(dataFrm['date'])):
-                todrop.append(code)
-        for code in todrop:
-            dataFrm = dataFrm.loc[dataFrm['code'] != code]
+    # Add a nominal distance travelled when below detection threshold
+    frm['km'] = frm['km'].fillna(frm['km'].min() / 2)
 
-    dataFrm = dataFrm.set_index(['date', 'code']).sort_index()
-    dataFrm['km'] = dataFrm['km'].fillna(dataFrm['km'].min() / 2)
-
-    dataFrm['adjstay'] = get_adjstay(dataFrm)
-    dataFrm['stayscore'] = get_stayscore(dataFrm)
-
-#     dataFrm = dataFrm.loc[dataFrm['date'] >= '2020-04-05']
-
-    dataFrm = dataFrm.sort_index()
-
-    reweight(dataFrm)
-
-    return dataFrm
-
-def get_adjstay(frm):
-    from scipy.special import expit
-    frm = frm.copy()
+    # Adjust 'stay' metric to account for detection cutoffs
     tileArea = frm['km'].min() ** 2
     popPerTile = frm['pop'] * tileArea / frm['area']
     mob = (1. - frm['stay'])
@@ -223,115 +185,84 @@ def get_adjstay(frm):
     detChance = expit((popPerTile * fbFrac / destTiles - fbThresh) / fbThresh)
     trav = (mob / detChance).apply(lambda x: min(x, 1.))
     adjStay = 1. - trav
-    return adjStay
+    frm['stay'] = adjStay
 
-def get_stayscore(frm):
-    frm = frm.copy()
-    frm = frm.reset_index()
-    frm['rawscore'] = frm['adjstay'] #* frm['km']
-    groups = frm.groupby(['code', 'day'])['rawscore']
-    bests = groups.apply(lambda s: s.nlargest(4).mean())
-    worsts = groups.apply(lambda s: s.nsmallest(4).mean())
-    frm = frm.set_index(['code', 'day', 'date']).sort_index()
-    frm = frm.loc[bests != worsts]
-    scores = ((frm['rawscore'] - worsts) / (bests - worsts))
-    # scores = scores.apply(lambda s: max(0, min(1, s)))
-    scores = scores.sort_index()
-    frm['stayscore'] = scores
-    frm = frm.reset_index().set_index(['date', 'code'])
-    return frm['stayscore']
+    # Drop redundant columns
+    frm = frm.drop(['area', 'code', 'weight'], axis = 1)
 
-def get_stayscore_series(series):
-    days = [int(d.strftime('%w')) for d in series.index.tolist()]
-    codes = ['ignore' for d in days]
-    frm = df({
-        'adjstay': series.values,
-        'day': days,
-        'code': codes,
-        'date': series.index
-        }).set_index(['date', 'code'])
-    scores = get_stayscore(frm).xs('ignore', level = 'code').sort_index()
-    return scores
+    # Reindex to final form
+    frm = frm.set_index(['date', 'name'])
 
-def update_melsummary():
+    # Get scores
+    scores = frm.groupby(level = 'name')['stay'].apply(calculate_day_scores)
+    scores = scores.reorder_levels([1, 0]).sort_index()
+    frm['score'] = scores
 
-    from matplotlib.pyplot import get_cmap
-    import matplotlib as mpl
+    # Add cases data
+    frm[casesFrm.columns] = casesFrm.reindex(frm.index).loc[frm.index].fillna(0.)
 
-    import pandas as pd
-    import window
-    from window.plot import Canvas, Data
-    from functools import partial
-    import produce
-    # from presentation import markprint
+    # Get averages
+    averages = calculate_averages(frm)
+    averages['name'] = 'average'
+    averages = averages.reset_index().set_index(['date', 'name']).sort_index()
+    frm = frm.append(averages).sort_index()
 
-    frm, geometry = produce.get_melvic_bokeh_frm()
-    avScore = frm.xs('average', level = 'name')['score']
-    avNew = frm.xs('average', level = 'name')['new_rolling']
+    # Final sort
+    frm = frm.sort_index()
 
-    dates = frm.index.get_level_values('date')
-    events_annotate_fn = partial(
-        events_annotate,
-        region = 'vic',
-        lims = (dates.min(), dates.max()),
-        points = (0, 12)
+    # Return:
+    return frm
+
+def make_geometry(indices, region = 'vic'):
+    statesLookup = dict(
+        vic = 'Victoria',
+        mel = 'Victoria',
+        nsw = 'New South Wales',
+        syd = 'Sydney',
         )
+    # Make a geometry frame from ABS data:
+    lgas = load.load_lgas()
+    lgas = lgas.loc[lgas['STE_NAME16'] == statesLookup[region]]
+    lgas['name'] = lgas['name'].apply(remove_brackets)
+    lgas = lgas.set_index('name')
+    councils = [c for c in indices if c in lgas.index]
+    geometry = lgas['geometry'].loc[councils]
+    return geometry
 
-    def colour_ticks(ax, colourmap):
-        if type(colourmap) is list:
-            cmap = mpl.colors.ListedColormap(colourmap)
-        else:
-            cmap = get_cmap(colourmap)
-        yticklabels = ax.ax.get_yticklabels()
-        ytickvals = ax.ax.get_yticks()
-        norm = mpl.colors.Normalize(min(ytickvals), max(ytickvals))
-        for tickval, ticklabel in zip(ytickvals, yticklabels):
-            ticklabel.set_color(cmap(norm(tickval)))
-            ticklabel.set_fontweight('heavy')
+def make_melvicFrm():
 
-    canvas = Canvas(size = (16, 3.5))
-    ax1 = canvas.make_ax(name = 'Lockdown Score')
-    ax2 = canvas.make_ax(name = 'COVID Cases')
-    ax1.set_title('Lockdown Compliance: Melbourne average')
-    tweakLims = (
-        dates.min() - pd.DateOffset(days = 0.5),
-        dates.max() + pd.DateOffset(days = 0.5),
-        )
-    ax1.line(
-        Data(avScore.index, label = 'Date', lims = tweakLims),
-        Data(avScore.values, label = 'Lockdown Compliance Score'),
-        c = 'green'
-        )
-    # ax2.line(
-    #     Data(avActive.index, label = 'Date', lims = tweakLims),
-    #     Data(avActive.values, label = 'Active COVID-19 Cases\n(per 10,000 people)', lims = (0., 15), capped = (True, True)),
-    #     c = 'red'
-    #     )
-    ax2.line(
-        Data(avNew.index, label = 'Date', lims = tweakLims),
-        Data(avNew.values, label = 'New cases per 10,000 people\n(7-day rolling average)', lims = (0., 1.)),
-        c = 'red'
-        )
+    # Get component frames
+    melFrm = make_dataFrm('mel')
+    melFrm = melFrm.drop('Greater Geelong', level = 'name')
+    melFrm = melFrm.drop('Queenscliffe', level = 'name')
+    vicFrm = make_dataFrm('vic')
+    indices = list(set.intersection(set(melFrm.index), set(vicFrm.index)))
+    melFrm = melFrm.loc[indices].sort_index()
+    vicFrm = vicFrm.loc[indices].sort_index()
 
-    ax2.swap_sides_axis_y()
-    ax2.toggle_axis_x()
-    ax2.toggle_grid()
-    colour_ticks(ax1, ['saddlebrown', 'chocolate', 'goldenrod', 'limegreen', 'green'])
-    colour_ticks(ax2, ['lightcoral', 'indianred', 'firebrick', 'maroon', 'darkred'])
+    # Merge frames
+    frm = melFrm.copy()
+    frm['stay'] = melFrm['stay'] * (1. + vicFrm['stay']) / 2.
+    frm['km'] = (melFrm['km'] + vicFrm['km']) / 2
 
-    keys = events_annotate_fn(ax1, avScore)
+    # Calculate new scores
+    scores = frm.groupby(level = 'name')['stay'].apply(calculate_day_scores)
+    scores = scores.reorder_levels([1, 0]).sort_index()
+    frm['score'] = scores
 
-    keyTable = pd.DataFrame(keys, columns = ['Key', 'Event']).set_index('Key')
-    canvas.fig.savefig(os.path.join(dataDir, 'melsummary.png'), bbox_inches = "tight")
-    canvas.fig.savefig(os.path.join(dataDir, 'melsummary_hires.png'), bbox_inches = "tight", dpi = 400)
-    keyTable = keyTable.to_html()
-    htmlout = '\n'.join([
-        '<img src="https://rsbyrne.github.io/mobility-aus/products/melsummary.png" alt="Melbourne summary data">',
-        keyTable
-        ])
-    with open(os.path.join(dataDir, 'melsummary.html'), 'w') as f:
-        f.write(htmlout)
+    # Calculate new averages
+    frm = frm.drop('average', level = 'name')
+    averages = calculate_averages(frm)
+    averages['name'] = 'average'
+    averages = averages.reset_index().set_index(['date', 'name']).sort_index()
+    frm = frm.append(averages).sort_index()
 
-    # keystr = events_annotate(ax1, avScore)
-    # markprint(keystr)
-    # display(canvas.fig)
+    # Calculate new average score
+    avScores = calculate_day_scores(frm['score'].xs('average', level = 'name'))
+    frm.loc[(slice(None), 'average'), 'score'] = avScores.to_list()
+
+    # Drop redundant columns
+    frm = frm.drop('pop', axis = 1)
+
+    # Return
+    return frm
