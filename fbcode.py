@@ -8,11 +8,12 @@ from selenium.webdriver.firefox.options import Options
 from selenium.common import exceptions
 
 MAXWAIT = 10.
+TIMEOUT = 30
 
-def format_string(string):
-    return string.replace(' ', '-')
-def check_string(string):
-    return string.replace(' ', '-').replace('-', '').isnumeric()
+def format_href(href):
+    return href[-18:].replace('%3A', '').replace('+', '-')
+def check_href(href):
+    return href[-21:-18] == 'ds=' and format_href(href).replace('-', '').isnumeric()
 
 def random_sleep(factor = 1.):
     sleepTime = (random.random() + 1.) * factor
@@ -50,27 +51,24 @@ def _file_check(fp):
         return os.stat(fp).st_size
     return False
 
-def download_all(
-        linksDict,
+def download(
+        driver,
+        link,
         downloadDir,
         outDir,
         outExt,
-        keys = None,
-        notkeys = set(),
         maxWait = MAXWAIT
         ):
-    print("Downloading all...")
-    if keys is None:
-        keys = linksDict.keys()
-    keys = sorted([key for key in keys if key not in notkeys])
-    for key in keys:
-        newFilename = key + outExt
-        if newFilename in os.listdir(outDir):
-            print("File already exists - skipping.")
-        else:
-            random_sleep(1.)
-            link = linksDict[key]
-            link.click()
+    global TIMEOUT
+    driver.set_page_load_timeout(3)
+    newFilename = format_href(link) + outExt
+    if newFilename in os.listdir(outDir):
+        print("File already exists - skipping.")
+    else:
+        random_sleep(1.)
+        try:
+            driver.get(link)
+        except exceptions.TimeoutException:
             wait_check(lambda: len(os.listdir(downloadDir)), maxWait = maxWait)
             checkFilenames = [
                 fp for fp in os.listdir(downloadDir) \
@@ -93,16 +91,20 @@ def download_all(
                     maxWait = maxWait
                     )
             print("Downloaded:", newFilename)
-    print("Downloaded all.")
+        except:
+            print(f"Something went wrong downloading {link}; skipping.")
+    driver.set_page_load_timeout(TIMEOUT)
 
 class Driver:
     def __init__(self, options, profile, logDir = '.'):
         self.options, self.profile, self.logDir = options, profile, logDir
     def __enter__(self):
+        global TIMEOUT
         self.driver = webdriver.Firefox(
             options = self.options,
             firefox_profile = self.profile
             )
+        self.driver.set_page_load_timeout(TIMEOUT)
         return self.driver
     def __exit__(self, exc_type, exc_value, exc_traceback):
         if exc_value:
@@ -200,7 +202,6 @@ def pull_datas(
                 username.send_keys(loginName)
                 password.send_keys(loginPass)
                 submit.click()
-                print("Made it this far")
                 errorText = "Sorry, something went wrong."
                 if driver.find_element_by_id("facebook").text.startswith(errorText):
                     raise ValueError("Bad login credentials!")
@@ -219,19 +220,21 @@ def pull_datas(
             random_sleep(1.)
 
             print("Finding data...")
-            linksDict = {
-                format_string(elem.text): elem \
-                    for elem in driver.find_elements_by_xpath("//a[@href]") \
-                        if check_string(elem.text)
-                }
-            if len(linksDict) > 0:
-                print("Data found.")
-                download_all(
-                    linksDict,
+            links = [
+                elem.get_attribute("href")
+                    for elem in driver.find_elements_by_xpath("//a[@href]")
+                        if check_href(elem.get_attribute("href"))
+                ]
+            if not len(links):
+                raise Exception("No data found at destination!")
+            print("Downloading all...")
+            for link in links:
+                download(
+                    driver,
+                    link,
                     downloadDir,
                     outDir,
                     outExt,
-                    maxWait = maxWait
+                    maxWait,
                     )
-            else:
-                print("No data found at that URL. Aborting.")
+            print("Done.")
