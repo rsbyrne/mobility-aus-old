@@ -2,16 +2,18 @@ import produce
 import analysis
 from load import NoData
 
-regions = {
-    'vic', 'mel', 'nsw', 'syd', 'sa', 'ade',
-    'wa', 'per', 'tas', 'qld', 'nt', 'aus',
-    }
-aggTypes = {
-    'lga', 'sa2', 'postcodes'
-    }
+# regions = {
+#     'vic', 'mel', 'nsw', 'syd', 'sa', 'ade',
+#     'wa', 'per', 'tas', 'qld', 'nt', 'aus',
+#     }
+# aggTypes = {
+#     'lga', 'sa2', 'postcodes'
+#     }
+regions = {'vic', 'mel',}
+aggTypes = {'lga',}
 
-# absLookup = produce.get_abs_lookup(aggTypes, refresh = True)
-absLookup = produce.get_abs_lookup({'lga', 'sa2'}, refresh = True)
+# # absLookup = produce.get_abs_lookup(aggTypes, refresh = True)
+# absLookup = produce.get_abs_lookup({'lga', 'sa2'}, refresh = True)
 
 for region in regions:
     for aggType in aggTypes:
@@ -35,8 +37,8 @@ for region in regions:
                 )
         except NoData:
             print("No data currently available for:", region)
-        except:
-            print("Something went wrong with:", region, aggType)
+#         except:
+#             print("Something went wrong with:", region, aggType)
 
 produce.make_meldash()
 
