@@ -2,13 +2,15 @@ import produce
 import analysis
 from load import NoData
 
-regions = {
-    'vic', 'mel', 'nsw', 'syd', 'sa', 'ade',
-    'wa', 'per', 'tas', 'qld', 'nt', 'aus',
-    }
-aggTypes = {
-    'lga', 'sa2', 'postcodes'
-    }
+# regions = {
+#     'vic', 'mel', 'nsw', 'syd', 'sa', 'ade',
+#     'wa', 'per', 'tas', 'qld', 'nt', 'aus',
+#     }
+# aggTypes = {
+#     'lga', 'sa2', 'postcodes'
+#     }
+regions = {'vic', 'mel'}
+aggTypes = {'lga',}
 
 # absLookup = produce.get_abs_lookup(aggTypes, refresh = True)
 absLookup = produce.get_abs_lookup({'lga', 'sa2'}, refresh = True)

@@ -28,7 +28,7 @@ def default_proc(val):
         return val
 
 def _process_datetime(x):
-    stripped = datetime.strptime(x, '%Y-%m-%d %H%M')
+    stripped = datetime.strptime(x.replace(':', ''), '%Y-%m-%d %H%M')
     adjusted = stripped.astimezone(timezone.utc)
     return adjusted
 def _process_geometry(x):
@@ -324,6 +324,8 @@ def conditional_flip_quadkey(x):
         return str(x)
 
 def new_load_fb_tiles(region, dataset, ignoreKeys = set()):
+    if dataset == 'pop':
+        raise Exception("Not implemented currently.")
     global FBURLS
     global TZS
     dataDir = os.path.join(repoPath, 'data')
@@ -336,95 +338,37 @@ def new_load_fb_tiles(region, dataset, ignoreKeys = set()):
         ]
     if not len(filenames):
         raise NoNewFiles
-    if dataset == 'mob':
-        dropKeys = {
-            'geometry',
-            'start_polygon_id',
-            'start_polygon_name',
-            'end_polygon_id',
-            'end_polygon_name',
-            'tile_size',
-            'country',
-            'level',
-            'n_baseline',
-            'n_difference',
-            'percent_change',
-            'is_statistically_significant',
-            'z_score',
-            'start_lat',
-            'start_lon',
-            'end_lat',
-            'end_lon',
-            }
-        procFuncs = {
-            'date_time': _process_datetime,
-            'length_km': float,
-            'start_quadkey': conditional_flip_quadkey,
-            'end_quadkey': conditional_flip_quadkey,
-            }
-    elif dataset == 'pop':
-        def _pop_handle_nan(x):
-            if str(x) == '\\N':
-                return 0.
-            else:
-                return float(x)
-        dropKeys = {
-            'country',
-            'n_baseline',
-            'n_difference',
-            'density_baseline',
-            'density_crisis',
-            'percent_change',
-            'clipped_z_score',
-            'ds',
-            'lat',
-            'lon',
-            }
-        procFuncs = {
-            'date_time': _process_datetime,
-            'quadkey': str,
-            'n_crisis': _pop_handle_nan,
-            }
-    else:
-        raise ValueError
+    renameDict = {
+        'start_quadkey': 'quadkey',
+        'start_quad': 'quadkey',
+        'end_quadkey': 'end_key',
+        'end_quad': 'end_key',
+        'date_time': 'datetime',
+        'length_km': 'km',
+        'n_crisis': 'n'
+        }
+    keepKeys = ['datetime', 'quadkey', 'end_key', 'km', 'n']
+    procFuncs = {
+        'datetime': _process_datetime,
+        'km': float,
+        'quadkey': str,
+        'end_key': str,
+        }
     print("Loading files...")
-    frm = pd.concat([
-        pd.read_csv(os.path.join(searchDir, f)) \
-            for f in filenames
-        ])
-    print("Preprocessing...")
-    frm = frm.drop(dropKeys, axis = 1)
-    for key, func in procFuncs.items(): frm[key] = frm[key].apply(func)
-    frm['date_time'] = frm['date_time'].dt.tz_convert(TZS[region])
-    frm = frm.loc[frm['n_crisis'] > 0.]
+    frms = []
+    for f in filenames:
+        frm = pd.read_csv(os.path.join(searchDir, f))
+        frm = frm.rename(mapper = renameDict, axis = 1)
+        frm = frm[keepKeys]
+        frms.append(frm)
+    frm = pd.concat(frms)
     print("Processing...")
-    if dataset == 'mob':
-        renameDict = {
-            'start_quadkey': 'quadkey',
-            'end_quadkey': 'end_key',
-            'date_time': 'datetime',
-            'length_km': 'km',
-            }
-        frm = frm.rename(
-            renameDict,
-            axis = 1
-            )
-#     # discard superfluous quadkeys:
-#     keyLens = set([len(qk) for qk in frm['quadkey']])
-#     assert len(keyLens) == 1
-#     zoom = list(keyLens)[0]
-#     print("Tile data loaded with zoom level:", zoom)
-#     regionQuadkeys = load_region_quadkeys(region, zoom)
-#     frm = frm.reset_index().set_index('quadkey')
-#     frm = frm.drop(set(frm.index).difference(regionQuadkeys))
-#     frm = frm.reset_index()
-#     frm = frm.drop('index', axis = 1)
-    # other tasks:
-    frm = frm.rename({'n_crisis': 'n'}, axis = 1)
-    if dataset == 'mob':
-        frm = frm.set_index(['datetime', 'quadkey', 'end_key'])
-    else:
-        frm.set_index(['datetime', 'quadkey'])
+    for key, func in procFuncs.items():
+        frm[key] = frm[key].apply(func)
+    frm['datetime'] = frm['datetime'].dt.tz_convert(TZS[region])
+    frm['quadkey'] = frm['quadkey'].apply(conditional_flip_quadkey)
+    frm = frm.loc[frm['n'] > 0.]
+    frm = frm.set_index(['datetime', 'quadkey', 'end_key'])
     print("Done.")
     return frm
 

@@ -114,6 +114,7 @@ def make_mob_date(region, aggType = 'lga', get = False, override = False):
     visit.index.names = ['date', 'code']
 
     frm = frm.rename(dict(start = 'code'), axis = 1)
+    frm['code'] = frm['code'].astype(int)
     frm = frm.set_index(['date', 'code'])
     frm = frm.drop('stop', axis = 1)
     procFrm = frm
