@@ -60,6 +60,16 @@ def make_lookupFrm():
     lookupFrm = pd.read_csv(lookupPath)
     lookupFrm['code'] = lookupFrm['code'].astype(str)
     return lookupFrm
+def make_sub_lookupFrm(state = None, aggType = None):
+    lookup = make_lookupFrm()
+    lookup['name'] = lookup['name'].apply(remove_brackets)
+    if not state is None:
+        lookup = lookup.loc[lookup['state'] == state]
+    if not aggType is None:
+        lookup = lookup.loc[lookup['type'] == aggType]
+    lookup = lookup[['name', 'area', 'pop']]
+    lookup = lookup.set_index('name')
+    return lookup
 
 def make_casesFrm_monash(region = 'vic'):
 
@@ -68,50 +78,49 @@ def make_casesFrm_monash(region = 'vic'):
 
     # From Monash
     # Load data:
-    covid = pd.read_csv('https://homepages.inf.ed.ac.uk/ngoddard/covid19/vicdata/lgadata.csv')
-    pop = dict(covid.loc[covid['Date'] == 'Population'].iloc[0].drop('Date'))
-    covid = covid.drop([0, 1, 2])
-    covid['Date'] = covid['Date'].astype('datetime64[ns]')
-    covid = covid.rename(mapper = dict(Date = 'date'), axis = 1)
+    cases = pd.read_csv('https://homepages.inf.ed.ac.uk/ngoddard/covid19/vicdata/lgadata.csv')
+    pop = dict(cases.loc[cases['Date'] == 'Population'].iloc[0].drop('Date'))
+    cases = cases.drop([0, 1, 2])
+    cases['Date'] = cases['Date'].astype('datetime64[ns]')
+    cases = cases.rename(mapper = dict(Date = 'date'), axis = 1)
 
     # Restructure array:
-    covid = covid.melt('date', var_name = 'name', value_name = 'cumulative')
-    covid = covid.set_index(['date', 'name'])
-    covid = covid.loc[~covid.index.duplicated()]
-    covid = covid.fillna(0).astype(int)
-    covid = covid.sort_index()
+    cases = cases.melt('date', var_name = 'name', value_name = 'cumulative')
+    cases = cases.set_index(['date', 'name'])
+    cases = cases.loc[~cases.index.duplicated()]
+    cases = cases.fillna(0).astype(int)
+    cases = cases.sort_index()
 
     # Correct population figures:
-    covid['pop'] = pd.Series(
-        covid.index.get_level_values('name'),
-        covid.index
-        ).apply(lambda v: pop[v]).astype(int)
+    lookup = make_sub_lookupFrm(region, 'lga')
+    popDict = dict(zip(lookup.index, lookup['pop']))
+    cases['pop'] = [popDict[n] for n in cases.index.get_level_values('name')]
 
     # Derive 'new cases' metric:
-    covid['new'] = covid['cumulative'].groupby(level = 'name') \
+    cases['new'] = cases['cumulative'].groupby(level = 'name') \
         .diff().dropna().astype(int)
-    covid = covid.dropna()
-    covid['new'] = covid['new'] / covid['pop'] * 10000
-    covid['new_rolling'] = covid['new'].groupby(level = 'name', group_keys = False) \
+    cases = cases.dropna()
+    cases['new'] = cases['new'] / cases['pop'] * 10000
+    cases['new_rolling'] = cases['new'].groupby(level = 'name', group_keys = False) \
         .rolling(7).mean().sort_index()
 
     # Add averages:
     serieses = dict()
     weightKey = 'pop'
     level = 'date'
-    for key in [key for key in covid if not key == weightKey]:
+    for key in [key for key in cases if not key == weightKey]:
         fn = lambda f: np.average(f[key], weights = f[weightKey])
-        series = covid[[key, weightKey]].groupby(level = level).apply(fn)
+        series = cases[[key, weightKey]].groupby(level = level).apply(fn)
         serieses[key] = series
     avFrm = pd.DataFrame(serieses)
     avFrm['name'] = 'average'
     avFrm = avFrm.reset_index().set_index(['date', 'name'])
-    covid = covid.drop(weightKey, axis = 1)
-    covid = covid.append(avFrm)
-    covid = covid.dropna().sort_index()
+    cases = cases.drop(weightKey, axis = 1)
+    cases = cases.append(avFrm)
+    cases = cases.dropna().sort_index()
 
     # Return:
-    return covid
+    return cases
 
 def make_casesFrm_covidlive(region = 'vic'):
 
@@ -120,11 +129,7 @@ def make_casesFrm_covidlive(region = 'vic'):
     if not region in {'vic', 'mel'}:
         raise Exception
 
-    lookup = make_lookupFrm() #pd.read_csv('../products/abs_lookup.csv')
-    lookup['name'] = lookup['name'].apply(remove_brackets)
-    lookup = lookup.loc[lookup['type'] == 'lga']
-    lookup = lookup[['name', 'area', 'pop']]
-    lookup = lookup.set_index('name')
+    lookup = make_sub_lookupFrm(region, 'lga') #pd.read_csv('../products/abs_lookup.csv')
     popDict = dict(zip(lookup.index, lookup['pop']))
 
     renameDict = dict(
@@ -215,7 +220,7 @@ def make_dataFrm(region):
     dataName = f'mob_lga_{region}.csv'
     rawPath = os.path.join(dataDir, dataName)
     frm = pd.read_csv(rawPath)
-    casesFrm = make_casesFrm()
+    cases = make_casesFrm()
 
     # Correct data types from csv
     frm['code'] = frm['code'].astype(int).astype(str)
@@ -262,7 +267,8 @@ def make_dataFrm(region):
     frm['score'] = scores
 
     # Add cases data
-    frm[casesFrm.columns] = casesFrm.reindex(frm.index).loc[frm.index].fillna(0.)
+    cases = cases.reindex(frm.index).loc[frm.index]
+    frm[cases.columns] = cases
 
     # Get averages
     averages = calculate_averages(frm)

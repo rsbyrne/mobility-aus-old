@@ -9,11 +9,12 @@ from load import NoData
 # aggTypes = {
 #     'lga', 'sa2', 'postcodes'
 #     }
+
 regions = {'vic', 'mel'}
 aggTypes = {'lga',}
 
-# absLookup = produce.get_abs_lookup(aggTypes, refresh = True)
-absLookup = produce.get_abs_lookup({'lga', 'sa2'}, refresh = True)
+# # absLookup = produce.get_abs_lookup(aggTypes, refresh = True)
+# absLookup = produce.get_abs_lookup({'lga', 'sa2'}, refresh = True)
 
 for region in regions:
     for aggType in aggTypes:

@@ -38,7 +38,12 @@ def make_abs_lookup(sources):
     frms = []
     for source in sources:
         frm = load.load_generic(source)
-        frm = frm[['name', 'area']]
+        frm = frm.rename(axis = 1, mapper = dict(
+            STE_NAME16 = 'state',
+            ))
+        invstates = {v: k for k, v in load.STATENAMES.items()}
+        frm['state'] = frm['state'].apply(lambda x: invstates[x])
+        frm = frm[['name', 'area', 'state']]
         frm['type'] = source
         frm.index.name = 'code'
         frms.append(frm)

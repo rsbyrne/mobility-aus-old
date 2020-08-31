@@ -175,7 +175,8 @@ STATENAMES = {
     'wa': 'Western Australia',
     'tas': 'Tasmania',
     'nt': 'Northern Territory',
-    'act': 'Australian Capital Territory'
+    'act': 'Australian Capital Territory',
+    'oth': 'Other Territories',
     }
 
 GCCNAMES = {
