@@ -103,6 +103,7 @@ def make_casesFrm_monash(region = 'vic'):
     cases['new'] = cases['new'] / cases['pop'] * 10000
     cases['new_rolling'] = cases['new'].groupby(level = 'name', group_keys = False) \
         .rolling(7).mean().sort_index()
+    cases['cumulative'] = cases['cumulative'] / cases['pop'] * 10000
 
     # Add averages:
     serieses = dict()
@@ -152,6 +153,7 @@ def make_casesFrm_covidlive(region = 'vic'):
     cases['new'] = cases['new'] / cases['pop'] * 10000
     cases['new_rolling'] = cases['new'].groupby(level = 'name', group_keys = False) \
         .rolling(7).mean().sort_index()
+    cases['cumulative'] = cases['cumulative'] / cases['pop'] * 10000
 
     # Add averages:
     serieses = dict()
