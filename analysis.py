@@ -61,7 +61,7 @@ def make_lookupFrm():
     lookupFrm['code'] = lookupFrm['code'].astype(str)
     return lookupFrm
 
-def make_casesFrm(region = 'vic'):
+def make_casesFrm_monash(region = 'vic'):
 
     if not region in {'vic', 'mel'}:
         raise Exception
@@ -112,6 +112,69 @@ def make_casesFrm(region = 'vic'):
 
     # Return:
     return covid
+
+def make_casesFrm_covidlive(region = 'vic'):
+
+    region = 'vic'
+
+    if not region in {'vic', 'mel'}:
+        raise Exception
+
+    lookup = make_lookupFrm() #pd.read_csv('../products/abs_lookup.csv')
+    lookup['name'] = lookup['name'].apply(remove_brackets)
+    lookup = lookup.loc[lookup['type'] == 'lga']
+    lookup = lookup[['name', 'area', 'pop']]
+    lookup = lookup.set_index('name')
+    popDict = dict(zip(lookup.index, lookup['pop']))
+
+    renameDict = dict(
+        REPORT_DATE = 'date',
+        LOCALITY_NAME = 'name',
+        CASE_CNT = 'cumulative'
+        )
+
+    cases = pd.read_json("https://covidlive.com.au/covid-live-loc.json")
+    cases = cases.rename(mapper = renameDict, axis = 1)
+    cases = cases[sorted(renameDict.values())]
+    cases['date'] = cases['date'].astype('datetime64[ns]')
+    cases = cases.set_index(['date', 'name'])
+    cases = cases.drop([k for k in cases.index.levels[1] if not k in popDict], level = 'name')
+    cases['pop'] = [popDict[n] for n in cases.index.get_level_values('name')]
+
+    # Derive 'new cases' metric:
+    cases['new'] = cases['cumulative'].groupby(level = 'name') \
+        .diff().dropna().astype(int)
+    cases['new'] = cases['new'] / cases['pop'] * 10000
+    cases['new_rolling'] = cases['new'].groupby(level = 'name', group_keys = False) \
+        .rolling(7).mean().sort_index()
+
+    # Add averages:
+    serieses = dict()
+    weightKey = 'pop'
+    level = 'date'
+    for key in [key for key in cases if not key == weightKey]:
+        fn = lambda f: np.average(f[key], weights = f[weightKey])
+        series = cases[[key, weightKey]].groupby(level = level).apply(fn)
+        serieses[key] = series
+    avFrm = pd.DataFrame(serieses)
+    avFrm['name'] = 'average'
+    avFrm = avFrm.reset_index().set_index(['date', 'name'])
+    cases = cases.drop(weightKey, axis = 1)
+    cases = cases.append(avFrm)
+    cases = cases.dropna().sort_index()
+
+    # Return:
+    return cases
+
+def make_casesFrm(region = 'vic'):
+    monashCases = make_casesFrm_monash(region)
+    covidliveCases = make_casesFrm_covidlive(region)
+    trimmedMonashCases = monashCases.loc[
+        monashCases.index.get_level_values('date') \
+        < covidliveCases.index.get_level_values('date').min()
+        ]
+    cases = pd.concat([trimmedMonashCases, covidliveCases]).sort_index()
+    return cases
 
 def remove_brackets(x):
     # Remove brackets from ABS council names:
