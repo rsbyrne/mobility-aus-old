@@ -11,9 +11,15 @@ MAXWAIT = 10.
 TIMEOUT = 30
 
 def format_href(href):
-    return href[-18:].replace('%3A', '').replace('+', '-')
+    if '%3A' in href:
+        return href[-18:].replace('%3A', '').replace('+', '-')
+    else:
+        return href[-15:].replace('+', '-')
 def check_href(href):
-    return href[-21:-18] == 'ds=' and format_href(href).replace('-', '').isnumeric()
+    if '%3A' in href:
+        return href[-21:-18] == 'ds=' and format_href(href).replace('-', '').isnumeric()
+    else:
+        return href[-18:-15] == 'ds=' and format_href(href).replace('-', '').isnumeric()
 
 def random_sleep(factor = 1.):
     sleepTime = (random.random() + 1.) * factor
@@ -63,7 +69,8 @@ def download(
     driver.set_page_load_timeout(3)
     newFilename = format_href(link) + outExt
     if newFilename in os.listdir(outDir):
-        print("File already exists - skipping.")
+        pass
+#         print("File already exists - skipping.")
     else:
         random_sleep(1.)
         try:
@@ -225,6 +232,11 @@ def pull_datas(
                     for elem in driver.find_elements_by_xpath("//a[@href]")
                         if check_href(elem.get_attribute("href"))
                 ]
+#             alllinks = [
+#                 elem.get_attribute("href")
+#                     for elem in driver.find_elements_by_xpath("//a[@href]")
+#                 ]
+#             print(alllinks)
             if not len(links):
                 raise Exception("No data found at destination!")
             print("Downloading all...")
