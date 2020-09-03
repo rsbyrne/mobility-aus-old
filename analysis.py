@@ -16,6 +16,7 @@ def events_annotate(ax, series, region, lims = (None, None), points = None, retu
     # Get events data:
     eventsFrm = pd.read_csv(os.path.join(dataDir, f'events_{region}.csv'))
     eventsFrm['date'] = eventsFrm['date'].astype('datetime64[ns]')
+    eventsFrm = eventsFrm.sort_values(by = ['date'])
 
     # Trim by provided lims:
     if not lims[0] is None:
@@ -300,7 +301,7 @@ def make_geometry(indices, region = 'vic'):
     geometry = lgas['geometry'].loc[councils]
     return geometry
 
-def make_melvicFrm():
+def make_melvicFrm(dates = None, names = None):
 
     # Get component frames
     melFrm = make_dataFrm('mel')
@@ -315,6 +316,12 @@ def make_melvicFrm():
     frm = melFrm.copy()
     frm['stay'] = melFrm['stay'] * (1. + vicFrm['stay']) / 2.
     frm['km'] = (melFrm['km'] + vicFrm['km']) / 2
+
+    # Optional selections:
+    if not dates is None:
+        frm = frm.loc[(dates, slice(None)),]
+    if not names is None:
+        frm = frm.loc[(slice(None), sorted(set([*names, 'average']))),]
 
     # Calculate new scores
     scores = frm.groupby(level = 'name')['stay'].apply(calculate_day_scores)

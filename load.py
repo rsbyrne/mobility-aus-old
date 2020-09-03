@@ -607,6 +607,51 @@ def load_poly_quadkeys(poly, zoom):
             json.dump(quadkeys, f)
     return quadkeys
 
+def load_seifa():
+
+    seifa = pd.read_csv(os.path.join(repoPath, 'resources/2033055001 - lga indexes - Table 1.csv'))
+
+    seifa = seifa.dropna()
+    seifa.columns = [
+        'code',
+        'name',
+        'Index of Relative Socio-economic Disadvantage - Score',
+        'Index of Relative Socio-economic Disadvantage - Decile',
+        'Index of Relative Socio-economic Advantage and Disadvantage - Score',
+        'Index of Relative Socio-economic Advantage and Disadvantage - Decile',
+        'Index of Economic Resources - Score',
+        'Index of Economic Resources - Decile',
+        'Index of Education and Occupation - Score',
+        'Index of Education and Occupation - Decile',
+        'pop',
+        ]
+
+    import re
+    strip_names = lambda x: re.sub("[\(\[].*?[\)\]]", "", x).strip()
+    seifa['name'] = seifa['name'].apply(strip_names)
+
+    lgas = load_lgas()
+    statesDict = dict(zip(lgas.index.astype(str), lgas['STE_NAME16']))
+    seifa['state'] = seifa['code'].apply(lambda x: statesDict[x] if x in statesDict else None)
+
+    for column in {
+            'Index of Relative Socio-economic Disadvantage - Score',
+            'Index of Relative Socio-economic Disadvantage - Decile',
+            'Index of Relative Socio-economic Advantage and Disadvantage - Score',
+            'Index of Relative Socio-economic Advantage and Disadvantage - Decile',
+            'Index of Economic Resources - Score',
+            'Index of Economic Resources - Decile',
+            'Index of Education and Occupation - Score',
+            'Index of Education and Occupation - Decile',
+            }:
+        seifa[column] = seifa[column].apply(lambda x: int(x) if x.isnumeric() else None)
+        seifa = seifa.dropna()
+        seifa[column] = seifa[column].astype(int)
+
+    seifa = seifa.set_index('code')
+
+    return seifa
+
 # #     allFilePath = os.path.join(dataDir, subDir, 'all.shp')
 #     allFilePath = os.path.join(dataDir, subDir, '_all.csv')
 #     if os.path.isfile(allFilePath):
