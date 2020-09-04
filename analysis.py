@@ -323,10 +323,24 @@ def make_melvicFrm(dates = None, names = None):
     if not names is None:
         frm = frm.loc[(slice(None), sorted(set([*names, 'average']))),]
 
+    # Get SEIFA data
+    seifa = load.load_seifa()
+    seifa = seifa.loc[seifa['state'] == 'Victoria']
+    seifa = seifa.set_index('name')['Index of Relative Socio-economic Disadvantage - Score']
+    indices = set(frm.index.levels[1]).intersection(seifa.index)
+    seifa = seifa.loc[indices]
+    import math
+    lowSE = seifa.nsmallest(math.floor(len(seifa) / 3))
+    highSE = seifa.nlargest(math.floor(len(seifa) / 3))
+    midSE = seifa.loc[[key for key in seifa.index if not (key in lowSE.index or key in highSE.index)]]
+
     # Calculate new scores
     scores = frm.groupby(level = 'name')['stay'].apply(calculate_day_scores)
     scores = scores.reorder_levels([1, 0]).sort_index()
     frm['score'] = scores
+
+    # Set aside the non-average keys:
+    names = frm.index.levels[1]
 
     # Calculate new averages
     frm = frm.drop('average', level = 'name')
@@ -338,6 +352,17 @@ def make_melvicFrm(dates = None, names = None):
     # Calculate new average score
     avScores = calculate_day_scores(frm['score'].xs('average', level = 'name'))
     frm.loc[(slice(None), 'average'), 'score'] = avScores.to_list()
+
+    # Calculate sub-averages
+    for name, se in zip(['lowSE', 'midSE', 'highSE'], [lowSE, midSE, highSE]):
+        subNames = set(se.index).intersection(names)
+        subFrm = frm.loc[(slice(None), subNames),]
+        subAverages = calculate_averages(subFrm)
+        subAverages['name'] = name
+        subAverages = subAverages.reset_index().set_index(['date', 'name']).sort_index()
+        frm = frm.append(subAverages).sort_index()
+        avScores = calculate_day_scores(frm['score'].xs(name, level = 'name'))
+        frm.loc[(slice(None), name), 'score'] = avScores.to_list()
 
     # Drop redundant columns
     frm = frm.drop('pop', axis = 1)

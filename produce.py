@@ -438,7 +438,9 @@ def bokeh_spacetimepop(
     corners = list(itertools.product(geometry.total_bounds[::2], geometry.total_bounds[1::2]))
     allPoly = Polygon([corners[0], corners[1], corners[3], corners[2]])
     allPoly = allPoly.centroid.buffer(np.sqrt(allPoly.area) / 1e6)
-    geometry['average'] = allPoly
+    for name in frm.index.levels[1]:
+        if not name in geometry.index:
+            geometry[name] = allPoly
     geometry = geometry.simplify(np.sqrt(geometry.area).min() * 10. ** 3.5)
     geoFrm = frm.reset_index().pivot(index = frm.index.names[1], columns = frm.index.names[0])
     geoFrm.columns = geoFrm.columns.map('_'.join).str.strip('_')
@@ -458,7 +460,7 @@ def bokeh_spacetimepop(
         plot_height = int((ph - 100) * 1. / 3.),
         plot_width = pw,
         toolbar_location = 'left',
-        tools = 'save, pan, box_zoom, reset, xwheel_zoom',
+        tools = 'save, xpan, box_zoom, reset, xwheel_zoom',
         active_scroll = 'auto',
     #         title = title,
         )
@@ -478,7 +480,7 @@ def bokeh_spacetimepop(
         plot_width = pw - 20,
         plot_height = int(round((pw - 20) / aspect)),
         toolbar_location = 'right',
-        tools = 'pan, zoom_in, zoom_out, wheel_zoom, reset',
+        tools = 'pan, wheel_zoom, reset',
         background_fill_color = "lightgrey"
         )
     mapFig.xgrid.grid_line_color = None
@@ -770,7 +772,10 @@ def make_meldash(returnPlot = False):
             The data has been aggregated to <b>Local Government Areas</b>,
             typically city councils,
             and goes back as far as mid-April when collection began.
-            Data featured on this page can be found
+            Averages across all councils weighted by population are provided,
+            as are sub-averages across socioeconomic bands derived from the
+            <a href="https://www.abs.gov.au/websitedbs/censushome.nsf/home/seifa">ABS SEIFA dataset.</a>
+            Raw data featured on this page can be downloaded
             <a href="https://rsbyrne.github.io/mobility-aus/products/{name}.csv">here</a>.
             Full data, including for other regions, is available
             <a href="https://rsbyrne.github.io/mobility-aus/">here</a>.
