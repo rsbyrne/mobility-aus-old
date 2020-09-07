@@ -133,6 +133,7 @@ class Data:
                 uLim += step - uLim % step
                 if self.data.max() > uLim - 1. / 3. * step:
                     uLim += step
+            lLim, uLim = [round(v, 15) for v in (lLim, uLim)]
             return lLim, uLim
 
         @staticmethod

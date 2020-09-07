@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import random
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -10,6 +11,8 @@ from ._fig import Fig as _Fig
 from . import analysis
 from .data import Data
 
+def tempname():
+    return str(random.randint(1e8, 1e9 - 1))
 def draw(variety, *args, size = (3, 3), **kwargs):
     fig = Canvas(size = size)
     ax = fig.make_ax()
@@ -108,8 +111,7 @@ class Ax:
             canvas = Canvas()
 
         if name is None:
-#             name = tempname()
-            name = 'default'
+            name = tempname()
 
         ax = canvas.fig.add_subplot(
             canvas.nrows,
@@ -147,6 +149,30 @@ class Ax:
         self.gridYMajorVisible = True
         self.gridYMinorVisible = True
 
+        self.tickValsXMajor = []
+        self.tickValsXMinor = []
+        self.tickValsYMajor = []
+        self.tickValsYMinor = []
+        self.tickValsXMajorVisible = True
+        self.tickValsYMajorVisible = True
+        self.tickValsXMinorVisible = True
+        self.tickValsYMinorVisible = True
+        self.tickLabelsXMajor = []
+        self.tickLabelsXMinor = []
+        self.tickLabelsYMajor = []
+        self.tickLabelsYMinor = []
+        self.tickLabelsXMajorVisible = True
+        self.tickLabelsYMajorVisible = True
+        self.tickLabelsXMinorVisible = True
+        self.tickLabelsYMinorVisible = True
+        self.tickLabelsXVisible = True
+        self.tickLabelsYVisible = True
+
+        self.labelX = ''
+        self.labelY = ''
+        self.labelXVisible = True
+        self.labelYVisible = True
+
         self.facecolour = None
         self.facecolourVisible = True
         axStack = self._get_axStack()
@@ -171,14 +197,14 @@ class Ax:
             ):
         localSize = self.canvas.size[i] / self.canvas.shape[::-1][i]
         nTicks = ticksPerInch * localSize
-        label, tickVals, minorTickVals, ticklabels, lims = \
+        label, tickVals, minorTickVals, tickLabels, lims = \
             data.auto_axis_configs(nTicks)
         tupFn = lambda val: (val, None) if i == 0 else (None, val)
         self.set_scales(*tupFn(scale))
         self.set_lims(*tupFn(lims))
-        self.set_ticks_major(*tupFn((tickVals, ticklabels)))
-        self.set_ticks_minor(*tupFn(minorTickVals))
-        self.set_label(*tupFn(label))
+        self.set_ticks(i, vals = tickVals, labels = tickLabels)
+        self.set_ticks(i, minor = True, vals = minorTickVals)
+        self.set_label(i, label)
         self.set_grid_i_major(i, alpha)
         self.set_grid_i_minor(i, alpha / 2.)
         if hide:
@@ -277,42 +303,109 @@ class Ax:
         if not x is None: self.ax.set_xlim(x)
         if not y is None: self.ax.set_ylim(y)
 
-    def set_ticks_major(self, x = None, y = None):
-        self.set_ticks(x = x, y = y, minor = False)
-    def set_ticks_minor(self, x = None, y = None):
-        self.set_ticks(x = x, y = y, minor = True)
-    def set_ticks(self, x = None, y = None, minor = False):
-        if not x is None:
-            if type(x) is tuple:
-                xticks, xticklabels = x
+    def set_ticks(self, i, minor = False, vals = [], labels = []):
+        if i == 0:
+            if minor:
+                self.set_tickVals_x_minor(vals)
+                self.set_tickLabels_x_minor(labels)
             else:
-                xticks, xticklabels = x, None
-            if not xticks is None:
-                self.ax.set_xticks(
-                    xticks,
-                    minor = minor
-                    )
-            if not xticklabels is None:
-                self.ax.set_xticklabels(
-                    xticklabels,
-                    rotation = 45,
-                    minor = minor
-                    )
-        if not y is None:
-            if type(y) is tuple:
-                yticks, yticklabels = y
+                self.set_tickVals_x_major(vals)
+                self.set_tickLabels_x_major(labels)
+        else:
+            if minor:
+                self.set_tickVals_y_minor(vals)
+                self.set_tickLabels_y_minor(labels)
             else:
-                yticks, yticklabels = y, None
-            if not yticks is None:
-                self.ax.set_yticks(
-                    yticks,
-                    minor = minor
-                    )
-            if not yticklabels is None:
-                self.ax.set_yticklabels(
-                    yticklabels,
-                    minor = minor
-                    )
+                self.set_tickVals_y_major(vals)
+                self.set_tickLabels_y_major(labels)
+    def set_tickVals_x_major(self, vals):
+        self.tickValsXMajor = vals
+        self._set_tickVals_x_major(vals)
+    def set_tickVals_y_major(self, vals):
+        self.tickValsYMajor = vals
+        self._set_tickVals_y_major(vals)
+    def set_tickVals_x_minor(self, vals):
+        self.tickValsXMinor = vals
+        self._set_tickVals_x_minor(vals)
+    def set_tickVals_y_minor(self, vals):
+        self.tickValsYMinor = vals
+        self._set_tickVals_y_minor(vals)
+    def set_tickLabels_x_major(self, labels):
+        self.tickLabelsXMajor = labels
+        self._set_tickLabels_x_major(labels)
+    def set_tickLabels_y_major(self, labels):
+        self.tickLabelsYMajor = labels
+        self._set_tickLabels_y_major(labels)
+    def set_tickLabels_x_minor(self, labels):
+        self.tickLabelsXMinor = labels
+        self._set_tickLabels_x_minor(labels)
+    def set_tickLabels_y_minor(self, labels):
+        self.tickLabelsYMinor = labels
+        self._set_tickLabels_y_minor(labels)
+    def _set_tickVals_x_major(self, vals):
+        self.ax.set_xticks(
+            vals,
+            minor = False
+            )
+    def _set_tickVals_y_major(self, vals):
+        self.ax.set_yticks(
+            vals,
+            minor = False
+            )
+    def _set_tickVals_x_minor(self, vals):
+        self.ax.set_xticks(
+            vals,
+            minor = True
+            )
+    def _set_tickVals_y_minor(self, vals):
+        self.ax.set_yticks(
+            vals,
+            minor = True
+            )
+    def _set_tickLabels_x_major(self, labels, rotation = 45):
+        self.ax.set_xticklabels(
+            labels,
+            rotation = rotation,
+            minor = False
+            )
+    def _set_tickLabels_y_major(self, labels, rotation = 0):
+        self.ax.set_yticklabels(
+            labels,
+            rotation = rotation,
+            minor = False
+            )
+    def _set_tickLabels_x_minor(self, labels, rotation = 45):
+        self.ax.set_xticklabels(
+            labels,
+            rotation = rotation,
+            minor = True
+            )
+    def _set_tickLabels_y_minor(self, labels, rotation = 0):
+        self.ax.set_yticklabels(
+            labels,
+            rotation = rotation,
+            minor = True
+            )
+    def toggle_tickLabels_x(self):
+        if self.tickLabelsXVisible:
+            majors = []
+            minors = []
+        else:
+            majors = self.tickLabelsXMajor
+            minors = self.tickLabelsXMinor
+        self.tickLabelsXVisible = not(self.tickLabelsXVisible)
+        self._set_tickLabels_x_major(majors)
+        self._set_tickLabels_x_minor(minors)
+    def toggle_tickLabels_y(self):
+        if self.tickLabelsYVisible:
+            majors = []
+            minors = []
+        else:
+            majors = self.tickLabelsYMajor
+            minors = self.tickLabelsYMinor
+        self.tickLabelsYVisible = not(self.tickLabelsYVisible)
+        self._set_tickLabels_y_major(majors)
+        self._set_tickLabels_y_minor(minors)
 
     def set_margins(self, x = 0., y = 0.):
         self.ax.set_xmargin(x)
@@ -410,6 +503,36 @@ class Ax:
         axStack = self._get_axStack()
         for ax in axStack:
             ax.facecolourVisible = not self.facecolourVisible
+
+    def set_label(self, i, label):
+        if i == 0:
+            self.set_label_x(label)
+        else:
+            self.set_label_y(label)
+    def set_label_x(self, label):
+        self.labelX = label
+        self.set_label_x(label)
+    def _set_label_x(self, label):
+        self.ax.set_xlabel(label)
+    def set_label_y(self, label):
+        self.labelY = label
+        self.set_label_y(label)
+    def _set_label_y(self, label):
+        self.ax.set_ylabel(label)
+    def toggle_label_x(self):
+        if self.labelXVisible:
+            setVal = ''
+        else:
+            setVal = self.labelX
+        self.labelXVisible = not self.labelXVisible
+        self._set_label_x(setVal)
+    def toggle_label_y(self):
+        if self.labelYVisible:
+            setVal = ''
+        else:
+            setVal = self.labelY
+        self.labelYVisible = not self.labelYVisible
+        self._set_label_y(setVal)
 
     def set_label(self, x = '', y = ''):
         if not x is None:
@@ -512,18 +635,18 @@ class Ax:
             label,
             arrowProps = dict(arrowstyle = 'simple'),
             points = None,
+            horizontalalignment = 'center',
+            verticalalignment = 'center',
             **kwargs
             ):
-        if points is None:
-            points = (10, 10)
-        location = (x, y)
-        labelLocation = ('offset points', 'offset points')
         self.ax.annotate(
             label,
-            location,
-            xytext = points,
-            textcoords = ('offset points', 'offset points'),
+            (x, y),
+            xytext = (10, 10) if points is None else points,
+            textcoords = 'offset points',
             arrowprops = arrowProps,
+            horizontalalignment = horizontalalignment,
+            verticalalignment = verticalalignment,
             **kwargs
             )
 
