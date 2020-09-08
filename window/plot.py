@@ -6,7 +6,6 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.pyplot import get_cmap
 
-# from everest.disk import tempname
 from ._fig import Fig as _Fig
 from . import analysis
 from .data import Data
@@ -30,6 +29,7 @@ class Canvas(_Fig):
 
     def __init__(self,
             name = None,
+            title = None,
             shape = (1, 1),
             size = (3, 3), # inches
             dpi = 100, # pixels per inch
@@ -59,7 +59,14 @@ class Canvas(_Fig):
 
         self.ax = self.make_ax
 
+        if not title is None:
+            self.set_title(title)
+
         super().__init__()
+
+    def set_title(self, title, fontsize = 16):
+        self.title = title
+        self.fig.suptitle(title, fontsize = fontsize)
 
     def make_ax(self, place = (0, 0), superimpose = False, **kwargs):
         rowNo, colNo = place
@@ -511,12 +518,12 @@ class Ax:
             self.set_label_y(label)
     def set_label_x(self, label):
         self.labelX = label
-        self.set_label_x(label)
+        self._set_label_x(label)
     def _set_label_x(self, label):
         self.ax.set_xlabel(label)
     def set_label_y(self, label):
         self.labelY = label
-        self.set_label_y(label)
+        self._set_label_y(label)
     def _set_label_y(self, label):
         self.ax.set_ylabel(label)
     def toggle_label_x(self):
@@ -533,12 +540,6 @@ class Ax:
             setVal = self.labelY
         self.labelYVisible = not self.labelYVisible
         self._set_label_y(setVal)
-
-    def set_label(self, x = '', y = ''):
-        if not x is None:
-            self.ax.set_xlabel(x)
-        if not y is None:
-            self.ax.set_ylabel(y)
 
     def draw(self,
             x,
@@ -637,6 +638,7 @@ class Ax:
             points = None,
             horizontalalignment = 'center',
             verticalalignment = 'center',
+            rotation = 0,
             **kwargs
             ):
         self.ax.annotate(
@@ -647,6 +649,7 @@ class Ax:
             arrowprops = arrowProps,
             horizontalalignment = horizontalalignment,
             verticalalignment = verticalalignment,
+            rotation = rotation,
             **kwargs
             )
 

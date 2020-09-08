@@ -866,7 +866,112 @@ def make_meldash(returnPlot = False):
     if returnPlot:
         return myplot
 
-def update_melsummary():
+def make_melsummary_se_plot():
+
+    global dataDir
+
+    frm = pd.read_csv(os.path.join(dataDir, 'meldash.csv'))
+    frm['date'] = frm['date'].astype('datetime64[ns]')
+    frm = frm.set_index(['date', 'name'])
+
+    lowAv = frm.xs('lowSE', level = 'name')['score']
+    midAv = frm.xs('midSE', level = 'name')['score']
+    highAv = frm.xs('highSE', level = 'name')['score']
+    avScore = frm.xs('average', level = 'name')['score']
+    serieses = [lowAv, midAv, highAv]
+    avNew = frm.xs('average', level = 'name')['new_rolling']
+
+    dates = avScore.index.get_level_values('date')
+
+    def colour_ticks(ax, colourmap):
+        if type(colourmap) is list:
+            cmap = mpl.colors.ListedColormap(colourmap)
+        else:
+            cmap = get_cmap(colourmap)
+        yticklabels = ax.ax.get_yticklabels()
+        ytickvals = ax.ax.get_yticks()
+        norm = mpl.colors.Normalize(min(ytickvals), max(ytickvals))
+        for tickval, ticklabel in zip(ytickvals, yticklabels):
+            ticklabel.set_color(cmap(norm(tickval)))
+            ticklabel.set_fontweight('heavy')
+
+    canvas = Canvas(size = (20, 12), shape = (2, 1))
+    canvas.set_title('Melbourne in Lockdown')
+
+    ax1 = canvas.make_ax(place = (0, 0), name = 'Lockdown Score')
+    ax1.set_title('Lockdown compliance by socioeconomic band\n (higher values -> greater social distancing)')
+    ax1.multiline(
+        [Data(s.index, label = 'Date') for s in serieses],
+        [Data(s.values, label = 'Lockdown compliance score') for s in serieses],
+        )
+    maxs = pd.Series(
+        [max(vs) for vs in zip(*[s.values for s in serieses])],
+        dates
+        )
+    events_annotate_fn = partial(
+        analysis.events_annotate,
+        region = 'vic',
+        lims = (dates.min(), dates.max()),
+        points = (10, 10)
+        )
+    # keys = events_annotate_fn(ax1, maxs)
+    ax1.ax.legend(['low-SE council areas', 'mid-SE council areas', 'high-SE council areas', 'all council areas'], loc = 'upper center')
+
+    ax2 = canvas.make_ax(place = (0, 0), name = 'COVID Cases')
+    ax2.line(
+        Data(avNew.index, label = 'Date'),
+        Data(avNew.values, label = 'New cases per 10,000 people\n(7-day rolling average)', lims = (0., 1.)),
+        c = 'red'
+        )
+    ax2.swap_sides_axis_y()
+    ax2.toggle_axis_x()
+    ax2.toggle_grid()
+    colour_ticks(ax1, ['saddlebrown', 'chocolate', 'goldenrod', 'limegreen', 'green'])
+    colour_ticks(ax2, ['lightcoral', 'indianred', 'firebrick', 'maroon', 'darkred'])
+
+    diffs = [(series - avScore) for series in serieses]
+    ax3 = canvas.make_ax(place = (1, 0))
+    ax3.multiline(
+        [Data(s.index, label = 'Date') for s in diffs],
+        [Data(s.values, label = 'Difference from average') for s in diffs],
+        )
+    ax3.set_title('Lockdown compliance score: differences from average by socioeconomic band\n (above the line -> better than average compliance)')
+
+    annotations = [
+        ('2020-04-25', 'Anzac Day'),
+        ('2020-06-01', 'Cafes reopen'),
+        ('2020-06-08', "Queen's Birthday"),
+        ('2020-06-26', 'School holidays begin'),
+        ('2020-06-30', 'Postcode lockdowns'),
+        ('2020-07-09', 'Stage Three begins'),
+        ('2020-08-02', 'Stage Four begins'),
+        ('2020-08-06', 'Businesses close')
+        ]
+    for i, (date, label) in enumerate(annotations):
+        maxs = pd.Series(
+            [max(vs) for vs in zip(*[s.values for s in diffs])],
+            dates
+            )
+        mins = pd.Series(
+            [min(vs) for vs in zip(*[s.values for s in diffs])],
+            dates
+            )
+        vert, vertOffset = (mins.loc[date], -50) if i % 2 else (maxs.loc[date], 50)
+        ax3.annotate(
+            pd.Timestamp(date),
+            vert,
+            label,
+            arrowProps = dict(arrowstyle = '->'),
+            points = (0, vertOffset),
+            )
+    #     ax3.ax.legend(['low-SE council areas', 'mid-SE council areas', 'high-SE council areas', 'all council areas'])
+
+    ax1.toggle_tickLabels_x()
+    ax1.toggle_label_x()
+
+    return canvas
+
+def make_melsummary_plot():
 
     global dataDir
 
@@ -929,13 +1034,29 @@ def update_melsummary():
     keys = events_annotate_fn(ax1, avScore)
 
     keyTable = pd.DataFrame(keys, columns = ['Key', 'Event']).set_index('Key')
+    keyTable = keyTable.to_html()
+
+    return canvas, keyTable
+
+def update_melsummary():
+
+    global dataDir
+
+    htmlout = ''
+
+    canvas, keyTable = make_melsummary_plot()
     canvas.fig.savefig(os.path.join(dataDir, 'melsummary.png'), bbox_inches = "tight")
     canvas.fig.savefig(os.path.join(dataDir, 'melsummary_hires.png'), bbox_inches = "tight", dpi = 400)
-    keyTable = keyTable.to_html()
-    htmlout = '\n'.join([
+    htmlout += '\n'.join([
         '<img src="https://rsbyrne.github.io/mobility-aus/products/melsummary.png" alt="Melbourne summary data">',
         keyTable
         ])
+
+    canvas = make_melsummary_se_plot()
+    canvas.fig.savefig(os.path.join(dataDir, 'melsummaryse.png'), bbox_inches = "tight")
+    canvas.fig.savefig(os.path.join(dataDir, 'melsummaryse_hires.png'), bbox_inches = "tight", dpi = 400)
+    htmlout += '\n<img src="https://rsbyrne.github.io/mobility-aus/products/melsummaryse.png" alt="Melbourne summary by socioeconomic group">'
+
     with open(os.path.join(dataDir, 'melsummary.html'), 'w') as f:
         f.write(htmlout)
 
