@@ -882,6 +882,7 @@ def make_melsummary_se_plot():
     avNew = frm.xs('average', level = 'name')['new_rolling']
 
     dates = avScore.index.get_level_values('date')
+    tweakMaxDate = dates.max() + pd.DateOffset(hours = 1)
 
     def colour_ticks(ax, colourmap):
         if type(colourmap) is list:
@@ -901,7 +902,7 @@ def make_melsummary_se_plot():
     ax1 = canvas.make_ax(place = (0, 0), name = 'Lockdown Score')
     ax1.set_title('Lockdown compliance by socioeconomic band\n (higher values -> greater social distancing)')
     ax1.multiline(
-        [Data(s.index, label = 'Date') for s in serieses],
+        [Data(s.index, label = 'Date', lims = (None, tweakMaxDate)) for s in serieses],
         [Data(s.values, label = 'Lockdown compliance score') for s in serieses],
         )
     maxs = pd.Series(
@@ -919,7 +920,7 @@ def make_melsummary_se_plot():
 
     ax2 = canvas.make_ax(place = (0, 0), name = 'COVID Cases')
     ax2.line(
-        Data(avNew.index, label = 'Date'),
+        Data(avNew.index, label = 'Date', lims = (None, tweakMaxDate)),
         Data(avNew.values, label = 'New cases per 10,000 people\n(7-day rolling average)', lims = (0., 1.)),
         c = 'red'
         )
@@ -932,7 +933,7 @@ def make_melsummary_se_plot():
     diffs = [(series - avScore) for series in serieses]
     ax3 = canvas.make_ax(place = (1, 0))
     ax3.multiline(
-        [Data(s.index, label = 'Date') for s in diffs],
+        [Data(s.index, label = 'Date', lims = (None, tweakMaxDate)) for s in diffs],
         [Data(s.values, label = 'Difference from average') for s in diffs],
         )
     ax3.set_title('Lockdown compliance score: differences from average by socioeconomic band\n (above the line -> better than average compliance)')
