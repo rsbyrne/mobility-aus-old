@@ -4,7 +4,7 @@ from load import NoData
 
 # regions = {'vic', 'mel', 'nsw', 'syd'}
 # aggTypes = {'lga', 'sa2'}
-regions, aggTypes = {}
+regions, aggTypes = {}, {}
 
 for region in regions:
     for aggType in aggTypes:
