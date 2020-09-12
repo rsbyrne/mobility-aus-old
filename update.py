@@ -2,22 +2,8 @@ import produce
 import analysis
 from load import NoData
 
-# regions = {
-#     'vic', 'mel', 'nsw', 'syd', 'sa', 'ade',
-#     'wa', 'per', 'tas', 'qld', 'nt', 'aus',
-#     }
-# aggTypes = {
-#     'lga', 'sa2', 'postcodes'
-#     }
-
-# regions = {'vic', 'mel'}
-# aggTypes = {'lga',}
-
-regions = {'vic', 'mel', 'nsw', 'syd'}
-aggTypes = {'lga', 'sa2'}
-
-# # absLookup = produce.get_abs_lookup(aggTypes, refresh = True)
-# absLookup = produce.get_abs_lookup({'lga', 'sa2'}, refresh = True)
+# regions = {'vic', 'mel', 'nsw', 'syd'}
+# aggTypes = {'lga', 'sa2'}
 
 for region in regions:
     for aggType in aggTypes:
@@ -47,3 +33,19 @@ for region in regions:
 produce.make_meldash()
 
 produce.update_melsummary()
+
+
+
+# regions = {
+#     'vic', 'mel', 'nsw', 'syd', 'sa', 'ade',
+#     'wa', 'per', 'tas', 'qld', 'nt', 'aus',
+#     }
+# aggTypes = {
+#     'lga', 'sa2', 'postcodes'
+#     }
+
+# regions = {'vic', 'mel'}
+# aggTypes = {'lga',}
+
+# # absLookup = produce.get_abs_lookup(aggTypes, refresh = True)
+# absLookup = produce.get_abs_lookup({'lga', 'sa2'}, refresh = True)
