@@ -2,3 +2,4 @@ data/
 resources/
 working/
 .credentials.*
+.ssh/
