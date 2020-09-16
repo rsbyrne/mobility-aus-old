@@ -946,7 +946,8 @@ def make_melsummary_se_plot():
         ('2020-06-30', 'Postcode lockdowns'),
         ('2020-07-09', 'Stage Three begins'),
         ('2020-08-02', 'Stage Four begins'),
-        ('2020-08-06', 'Businesses close')
+        ('2020-08-06', 'Businesses close'),
+        ('2020-09-06', 'Roadmap announcement'),
         ]
     for i, (date, label) in enumerate(annotations):
         maxs = pd.Series(
