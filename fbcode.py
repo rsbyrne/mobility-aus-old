@@ -7,7 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.common import exceptions
 
-MAXWAIT = 10.
+MAXWAIT = 30.
 TIMEOUT = 30
 
 def format_href(href):
