@@ -7,8 +7,8 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.common import exceptions
 
-MAXWAIT = 30.
-TIMEOUT = 30
+MAXWAIT = 60.
+TIMEOUT = 60
 
 def format_href(href):
     if '%3A' in href:
