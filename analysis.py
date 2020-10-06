@@ -305,8 +305,9 @@ def make_melvicFrm(dates = None, names = None):
 
     # Get component frames
     melFrm = make_dataFrm('mel')
-    melFrm = melFrm.drop('Greater Geelong', level = 'name')
-    melFrm = melFrm.drop('Queenscliffe', level = 'name')
+    for key in {'Greater Geelong', 'Queenscliffe', 'Surf Coast'}:
+        if key in set(melFrm.index.get_level_values('name')):
+            melFrm = melFrm.drop(key, level = 'name')
     vicFrm = make_dataFrm('vic')
     indices = list(set.intersection(set(melFrm.index), set(vicFrm.index)))
     melFrm = melFrm.loc[indices].sort_index()

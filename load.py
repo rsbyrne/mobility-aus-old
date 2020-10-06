@@ -262,29 +262,30 @@ def load_fb_mob_tiles_wa():
 def load_fb_mob_tiles_tas():
     return load_fb_mob_tiles('tas')
 
-def load_fb_tiles(region, dataset, get = False, override = False):
+def load_fb_tiles(region, dataset, get = False, override = True):
     global FBURLS
-    if get:
-        quick_pull_data(region, dataset, 'tiles')
+#     if get:
+#         quick_pull_data(region, dataset, 'tiles')
     dataDir = os.path.join(repoPath, 'data')
     subDir = FBURLS[region][dataset]['tiles']
     searchDir = os.path.join(dataDir, subDir)
     if not os.path.isdir(searchDir):
         os.mkdir(searchDir, mode = 777)
-    pre, ignoreKeys = None, set()
-    if not override:
-        try:
-            pre, ignoreKeys = pre_load_fb_tiles(region, dataset)
-        except FileNotFoundError:
-            pass
-    try:
-        new = new_load_fb_tiles(region, dataset, ignoreKeys)
-    except NoNewFiles:
-        new = None
-    if new is None and pre is None:
-        raise NoData
-    out = pd.concat([pre, new])
-    out = out.sort_index()
+    out = new_load_fb_tiles(region, dataset)
+#     pre, ignoreKeys = None, set()
+#     if not override:
+#         try:
+#             pre, ignoreKeys = pre_load_fb_tiles(region, dataset)
+#         except FileNotFoundError:
+#             pass
+#     try:
+#         new = new_load_fb_tiles(region, dataset, ignoreKeys)
+#     except NoNewFiles:
+#         new = None
+#     if new is None and pre is None:
+#         raise NoData
+#     out = pd.concat([pre, new])
+#     out = out.sort_index()
     allFilePath = os.path.join(searchDir, '_all.csv')
     if os.path.exists(allFilePath):
         os.remove(allFilePath)
@@ -303,10 +304,7 @@ def pre_load_fb_tiles(region, dataset):
     print("Fixing dates...")
     fix_dates = lambda t: pd.to_datetime(t, utc = True).tz_convert(TZS[region])
     fixedDates = {date: fix_dates(date) for date in set(loaded['datetime'])}
-    print("Shifting early morning timestamps to 11:59 PM previous night.")
-    shiftD = lambda d: d - pd.Timedelta(d.hour, 'hour') - pd.Timedelta(1, 'minute')
-    shiftedDates = [shiftD(d) if d.hour <= 5 else d for d in dates]
-    loaded['datetime'] = loaded['datetime'].apply(lambda x: shiftedDates[x])
+    loaded['datetime'] = loaded['datetime'].apply(lambda x: fixedDates[x])
     alreadyKeys = set([standardise_timestamp(t) for t in set(loaded['datetime'])])
     loaded['quadkey'] = loaded['quadkey'].astype(str)
     if dataset == 'mob':
@@ -370,9 +368,17 @@ def new_load_fb_tiles(region, dataset, ignoreKeys = set()):
     for key, func in procFuncs.items():
         frm[key] = frm[key].apply(func)
     frm['datetime'] = frm['datetime'].dt.tz_convert(TZS[region])
+#     print("Shifting early morning timestamps to 11:59 PM previous night.")
+#     shiftD = lambda d: d - pd.Timedelta(d.hour, 'hour') - pd.Timedelta(1, 'minute')
+#     shiftedDates = {d: shiftD(d) if d.hour <= 5 else d for d in set(frm['datetime'])}
+#     frm['datetime'] = frm['datetime'].apply(lambda x: shiftedDates[x])
     frm['quadkey'] = frm['quadkey'].apply(conditional_flip_quadkey)
+    frm['end_key'] = frm['end_key'].apply(conditional_flip_quadkey)
+    zeroDisp = frm.loc[frm['km'] == 0]
+    assert all(zeroDisp['quadkey'] == zeroDisp['end_key'])
     frm = frm.loc[frm['n'] > 0.]
     frm = frm.set_index(['datetime', 'quadkey', 'end_key'])
+    frm = frm.sort_index()
     print("Done.")
     return frm
 

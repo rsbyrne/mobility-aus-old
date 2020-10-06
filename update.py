@@ -14,7 +14,7 @@ for region in regions:
                 aggType,
                 get = False,
                 refresh = True,
-                override = False
+                override = True
                 )
             produce.make_mob_plots(
                 mob,

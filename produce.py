@@ -1048,18 +1048,43 @@ def update_melsummary():
 
     htmlout = ''
 
-    canvas, keyTable = make_melsummary_plot()
-    canvas.fig.savefig(os.path.join(dataDir, 'melsummary.png'), bbox_inches = "tight")
-    canvas.fig.savefig(os.path.join(dataDir, 'melsummary_hires.png'), bbox_inches = "tight", dpi = 400)
-    htmlout += '\n'.join([
-        '<img src="https://rsbyrne.github.io/mobility-aus/products/melsummary.png" alt="Melbourne summary data">',
-        keyTable
-        ])
+#     canvas, keyTable = make_melsummary_plot()
+#     canvas.fig.savefig(os.path.join(dataDir, 'melsummary.png'), bbox_inches = "tight")
+#     canvas.fig.savefig(os.path.join(dataDir, 'melsummary_hires.png'), bbox_inches = "tight", dpi = 400)
+#     htmlout += '\n'.join([
+#         '<img src="https://rsbyrne.github.io/mobility-aus/products/melsummary.png" alt="Melbourne summary data">',
+#         keyTable
+#         ])
 
     canvas = make_melsummary_se_plot()
-    canvas.fig.savefig(os.path.join(dataDir, 'melsummaryse.png'), bbox_inches = "tight")
+    canvas.fig.savefig(os.path.join(dataDir, 'melsummaryse.png'), bbox_inches = "tight", dpi = 100)
     canvas.fig.savefig(os.path.join(dataDir, 'melsummaryse_hires.png'), bbox_inches = "tight", dpi = 400)
     htmlout += '\n<img src="https://rsbyrne.github.io/mobility-aus/products/melsummaryse.png" alt="Melbourne summary by socioeconomic group">'
+
+    htmlout += '''
+        This chart shows the change in people's behaviour over time in response to lockdown policies and COVID case numbers.
+        Facebook movement data for hundreds of thousands of anonymised individuals was aggregated to councils and calendar days
+        were analysed to determine the proportion of users who stayed within a few kilometres of their start position
+        over each time period. The numbers were then scaled according to the highest (1) and lowest (0) stay-at-home
+        values observed for that day of the week (e.g. 'all Mondays') for that council area.
+        The councils have been grouped by socioeconomic advantage as defined by the
+        <a href="https://www.abs.gov.au/websitedbs/censushome.nsf/home/seifa">Australian Bureau of Statistics</a>
+        and plotted against case numbers sourced with gratitude from
+        <a href="https://covid19data.com.au/">covid19data.com.au</a>
+        and
+        <a href="https://covidlive.com.au/">covidlive.com.au</a>.
+        Values of 1 or higher mean that people are meeting or beating their highest stay-at-home behaviours,
+        while values of 0 or lower mean that people are straying from home as much or even more than they ever have.
+        The lower plot shows how the score for each group of councils deviates from the average across all councils on that
+        given day: values above 0 indicate that those councils are beating the average,
+        while values below 0 show councils that are trailing the average.
+        The data are updated daily and go back as far as April when collection began.
+        \n\n
+        Visit the <a href="https://rsbyrne.github.io/mobility-aus/products/meldash.html">Interactive Dashboard</a>
+        to see more. For questions or suggestions contact <a href="mailto:rohan.byrne@unimelb.edu.au">Rohan Byrne</a>.
+        This work was carried out at the University of Melbourne on the lands of the Wurundjeri People of the Kulin Nation,
+        whose sovereignty was never ceded.
+        '''
 
     with open(os.path.join(dataDir, 'melsummary.html'), 'w') as f:
         f.write(htmlout)
