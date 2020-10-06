@@ -303,7 +303,10 @@ def pre_load_fb_tiles(region, dataset):
     print("Fixing dates...")
     fix_dates = lambda t: pd.to_datetime(t, utc = True).tz_convert(TZS[region])
     fixedDates = {date: fix_dates(date) for date in set(loaded['datetime'])}
-    loaded['datetime'] = loaded['datetime'].apply(lambda x: fixedDates[x])
+    print("Shifting early morning timestamps to 11:59 PM previous night.")
+    shiftD = lambda d: d - pd.Timedelta(d.hour, 'hour') - pd.Timedelta(1, 'minute')
+    shiftedDates = [shiftD(d) if d.hour <= 5 else d for d in dates]
+    loaded['datetime'] = loaded['datetime'].apply(lambda x: shiftedDates[x])
     alreadyKeys = set([standardise_timestamp(t) for t in set(loaded['datetime'])])
     loaded['quadkey'] = loaded['quadkey'].astype(str)
     if dataset == 'mob':
