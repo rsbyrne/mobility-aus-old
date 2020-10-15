@@ -22,17 +22,11 @@ The areas in question are given by standard ABS LGA codes; the associated geomet
 
 [Victoria](https://rsbyrne.github.io/mobility-aus/products/mob_lga_vic.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_vic.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_vic.png))
 
-[Queensland](https://rsbyrne.github.io/mobility-aus/products/mob_lga_qld.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_qld.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_qld.png))
-
-[Western Australia](https://rsbyrne.github.io/mobility-aus/products/mob_lga_wa.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_wa.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_wa.png))
-
 **Metros**
 
 [Sydney](https://rsbyrne.github.io/mobility-aus/products/mob_lga_syd.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_syd.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_syd.png))
 
 [Melbourne](https://rsbyrne.github.io/mobility-aus/products/mob_lga_mel.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_mel.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_mel.png))
-
-[Adelaide](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_lga_ade.png))
 
 ### Facebook Mobility by ABS Statistical Area (Level 2)
 
@@ -46,17 +40,11 @@ The areas in question are given by standard ABS SA2 codes; the associated geomet
 
 [Victoria](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_vic.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_vic.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_vic.png))
 
-[Queensland](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_qld.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_qld.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_qld.png))
-
-[Western Australia](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_wa.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_wa.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_wa.png))
-
 **Metros**
 
 [Sydney](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_syd.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_syd.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_syd.png))
 
 [Melbourne](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_mel.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_mel.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_mel.png))
-
-[Adelaide](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_ade.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_ade.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_sa2_ade.png))
 
 ### Facebook Mobility by Postcode
 Postcodes are areas defined by Australia Post for the purpose of logistical convenience.
@@ -70,17 +58,11 @@ Shapefiles are available [here](https://www.abs.gov.au/AUSSTATS/abs@.nsf/Details
 
 [Victoria](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_vic.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_vic.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_vic.png))
 
-[Queensland](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_qld.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_qld.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_qld.png))
-
-[Western Australia](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_wa.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_wa.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_wa.png))
-
 **Metros**
 
 [Sydney](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_syd.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_syd.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_syd.png))
 
 [Melbourne](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_mel.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_mel.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_mel.png))
-
-[Adelaide](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_ade.csv) ([maps](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_ade.html), [plots](https://rsbyrne.github.io/mobility-aus/products/mob_postcodes_ade.png))
 
 ### Utilities
 
