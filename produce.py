@@ -950,7 +950,7 @@ def make_melsummary_se_plot():
         ('2020-09-06', 'Roadmap announcement'),
         ('2020-09-14', 'First Step'),
         ('2020-09-28', 'Second Step'),
-        ('2020-10-18', 'Travel relaxation')
+        ('2020-10-18', 'Travel relaxed')
         ]
     for i, (date, label) in enumerate(annotations):
         maxs = pd.Series(
@@ -1093,3 +1093,136 @@ def update_melsummary():
     # keystr = events_annotate(ax1, avScore)
     # markprint(keystr)
     # display(canvas.fig)
+
+def highlight_melbourne_council(council):
+
+    dataDir = os.path.abspath('../products')
+
+    frm = pd.read_csv(os.path.join(dataDir, 'meldash.csv'))
+    frm['date'] = frm['date'].astype('datetime64[ns]')
+    frm = frm.set_index(['date', 'name'])
+    # frm = frm.loc[(slice('2020-07-03', None), slice(None)),]
+
+    avScore = frm.xs('average', level = 'name')['score']
+    lowScore = frm.xs('lowSE', level = 'name')['score']
+    midScore = frm.xs('midSE', level = 'name')['score']
+    highScore = frm.xs('highSE', level = 'name')['score']
+    councilScore = frm.xs(council, level = 'name')['score']
+    scoreSerieses = [lowScore, midScore, highScore, councilScore]
+
+    avNew = frm.xs('average', level = 'name')['new_rolling'].clip(lower = 0.)
+    lowNew = frm.xs('lowSE', level = 'name')['new_rolling'].clip(lower = 0.)
+    midNew = frm.xs('midSE', level = 'name')['new_rolling'].clip(lower = 0.)
+    highNew = frm.xs('highSE', level = 'name')['new_rolling'].clip(lower = 0.)
+    councilNew = frm.xs(council, level = 'name')['new_rolling'].clip(lower = 0.)
+    caseSerieses = [lowNew, midNew, highNew, councilNew]
+
+    dates = avScore.index.get_level_values('date')
+    tweakMaxDate = dates.max() + pd.DateOffset(hours = 1)
+
+    def colour_ticks(ax, colourmap):
+        if type(colourmap) is list:
+            cmap = mpl.colors.ListedColormap(colourmap)
+        else:
+            cmap = get_cmap(colourmap)
+        yticklabels = ax.ax.get_yticklabels()
+        ytickvals = ax.ax.get_yticks()
+        norm = mpl.colors.Normalize(min(ytickvals), max(ytickvals))
+        for tickval, ticklabel in zip(ytickvals, yticklabels):
+            ticklabel.set_color(cmap(norm(tickval)))
+            ticklabel.set_fontweight('heavy')
+
+    canvas = Canvas(size = (15, 15), shape = (4, 1))
+    canvas.set_title(f'COVID-19: {council} council comparison.')
+
+    ax1 = canvas.make_ax(place = (1, 0), name = 'Lockdown Score')
+    # ax1.set_title('Lockdown compliance by socioeconomic band\n (higher values -> greater social distancing)')
+    ax1.multiline(
+        [Data(s.index, label = 'Date', lims = (None, tweakMaxDate)) for s in scoreSerieses],
+        [Data(s.values, label = 'Lockdown compliance score') for s in scoreSerieses],
+        )
+    maxs = pd.Series(
+        [max(vs) for vs in zip(*[s.values for s in scoreSerieses])],
+        dates
+        )
+    events_annotate_fn = partial(
+        analysis.events_annotate,
+        region = 'vic',
+        lims = (dates.min(), dates.max()),
+        points = (10, 10)
+        )
+    # keys = events_annotate_fn(ax1, maxs)
+    # ax1.ax.legend(['low-SE council areas', 'mid-SE council areas', 'high-SE council areas', 'Casey council area'], loc = 'upper center')
+    colour_ticks(ax1, ['saddlebrown', 'chocolate', 'goldenrod', 'limegreen', 'green'])
+    ax1.toggle_tickLabels_x()
+    ax1.toggle_label_x()
+
+    ax2 = canvas.make_ax(place = (0, 0), name = 'COVID-19 Cases')
+    # ax2.set_title("COVID-19: new cases by socioeconomic band")
+    ax2.multiline(
+        [Data(s.index, label = 'Date', lims = (None, tweakMaxDate)) for s in caseSerieses],
+        [Data(s.values, label = 'New cases per 10,000 people\n(7-day rolling average)') for s in caseSerieses],
+    #     c = 'red',
+        linestyle = 'dotted'
+        )
+    # ax2.swap_sides_axis_y()
+    ax2.swap_sides_axis_x()
+    # ax2.toggle_axis_x()
+    # ax2.toggle_grid()
+    colour_ticks(ax2, ['lightcoral', 'indianred', 'firebrick', 'maroon', 'darkred'])
+    ax2.ax.legend(['low-SE council areas', 'mid-SE council areas', 'high-SE council areas', f'{council} council area'], loc = 'upper right')
+
+    diffs = [(series - avScore) for series in scoreSerieses]
+    ax3 = canvas.make_ax(place = (2, 0))
+    # ax3.set_title('Lockdown compliance score: differences from average by socioeconomic band\n (above the line -> better than average compliance)')
+    ax3.multiline(
+        [Data(s.index, label = 'Date', lims = (None, tweakMaxDate)) for s in diffs],
+        [Data(s.values, label = 'Difference from average') for s in diffs],
+        )
+    ax3.toggle_tickLabels_x()
+    ax3.toggle_label_x()
+
+    annotations = [
+        ('2020-04-25', 'Anzac Day'),
+        ('2020-06-01', 'Cafes reopen'),
+        ('2020-06-08', "Queen's Birthday"),
+        ('2020-06-26', 'School holidays begin'),
+        ('2020-06-30', 'Postcode lockdowns'),
+        ('2020-07-09', 'Stage Three begins'),
+        ('2020-08-02', 'Stage Four begins'),
+        ('2020-08-06', 'Businesses close')
+        ]
+    for i, (date, label) in enumerate(annotations):
+        maxs = pd.Series(
+            [max(vs) for vs in zip(*[s.values for s in diffs])],
+            dates
+            )
+        mins = pd.Series(
+            [min(vs) for vs in zip(*[s.values for s in diffs])],
+            dates
+            )
+        vert, vertOffset = (mins.loc[date], -50) if i % 2 else (maxs.loc[date], 50)
+        ax3.annotate(
+            pd.Timestamp(date),
+            vert,
+            label,
+            arrowProps = dict(arrowstyle = '->'),
+            points = (0, vertOffset),
+            )
+    #     ax3.ax.legend(['low-SE council areas', 'mid-SE council areas', 'high-SE council areas', 'all council areas'])
+
+    kmAx = canvas.make_ax(place = (3, 0))
+#     kmAx.set_title('Melbourne Lockdown: average distances travelled each day by socioeconomic band')
+
+    lowKm = frm.xs('lowSE', level = 'name')['km']
+    midKm = frm.xs('midSE', level = 'name')['km']
+    highKm = frm.xs('highSE', level = 'name')['km']
+    councilKm = frm.xs(council, level = 'name')['km']
+    kmSerieses = [lowKm, midKm, highKm, councilKm]
+    kmAx.multiline(
+        [Data(s.index, label = 'Date') for s in kmSerieses],
+        [Data(s.values, label = 'Average distance travelled (km)') for s in kmSerieses],
+        )
+
+    # return canvas
+    return canvas.fig
