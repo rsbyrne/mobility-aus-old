@@ -1094,14 +1094,17 @@ def update_melsummary():
     # markprint(keystr)
     # display(canvas.fig)
 
-def highlight_melbourne_council(council):
+def highlight_melbourne_council(council, start = None):
 
-    dataDir = os.path.abspath('../products')
+#     dataDir = os.path.abspath('../products')
+    global dataDir
 
     frm = pd.read_csv(os.path.join(dataDir, 'meldash.csv'))
     frm['date'] = frm['date'].astype('datetime64[ns]')
+    if start is None:
+        start = min(frm['date'])
     frm = frm.set_index(['date', 'name'])
-    # frm = frm.loc[(slice('2020-07-03', None), slice(None)),]
+    frm = frm.loc[(slice(start, None), slice(None)),]
 
     avScore = frm.xs('average', level = 'name')['score']
     lowScore = frm.xs('lowSE', level = 'name')['score']
@@ -1190,25 +1193,31 @@ def highlight_melbourne_council(council):
         ('2020-06-30', 'Postcode lockdowns'),
         ('2020-07-09', 'Stage Three begins'),
         ('2020-08-02', 'Stage Four begins'),
-        ('2020-08-06', 'Businesses close')
+        ('2020-08-06', 'Businesses close'),
+        ('2020-09-06', 'Roadmap announcement'),
+        ('2020-09-14', 'First Step'),
+        ('2020-09-28', 'Second Step'),
+        ('2020-10-18', 'Travel relaxed')
         ]
     for i, (date, label) in enumerate(annotations):
-        maxs = pd.Series(
-            [max(vs) for vs in zip(*[s.values for s in diffs])],
-            dates
-            )
-        mins = pd.Series(
-            [min(vs) for vs in zip(*[s.values for s in diffs])],
-            dates
-            )
-        vert, vertOffset = (mins.loc[date], -50) if i % 2 else (maxs.loc[date], 50)
-        ax3.annotate(
-            pd.Timestamp(date),
-            vert,
-            label,
-            arrowProps = dict(arrowstyle = '->'),
-            points = (0, vertOffset),
-            )
+        if pd.Timestamp(date) > pd.Timestamp(start):
+            maxs = pd.Series(
+                [max(vs) for vs in zip(*[s.values for s in diffs])],
+                dates
+                )
+            mins = pd.Series(
+                [min(vs) for vs in zip(*[s.values for s in diffs])],
+                dates
+                )
+            vert, vertOffset = (mins.loc[date], -35) if i % 2 else (maxs.loc[date], 35)
+            ax3.annotate(
+                pd.Timestamp(date),
+                vert,
+                label,
+                rotation = 15,
+                arrowProps = dict(arrowstyle = '->'),
+                points = (0, vertOffset),
+                )
     #     ax3.ax.legend(['low-SE council areas', 'mid-SE council areas', 'high-SE council areas', 'all council areas'])
 
     kmAx = canvas.make_ax(place = (3, 0))

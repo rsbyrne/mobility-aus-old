@@ -243,6 +243,9 @@ def make_dataFrm(region):
     # Trim brackets from council names
     frm['name'] = frm['name'].apply(remove_brackets)
 
+    # Manually drop problematic councils:
+#     if region == 'm'
+
     # Add a nominal distance travelled when below detection threshold
     frm['km'] = frm['km'].fillna(frm['km'].min() / 2)
 

@@ -2,10 +2,10 @@ import produce
 import analysis
 from load import NoData
 
-#regions = {'vic', 'mel', 'nsw', 'syd'}
-regions = {'vic', 'mel'}
-aggTypes = {'lga',}
-#aggTypes = {'lga', 'sa2', 'postcodes'}
+regions = {'vic', 'mel', 'nsw', 'syd'}
+#regions = {'vic', 'mel'}
+#aggTypes = {'lga',}
+aggTypes = {'lga', 'sa2', 'postcodes'}
 # regions, aggTypes = {}, {}
 
 for region in regions:
