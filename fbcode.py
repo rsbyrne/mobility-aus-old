@@ -185,37 +185,26 @@ def pull_datas(
 
             print("Logging in...")
 
-            random_sleep(1.)
-
+            random_sleep(2.)
             username = driver.find_element_by_id("email")
             password = driver.find_element_by_id("pass")
+            username.send_keys(loginName)
+            random_sleep(1.)
+            password.send_keys(loginPass)
+            random_sleep(1.)
+            password.send_keys(u'\ue007')
+
+            random.sleep(2.)
             try:
-                submit = driver.find_element_by_id("loginbutton")
-                normalLogin = True
+                _ = driver.find_element_by_id("loginbutton")
+                raise Exception("Login failed!")
             except exceptions.NoSuchElementException:
-                submit = driver.find_element_by_name('login')
-                normalLogin = False
-            if normalLogin:
-                username.send_keys(loginName)
-                password.send_keys(loginPass)
-                submit.click()
                 try:
-                    loginForm = driver.find_element_by_id("login_form")
-                    raise ValueError("Bad login credentials!")
+                    _ = driver.find_element_by_id("login_form")
+                    raise Exception("Login failed!")
                 except exceptions.NoSuchElementException:
                     pass
-            else:
-                submit = driver.find_element_by_name('login')
-                username.send_keys(loginName)
-                password.send_keys(loginPass)
-                submit.click()
-                errorText = "Sorry, something went wrong."
-                if driver.find_element_by_id("facebook").text.startswith(errorText):
-                    raise ValueError("Bad login credentials!")
-
             print("Logged in.")
-
-            random_sleep(1.)
 
             print("Navigating to data page...")
             try:
@@ -250,3 +239,21 @@ def pull_datas(
                     maxWait,
                     )
             print("Done.")
+
+#             try:
+#                 submit = driver.find_element_by_id("loginbutton")
+#                 normalLogin = True
+#             except exceptions.NoSuchElementException:
+#                 submit = driver.find_element_by_name('login')
+#                 normalLogin = False
+#             submit.click()
+#             if normalLogin:
+#                 try:
+#                     loginForm = driver.find_element_by_id("login_form")
+#                     raise ValueError("Bad login credentials!")
+#                 except exceptions.NoSuchElementException:
+#                     pass
+#             else:
+#                 e = "Sorry, something went wrong."
+#                 if driver.find_element_by_id("facebook").text.startswith(e):
+#                     raise ValueError("Bad login credentials!")
