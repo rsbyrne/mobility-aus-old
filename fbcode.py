@@ -194,7 +194,7 @@ def pull_datas(
             random_sleep(1.)
             password.send_keys(u'\ue007')
 
-            random.sleep(2.)
+            random_sleep(2.)
             try:
                 _ = driver.find_element_by_id("loginbutton")
                 raise Exception("Login failed!")
