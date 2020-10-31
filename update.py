@@ -2,42 +2,42 @@ import produce
 import analysis
 from load import NoData
 
-regions = {'vic', 'mel', 'nsw', 'syd'}
-#regions = {'vic', 'mel'}
-#aggTypes = {'lga',}
-aggTypes = {'lga', 'sa2', 'postcodes'}
-# regions, aggTypes = {}, {}
+# regions = {'vic', 'mel', 'nsw', 'syd'}
+# #regions = {'vic', 'mel'}
+# #aggTypes = {'lga',}
+# aggTypes = {'lga', 'sa2', 'postcodes'}
+# # regions, aggTypes = {}, {}
 
-for region in regions:
-    for aggType in aggTypes:
-        try:
-            mob = produce.get_mob_date(
-                region,
-                aggType,
-                get = False,
-                refresh = True,
-                override = True
-                )
-            produce.make_mob_plots(
-                mob,
-                region,
-                aggType,
-                )
-            produce.make_mob_dateMap(
-                mob,
-                region,
-                aggType,
-                )
-        except NoData:
-            print("No data currently available for:", region)
-        except:
-            print("Something went wrong with:", region, aggType)
+# for region in regions:
+#     for aggType in aggTypes:
+#         try:
+#             mob = produce.get_mob_date(
+#                 region,
+#                 aggType,
+#                 get = False,
+#                 refresh = True,
+#                 override = True
+#                 )
+#             produce.make_mob_plots(
+#                 mob,
+#                 region,
+#                 aggType,
+#                 )
+#             produce.make_mob_dateMap(
+#                 mob,
+#                 region,
+#                 aggType,
+#                 )
+#         except NoData:
+#             print("No data currently available for:", region)
+#         except:
+#             print("Something went wrong with:", region, aggType)
 
 produce.make_meldash()
 
 produce.update_melsummary()
 
-
+produce.make_melsummarySimple_plot(save = True)
 
 # regions = {
 #     'vic', 'mel', 'nsw', 'syd', 'sa', 'ade',

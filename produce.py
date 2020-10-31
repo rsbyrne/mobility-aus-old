@@ -16,6 +16,7 @@ import load
 import utils
 import processing
 import aggregate
+from window import plot
 from window.plot import Canvas, Data
 import analysis
 
@@ -750,6 +751,7 @@ def bokeh_spacetimepop(
 def make_meldash(returnPlot = False):
     name = 'meldash'
     frm = analysis.make_melvicFrm()
+    frm['score'] = 1. - frm['score']
     frm.to_csv(os.path.join(dataDir, name + '.csv'))
 
     geometry = analysis.make_geometry(frm.index.levels[1], region = 'vic')
@@ -818,14 +820,15 @@ def make_meldash(returnPlot = False):
                 """,
             'km': """
                 This shows the average distance travelled
-                by Facebook users observed moving
-                from a particular council area on a particular day.
+                by Facebook users in each council observed moving
+                from their immediate area on a particular day.
                 """,
             'score': """
-                This is an estimate  of lockdown compliance
-                where one or higher is very good and zero or lower is very bad;
-                it is calculated by normalising the Facebook 'stay' percentages
-                with respect to the highest and lowest records
+                This is a measure of total mobility
+                where one or higher represents large amounts of travel
+                and zero or lower represents comparatively little travel.
+                It is calculated by normalising the Facebook 'stay' percentages
+                with respect to the four highest and four lowest records
                 observed for that day of the week (e.g. 'all Mondays')
                 in that council.
                 """,
@@ -899,11 +902,11 @@ def make_melsummary_se_plot():
     canvas = Canvas(size = (20, 12), shape = (2, 1))
     canvas.set_title('Melbourne in Lockdown')
 
-    ax1 = canvas.make_ax(place = (0, 0), name = 'Lockdown Score')
-    ax1.set_title('Lockdown compliance by socioeconomic band\n (higher values -> greater social distancing)')
+    ax1 = canvas.make_ax(place = (0, 0), name = 'Mobility Score')
+    ax1.set_title('Mobility score by socioeconomic band\n (higher values -> greater travel)')
     ax1.multiline(
         [Data(s.index, label = 'Date', lims = (None, tweakMaxDate)) for s in serieses],
-        [Data(s.values, label = 'Lockdown compliance score') for s in serieses],
+        [Data(s.values, label = 'Mobility Score') for s in serieses],
         )
     maxs = pd.Series(
         [max(vs) for vs in zip(*[s.values for s in serieses])],
@@ -936,7 +939,7 @@ def make_melsummary_se_plot():
         [Data(s.index, label = 'Date', lims = (None, tweakMaxDate)) for s in diffs],
         [Data(s.values, label = 'Difference from average') for s in diffs],
         )
-    ax3.set_title('Lockdown compliance score: differences from average by socioeconomic band\n (above the line -> better than average compliance)')
+    ax3.set_title('Mobility Score: differences from average by socioeconomic band\n (above the line -> more than average travel)')
 
     annotations = [
         ('2020-04-25', 'Anzac Day'),
@@ -983,6 +986,7 @@ def make_melsummary_plot():
     # from presentation import markprint
 
     frm = analysis.make_melvicFrm()
+    frm['score'] = 1. - frm['score']
     avScore = frm.xs('average', level = 'name')['score']
     avNew = frm.xs('average', level = 'name')['new_rolling']
 
@@ -1007,16 +1011,16 @@ def make_melsummary_plot():
             ticklabel.set_fontweight('heavy')
 
     canvas = Canvas(size = (16, 3.5))
-    ax1 = canvas.make_ax(name = 'Lockdown Score')
+    ax1 = canvas.make_ax(name = 'Mobility Score')
     ax2 = canvas.make_ax(name = 'COVID Cases')
-    ax1.set_title('Lockdown Compliance: Melbourne average')
+    ax1.set_title('Mobility Score: Melbourne average')
     tweakLims = (
         dates.min() - pd.DateOffset(days = 0.5),
         dates.max() + pd.DateOffset(days = 0.5),
         )
     ax1.line(
         Data(avScore.index, label = 'Date', lims = tweakLims),
-        Data(avScore.values, label = 'Lockdown Compliance Score'),
+        Data(avScore.values, label = 'Mobility Score'),
         c = 'green'
         )
     # ax2.line(
@@ -1074,8 +1078,8 @@ def update_melsummary():
         <a href="https://covid19data.com.au/">covid19data.com.au</a>
         and
         <a href="https://covidlive.com.au/">covidlive.com.au</a>.
-        Values of 1 or higher mean that people are meeting or beating their highest stay-at-home behaviours,
-        while values of 0 or lower mean that people are straying from home as much or even more than they ever have.
+        Values of 1 or higher mean that people are matching or exceeding their highest-recorded mobility,
+        while values of 0 or lower mean that people are staying at home as much or more than previously recorded.
         The lower plot shows how the score for each group of councils deviates from the average across all councils on that
         given day: values above 0 indicate that those councils are beating the average,
         while values below 0 show councils that are trailing the average.
@@ -1138,11 +1142,11 @@ def highlight_melbourne_council(council, start = None):
     canvas = Canvas(size = (15, 15), shape = (4, 1))
     canvas.set_title(f'COVID-19: {council} council comparison.')
 
-    ax1 = canvas.make_ax(place = (1, 0), name = 'Lockdown Score')
+    ax1 = canvas.make_ax(place = (1, 0), name = 'Mobility Score')
     # ax1.set_title('Lockdown compliance by socioeconomic band\n (higher values -> greater social distancing)')
     ax1.multiline(
         [Data(s.index, label = 'Date', lims = (None, tweakMaxDate)) for s in scoreSerieses],
-        [Data(s.values, label = 'Lockdown compliance score') for s in scoreSerieses],
+        [Data(s.values, label = 'Mobility Score') for s in scoreSerieses],
         )
     maxs = pd.Series(
         [max(vs) for vs in zip(*[s.values for s in scoreSerieses])],
@@ -1235,3 +1239,89 @@ def highlight_melbourne_council(council, start = None):
 
     # return canvas
     return canvas.fig
+
+def make_melsummarySimple_plot(save = False):
+
+    global dataDir
+    
+    frm = pd.read_csv(os.path.join(dataDir, 'meldash.csv'))
+    frm['date'] = frm['date'].apply(pd.Timestamp)
+    frm = frm.set_index(['date', 'name'])
+
+    av = frm.xs('average', level = 'name')
+    avMob = av['score']
+    avCases = av['new_rolling']
+
+    canvas = Canvas(size = (16, 4), title = "Melbourne's lockdown journey")
+
+    ax1, ax2 = canvas.make_ax(), canvas.make_ax(superimpose = True)
+    # dates = Data(avMob.index, lims = ('2020-04-19', '2020-11-01'), capped = (True, True), label = 'Date')
+    dates = Data(avMob.index, label = 'Date')
+    ax1.line(
+        dates,
+        Data(avMob.values, label = 'Mobility Score'),
+        c = 'blue'
+        )
+    ax2.line(
+        dates,
+        Data(avCases.values, lims = (0, 1), label = '7-day average new cases\nper 10,000 people'),
+        c = 'red'
+        )
+    ax2.toggle_axis_x()
+    ax2.swap_sides_axis_y()
+    ax2.toggle_grid()
+
+    date = pd.Timestamp('2020-05-17')
+    ax1.annotate(
+        date,
+        avMob.loc[date],
+        label = 'Mobility Score',
+        arrowProps = dict(arrowstyle = 'fancy', color = 'blue'),
+        points = (-30, 30),
+        c = 'blue'
+        )
+    date = pd.Timestamp('2020-08-16')
+    ax2.annotate(
+        date,
+        avCases.loc[date],
+        label = 'COVID cases',
+        arrowProps = dict(arrowstyle = 'fancy', color = 'red'),
+        points = (30, 30),
+        c = 'red'
+        )
+
+    annotations = [
+        ('2020-04-25', 'Anzac Day', (0, -30)),
+        ('2020-05-13', 'Easing', (0, -30)),
+        ('2020-06-01', 'Cafes reopen', (0, 30)),
+        ('2020-06-08', "Queen's Birthday", (0, -30)),
+        ('2020-06-26', 'School holidays', (0, 15)),
+        ('2020-06-30', 'Postcode\nlockdowns', (0, -45)),
+        ('2020-07-09', 'Stage 3', (30, 30)),
+        ('2020-08-02', 'Stage 4', (-30, -30)),
+        ('2020-08-06', 'Businesses close', (0, -30)),
+        ('2020-09-06', 'Roadmap plan', (0, 30)),
+        ('2020-09-14', 'First Step', (0, -30)),
+        ('2020-09-28', 'Second Step', (15, -30)),
+        ('2020-10-11', 'Picnics\nallowed', (-45, 15)),
+        ('2020-10-18', 'Travel relaxed', (-15, 35)),
+        ('2020-10-23', 'Footy Friday', (0, -30)),
+        ('2020-10-25', 'Grand Final', (30, -30)),
+        ('2020-10-28', 'Reopening', (0, 30)),
+        ]
+    for i, (date, label, offset) in enumerate(annotations):
+        date = pd.Timestamp(date)
+        vert = avMob.loc[date]
+        ax1.annotate(
+            date,
+            vert,
+            label,
+            rotation = 0,
+            arrowProps = dict(arrowstyle = '->'),
+            points = offset,
+            )
+
+    if save:
+        canvas.fig.savefig(os.path.join(dataDir, 'melsummarysimple.png'), bbox_inches = "tight", dpi = 200)
+    else:
+        return canvas

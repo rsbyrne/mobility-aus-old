@@ -1,5 +1,7 @@
 # Crisis Mobility Data Portal
 
+![Melbourne summary plot](https://rsbyrne.github.io/mobility-aus/products/melsummarysimple.png)
+
 See our [special report on the Melbourne COVID-19 outbreak](https://rsbyrne.github.io/mobility-aus/products/meldash.html)
 
 This repository has been established to provide free and easy access to aggregated mobility data products from Facebook and other sources. The data held here is authorised for general release to the public to support research activities related to the COVID-19 epidemic.
