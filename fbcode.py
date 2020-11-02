@@ -195,15 +195,15 @@ def pull_datas(
             password.send_keys(u'\ue007')
 
             random_sleep(2.)
-            try:
-                _ = driver.find_element_by_id("loginbutton")
-                raise Exception("Login failed!")
-            except exceptions.NoSuchElementException:
-                try:
-                    _ = driver.find_element_by_id("login_form")
-                    raise Exception("Login failed!")
-                except exceptions.NoSuchElementException:
-                    pass
+#            try:
+#                _ = driver.find_element_by_id("loginbutton")
+#                raise Exception("Login failed!")
+#            except exceptions.NoSuchElementException:
+#                try:
+#                    _ = driver.find_element_by_id("login_form")
+#                    raise Exception("Login failed!")
+#                except exceptions.NoSuchElementException:
+#                    pass
             print("Logged in.")
 
             print("Navigating to data page...")
