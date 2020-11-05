@@ -72,7 +72,7 @@ def download(
         pass
 #         print("File already exists - skipping.")
     else:
-        random_sleep(1.)
+        random_sleep(0.3)
         try:
             driver.get(link)
         except exceptions.TimeoutException:
@@ -86,9 +86,9 @@ def download(
             oldFilepath = os.path.join(downloadDir, oldFilename)
             wait_check(lambda: _file_check(oldFilepath), maxWait = maxWait)
             newFilepath = os.path.join(outDir, newFilename)
-            random_sleep(1.)
+            random_sleep(0.2)
             shutil.copyfile(oldFilepath, newFilepath)
-            random_sleep(1.)
+            random_sleep(0.2)
             wait_check(lambda: _file_check(newFilepath), maxWait = maxWait)
             for filename in os.listdir(downloadDir):
                 filepath = os.path.join(downloadDir, filename)
@@ -185,25 +185,33 @@ def pull_datas(
 
             print("Logging in...")
 
-            random_sleep(2.)
+            random_sleep(0.5)
             username = driver.find_element_by_id("email")
             password = driver.find_element_by_id("pass")
             username.send_keys(loginName)
-            random_sleep(1.)
+            random_sleep(0.2)
             password.send_keys(loginPass)
-            random_sleep(1.)
-            password.send_keys(u'\ue007')
+            random_sleep(0.2)
+            try:
+                submit = driver.find_element_by_id("loginbutton")
+                submit.click()
+            except exceptions.NoSuchElementException:
+                try:
+                    submit = driver.find_element_by_name('login')
+                    submit.click()
+                except exceptions.NoSuchElementException:
+                    password.send_keys(u'\ue007')
 
-            random_sleep(2.)
-#            try:
-#                _ = driver.find_element_by_id("loginbutton")
-#                raise Exception("Login failed!")
-#            except exceptions.NoSuchElementException:
-#                try:
-#                    _ = driver.find_element_by_id("login_form")
-#                    raise Exception("Login failed!")
-#                except exceptions.NoSuchElementException:
-#                    pass
+            random_sleep(0.5)
+            try:
+                _ = driver.find_element_by_id("loginbutton")
+                raise Exception("Login failed!")
+            except exceptions.NoSuchElementException:
+                try:
+                    _ = driver.find_element_by_id("login_form")
+                    raise Exception("Login failed!")
+                except exceptions.NoSuchElementException:
+                    pass
             print("Logged in.")
 
             print("Navigating to data page...")
@@ -213,7 +221,7 @@ def pull_datas(
                 raise ValueError("Bad data URL!")
             print("Navigated to data page.")
 
-            random_sleep(1.)
+            random_sleep(0.5)
 
             print("Finding data...")
             links = [
@@ -240,12 +248,6 @@ def pull_datas(
                     )
             print("Done.")
 
-#             try:
-#                 submit = driver.find_element_by_id("loginbutton")
-#                 normalLogin = True
-#             except exceptions.NoSuchElementException:
-#                 submit = driver.find_element_by_name('login')
-#                 normalLogin = False
 #             submit.click()
 #             if normalLogin:
 #                 try:

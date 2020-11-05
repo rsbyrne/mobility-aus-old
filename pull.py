@@ -17,14 +17,13 @@ maxTries = 3
 for fbid in fbids:
     outDir = os.path.join(repoPath, 'data', fbid)
     dataURL = masterURL + fbid
-    fbcode.pull_datas(dataURL, loginName, loginPass, outDir, dataMime, outExt)
-#     tries = 0
-#     while tries < maxTries:
-#         try:
-#             fbcode.pull_datas(dataURL, loginName, loginPass, outDir, dataMime, outExt)
-#             break
-#         except:
-#             pass
-#         tries += 1
-#     if tries == maxTries:
-#         print("Max tries reached downloading", fbid)
+    tries = 0
+    while tries < maxTries:
+        try:
+            fbcode.pull_datas(dataURL, loginName, loginPass, outDir, dataMime, outExt)
+            break
+        except:
+            pass
+        tries += 1
+    if tries == maxTries:
+        print("Max tries reached downloading", fbid)
