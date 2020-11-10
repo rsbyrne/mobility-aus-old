@@ -6,7 +6,7 @@ regions = {'vic', 'mel', 'nsw', 'syd'}
 #regions = {'vic', 'mel'}
 #aggTypes = {'lga',}
 aggTypes = {'lga', 'sa2', 'postcodes'}
-# regions, aggTypes = {}, {}
+regions, aggTypes = {}, {}
 
 for region in regions:
     for aggType in aggTypes:
@@ -36,8 +36,6 @@ for region in regions:
 produce.make_meldash()
 
 produce.update_melsummary()
-
-produce.make_melsummarySimple_plot(save = True)
 
 # regions = {
 #     'vic', 'mel', 'nsw', 'syd', 'sa', 'ade',

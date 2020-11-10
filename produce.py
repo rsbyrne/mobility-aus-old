@@ -882,7 +882,7 @@ def make_melsummary_se_plot():
     highAv = frm.xs('highSE', level = 'name')['score']
     avScore = frm.xs('average', level = 'name')['score']
     serieses = [lowAv, midAv, highAv]
-    avNew = frm.xs('average', level = 'name')['new_rolling']
+    avNew = frm.xs('average', level = 'name')['new_rolling'].apply(lambda s: max(0, s))
 
     dates = avScore.index.get_level_values('date')
     tweakMaxDate = dates.max() + pd.DateOffset(hours = 1)
@@ -919,7 +919,7 @@ def make_melsummary_se_plot():
         points = (10, 10)
         )
     # keys = events_annotate_fn(ax1, maxs)
-    ax1.ax.legend(['low-SE council areas', 'mid-SE council areas', 'high-SE council areas', 'all council areas'], loc = 'upper center')
+    ax1.ax.legend(['low-SE council areas', 'mid-SE council areas', 'high-SE council areas', 'all council areas'], loc = 'upper left')
 
     ax2 = canvas.make_ax(place = (0, 0), name = 'COVID Cases')
     ax2.line(
@@ -953,7 +953,10 @@ def make_melsummary_se_plot():
         ('2020-09-06', 'Roadmap announcement'),
         ('2020-09-14', 'First Step'),
         ('2020-09-28', 'Second Step'),
-        ('2020-10-18', 'Travel relaxed')
+        ('2020-10-18', 'Travel relaxed'),
+        ('2020-10-23', 'Footy Friday'),
+        ('2020-10-28', 'Third Step'),
+        ('2020-11-03', 'Cup Day'),
         ]
     for i, (date, label) in enumerate(annotations):
         maxs = pd.Series(
@@ -1064,6 +1067,7 @@ def update_melsummary():
     canvas = make_melsummary_se_plot()
     canvas.fig.savefig(os.path.join(dataDir, 'melsummaryse.png'), bbox_inches = "tight", dpi = 100)
     canvas.fig.savefig(os.path.join(dataDir, 'melsummaryse_hires.png'), bbox_inches = "tight", dpi = 400)
+    make_melsummarySimple_plot(save = True)
     htmlout += '\n<img src="https://rsbyrne.github.io/mobility-aus/products/melsummaryse.png" alt="Melbourne summary by socioeconomic group">'
 
     htmlout += '''\n
@@ -1117,11 +1121,11 @@ def highlight_melbourne_council(council, start = None):
     councilScore = frm.xs(council, level = 'name')['score']
     scoreSerieses = [lowScore, midScore, highScore, councilScore]
 
-    avNew = frm.xs('average', level = 'name')['new_rolling'].clip(lower = 0.)
-    lowNew = frm.xs('lowSE', level = 'name')['new_rolling'].clip(lower = 0.)
-    midNew = frm.xs('midSE', level = 'name')['new_rolling'].clip(lower = 0.)
-    highNew = frm.xs('highSE', level = 'name')['new_rolling'].clip(lower = 0.)
-    councilNew = frm.xs(council, level = 'name')['new_rolling'].clip(lower = 0.)
+    avNew = frm.xs('average', level = 'name')['new_rolling'].apply(lambda s: max(0, s))
+    lowNew = frm.xs('lowSE', level = 'name')['new_rolling'].apply(lambda s: max(0, s))
+    midNew = frm.xs('midSE', level = 'name')['new_rolling'].apply(lambda s: max(0, s))
+    highNew = frm.xs('highSE', level = 'name')['new_rolling'].apply(lambda s: max(0, s))
+    councilNew = frm.xs(council, level = 'name')['new_rolling'].apply(lambda s: max(0, s))
     caseSerieses = [lowNew, midNew, highNew, councilNew]
 
     dates = avScore.index.get_level_values('date')
@@ -1201,7 +1205,10 @@ def highlight_melbourne_council(council, start = None):
         ('2020-09-06', 'Roadmap announcement'),
         ('2020-09-14', 'First Step'),
         ('2020-09-28', 'Second Step'),
-        ('2020-10-18', 'Travel relaxed')
+        ('2020-10-18', 'Travel relaxed'),
+        ('2020-10-23', 'Footy Friday'),
+        ('2020-10-28', 'Third Step'),
+        ('2020-11-03', 'Cup Day'),
         ]
     for i, (date, label) in enumerate(annotations):
         if pd.Timestamp(date) > pd.Timestamp(start):
@@ -1250,7 +1257,7 @@ def make_melsummarySimple_plot(save = False):
 
     av = frm.xs('average', level = 'name')
     avMob = av['score']
-    avCases = av['new_rolling']
+    avCases = av['new_rolling'].apply(lambda s: max(0, s))
 
     canvas = Canvas(size = (16, 4), title = "Melbourne's lockdown journey")
 
@@ -1306,8 +1313,9 @@ def make_melsummarySimple_plot(save = False):
         ('2020-10-11', 'Picnics\nallowed', (-45, 15)),
         ('2020-10-18', 'Travel relaxed', (-15, 35)),
         ('2020-10-23', 'Footy Friday', (0, -30)),
-        ('2020-10-25', 'Grand Final', (30, -30)),
-        ('2020-10-28', 'Reopening', (0, 30)),
+        ('2020-10-28', 'Third Step', (0, 30)),
+        ('2020-11-03', 'Cup Day', (0, -30)),
+#         ('2020-11-09', 'Ring of\nSteel ends', (0, -30)),
         ]
     for i, (date, label, offset) in enumerate(annotations):
         date = pd.Timestamp(date)
