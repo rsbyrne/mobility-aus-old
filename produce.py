@@ -1263,7 +1263,9 @@ def make_melsummarySimple_plot(save = False):
 
     ax1, ax2 = canvas.make_ax(), canvas.make_ax(superimpose = True)
     # dates = Data(avMob.index, lims = ('2020-04-19', '2020-11-01'), capped = (True, True), label = 'Date')
-    dates = Data(avMob.index, label = 'Date')
+    dates = avMob.index
+    tweakMaxDate = dates.max() + pd.DateOffset(hours = 12)
+    dates = Data(dates, label = 'Date', lims = (None, tweakMaxDate))
     ax1.line(
         dates,
         Data(avMob.values, label = 'Mobility Score'),
@@ -1299,7 +1301,7 @@ def make_melsummarySimple_plot(save = False):
 
     annotations = [
         ('2020-04-25', 'Anzac Day', (0, -30)),
-        ('2020-05-13', 'Easing', (0, -30)),
+        ('2020-05-13', 'Easing', (0, -35)),
         ('2020-06-01', 'Cafes reopen', (0, 30)),
         ('2020-06-08', "Queen's Birthday", (0, -30)),
         ('2020-06-26', 'School holidays', (0, 15)),
@@ -1315,7 +1317,7 @@ def make_melsummarySimple_plot(save = False):
         ('2020-10-23', 'Footy Friday', (0, -30)),
         ('2020-10-28', 'Third Step', (0, 30)),
         ('2020-11-03', 'Cup Day', (0, -30)),
-#         ('2020-11-09', 'Ring of\nSteel ends', (0, -30)),
+#         ('2020-11-09', 'Ring of\nSteel ends', (15, -45)),
         ]
     for i, (date, label, offset) in enumerate(annotations):
         date = pd.Timestamp(date)
