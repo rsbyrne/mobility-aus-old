@@ -285,6 +285,9 @@ def make_dataFrm(region):
     # Final sort
     frm = frm.sort_index()
 
+    # Fill nans
+    frm = frm.fillna(0.)
+
     # Return:
     return frm
 
