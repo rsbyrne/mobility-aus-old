@@ -371,5 +371,8 @@ def make_melvicFrm(dates = None, names = None):
     # Drop redundant columns
     frm = frm.drop('pop', axis = 1)
 
+    # Fill nans
+    frm = frm.fillna(0.)
+
     # Return
     return frm

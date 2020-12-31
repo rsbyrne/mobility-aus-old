@@ -13,13 +13,15 @@ TIMEOUT = 60
 def format_href(href):
     if '%3A' in href:
         return href[-18:].replace('%3A', '').replace('+', '-')
+    elif '%20' in href:
+        return href[-17:].replace('%20', '-')
     else:
         return href[-15:].replace('+', '-')
-def check_href(href):
-    if '%3A' in href:
-        return href[-21:-18] == 'ds=' and format_href(href).replace('-', '').isnumeric()
-    else:
-        return href[-18:-15] == 'ds=' and format_href(href).replace('-', '').isnumeric()
+# def check_href(href):
+#     if '%3A' in href:
+#         return href[-21:-18] == 'ds=' and format_href(href).replace('-', '').isnumeric()
+#     else:
+#         return href[-18:-15] == 'ds=' and format_href(href).replace('-', '').isnumeric()
 
 def random_sleep(factor = 1.):
     sleepTime = (random.random() + 1.) * factor
@@ -224,16 +226,16 @@ def pull_datas(
             random_sleep(0.5)
 
             print("Finding data...")
-            links = [
-                elem.get_attribute("href")
-                    for elem in driver.find_elements_by_xpath("//a[@href]")
-                        if check_href(elem.get_attribute("href"))
-                ]
-#             alllinks = [
+#             links = [
 #                 elem.get_attribute("href")
 #                     for elem in driver.find_elements_by_xpath("//a[@href]")
+#                         if check_href(elem.get_attribute("href"))
 #                 ]
-#             print(alllinks)
+            alllinks = [
+                elem.get_attribute("href")
+                    for elem in driver.find_elements_by_xpath("//a[@href]")
+                ]
+            links = [link for link in alllinks if 'downloads/vector' in link]
             if not len(links):
                 raise Exception("No data found at destination!")
             print("Downloading all...")
