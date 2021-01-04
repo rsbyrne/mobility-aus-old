@@ -11,6 +11,11 @@ import load
 dirPath = os.path.abspath(os.path.dirname(__file__))
 dataDir = os.path.join(dirPath, 'products')
 
+def get_old_meldash():
+    frm = pd.read_csv("https://raw.githubusercontent.com/rsbyrne/mobility-aus/335fbc5a5e73113552612213c6ac02078c7dee7f/products/meldash.csv")
+    frm = frm.set_index(['date', 'name'])
+    return frm
+
 def events_annotate(ax, series, region, lims = (None, None), points = None, returnTable = False):
 
     # Get events data:
@@ -126,10 +131,10 @@ def make_casesFrm_monash(region = 'vic'):
 
 def make_casesFrm_covidlive(region = 'vic'):
 
-    region = 'vic'
-
     if not region in {'vic', 'mel'}:
         raise Exception
+
+    region = 'vic'
 
     lookup = make_sub_lookupFrm(region, 'lga') #pd.read_csv('../products/abs_lookup.csv')
     popDict = dict(zip(lookup.index, lookup['pop']))
@@ -175,13 +180,14 @@ def make_casesFrm_covidlive(region = 'vic'):
     return cases
 
 def make_casesFrm(region = 'vic'):
-    monashCases = make_casesFrm_monash(region)
-    covidliveCases = make_casesFrm_covidlive(region)
-    trimmedMonashCases = monashCases.loc[
-        monashCases.index.get_level_values('date') \
-        < covidliveCases.index.get_level_values('date').min()
-        ]
-    cases = pd.concat([trimmedMonashCases, covidliveCases]).sort_index()
+#     monashCases = make_casesFrm_monash(region)
+#     covidliveCases = make_casesFrm_covidlive(region)
+#     trimmedMonashCases = monashCases.loc[
+#         monashCases.index.get_level_values('date') \
+#         < covidliveCases.index.get_level_values('date').min()
+#         ]
+#     cases = pd.concat([trimmedMonashCases, covidliveCases]).sort_index()
+    cases = make_casesFrm_monash(region)
     return cases
 
 def remove_brackets(x):

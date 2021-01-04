@@ -22,6 +22,32 @@ import analysis
 
 dataDir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'products')
 
+MELVIC_ANNOTATIONS = [
+    ('2020-04-25', 'Anzac Day', (0, -30)),
+    ('2020-05-13', 'Easing', (0, -30)),
+    ('2020-05-31', 'Cafes reopen', (0, 30)),
+    ('2020-06-08', "Queen's Birthday", (0, -30)),
+    ('2020-06-26', 'School\nholidays', (-30, 30)),
+    ('2020-06-30', 'Postcode\nlockdowns', (0, -60)),
+    ('2020-07-08', 'Stage 3', (0, 30)),
+    ('2020-08-02', 'Stage 4', (0, 30)),
+    ('2020-08-06', 'Businesses close', (0, -30)),
+    ('2020-09-06', 'Roadmap\nplan', (-15, 60)),
+    ('2020-09-13', 'First Step', (0, 30)),
+    ('2020-09-27', 'Second Step', (0, -30)),
+    ('2020-10-11', 'Picnics\nallowed', (-30, 30)),
+    ('2020-10-18', 'Travel\nrelaxed', (0, 30)),
+    ('2020-10-23', 'Footy Friday', (0, -30)),
+    ('2020-10-28', 'Third Step', (0, 30)),
+    ('2020-11-03', 'Cup Day', (0, -30)),
+    ('2020-11-08', 'Ring of Steel\nends', (0, 45)),
+    ('2020-11-22', 'Last Step', (0, -30)),
+    ('2020-12-06', 'COVIDSafe\nSummer', (0, 30)),
+    ('2020-12-25', 'Christmas\nDay', (-30, -30)),
+    ('2020-12-26', 'Boxing\nDay', (0, 30)),
+    ('2021-01-01', "New Year's\nDay", (0, -30)),
+    ]
+
 def get_abs_lookup(sources, refresh = False):
     filename = 'abs_lookup.csv'
     filePath = os.path.join(dataDir, filename)
@@ -749,9 +775,11 @@ def bokeh_spacetimepop(
     return layout
 
 def make_meldash(returnPlot = False):
+
     name = 'meldash'
     frm = analysis.make_melvicFrm()
     frm['score'] = 1. - frm['score']
+    # Saving
     frm.to_csv(os.path.join(dataDir, name + '.csv'))
 
     geometry = analysis.make_geometry(frm.index.levels[1], region = 'vic')
@@ -941,24 +969,9 @@ def make_melsummary_se_plot():
         )
     ax3.set_title('Mobility Score: differences from average by socioeconomic band\n (above the line -> more than average travel)')
 
-    annotations = [
-        ('2020-04-25', 'Anzac Day'),
-        ('2020-06-01', 'Cafes reopen'),
-        ('2020-06-08', "Queen's Birthday"),
-        ('2020-06-26', 'School holidays begin'),
-        ('2020-06-30', 'Postcode lockdowns'),
-        ('2020-07-09', 'Stage Three begins'),
-        ('2020-08-02', 'Stage Four begins'),
-        ('2020-08-06', 'Businesses close'),
-        ('2020-09-06', 'Roadmap announcement'),
-        ('2020-09-14', 'First Step'),
-        ('2020-09-28', 'Second Step'),
-        ('2020-10-18', 'Travel relaxed'),
-        ('2020-10-23', 'Footy Friday'),
-        ('2020-10-28', 'Third Step'),
-        ('2020-11-03', 'Cup Day'),
-        ]
-    for i, (date, label) in enumerate(annotations):
+    global MELVIC_ANNOTATIONS
+    annotations = MELVIC_ANNOTATIONS
+    for i, (date, label, _) in enumerate(annotations):
         maxs = pd.Series(
             [max(vs) for vs in zip(*[s.values for s in diffs])],
             dates
@@ -1193,24 +1206,9 @@ def highlight_melbourne_council(council, start = None):
     ax3.toggle_tickLabels_x()
     ax3.toggle_label_x()
 
-    annotations = [
-        ('2020-04-25', 'Anzac Day'),
-        ('2020-06-01', 'Cafes reopen'),
-        ('2020-06-08', "Queen's Birthday"),
-        ('2020-06-26', 'School holidays begin'),
-        ('2020-06-30', 'Postcode lockdowns'),
-        ('2020-07-09', 'Stage Three begins'),
-        ('2020-08-02', 'Stage Four begins'),
-        ('2020-08-06', 'Businesses close'),
-        ('2020-09-06', 'Roadmap announcement'),
-        ('2020-09-14', 'First Step'),
-        ('2020-09-28', 'Second Step'),
-        ('2020-10-18', 'Travel relaxed'),
-        ('2020-10-23', 'Footy Friday'),
-        ('2020-10-28', 'Third Step'),
-        ('2020-11-03', 'Cup Day'),
-        ]
-    for i, (date, label) in enumerate(annotations):
+    global MELVIC_ANNOTATIONS
+    annotations = MELVIC_ANNOTATIONS
+    for i, (date, label, _) in enumerate(annotations):
         if pd.Timestamp(date) > pd.Timestamp(start):
             maxs = pd.Series(
                 [max(vs) for vs in zip(*[s.values for s in diffs])],
@@ -1299,30 +1297,8 @@ def make_melsummarySimple_plot(save = False):
         c = 'red'
         )
 
-    annotations = [
-        ('2020-04-25', 'Anzac Day', (0, -30)),
-        ('2020-05-13', 'Easing', (0, -30)),
-        ('2020-05-31', 'Cafes reopen', (0, 30)),
-        ('2020-06-08', "Queen's Birthday", (0, -30)),
-        ('2020-06-26', 'School\nholidays', (-30, 30)),
-        ('2020-06-30', 'Postcode\nlockdowns', (0, -60)),
-        ('2020-07-08', 'Stage 3', (0, 30)),
-        ('2020-08-02', 'Stage 4', (0, 30)),
-        ('2020-08-06', 'Businesses close', (0, -30)),
-        ('2020-09-06', 'Roadmap\nplan', (-15, 60)),
-        ('2020-09-13', 'First Step', (0, 30)),
-        ('2020-09-27', 'Second Step', (0, -30)),
-        ('2020-10-11', 'Picnics\nallowed', (-30, 30)),
-        ('2020-10-18', 'Travel\nrelaxed', (0, 30)),
-        ('2020-10-23', 'Footy Friday', (0, -30)),
-        ('2020-10-28', 'Third Step', (0, 30)),
-        ('2020-11-03', 'Cup Day', (0, -30)),
-        ('2020-11-08', 'Ring of Steel\nends', (0, 45)),
-        ('2020-11-22', 'Last Step', (0, -30)),
-        ('2020-12-06', 'COVIDSafe\nSummer', (0, 30)),
-        ('2020-12-25', 'Christmas\nDay', (0, -30)),
-        ('2020-12-26', 'Boxing\nDay', (0, 30)),
-        ]
+    global MELVIC_ANNOTATIONS
+    annotations = MELVIC_ANNOTATIONS
     for i, (date, label, offset) in enumerate(annotations):
         date = pd.Timestamp(date)
         vert = avMob.loc[date]
