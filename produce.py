@@ -37,7 +37,7 @@ MELVIC_ANNOTATIONS = [
     ('2020-09-27', 'Second Step', (0, -30)),
     ('2020-10-11', 'Picnics\nallowed', (-30, 30)),
     ('2020-10-18', 'Travel\nrelaxed', (0, 30)),
-    ('2020-10-23', 'Footy Friday', (0, -30)),
+    ('2020-10-23', 'Grand Final\nholiday', (0, -30)),
     ('2020-10-28', 'Third Step', (0, 30)),
     ('2020-11-03', 'Cup Day', (0, -30)),
     ('2020-11-08', 'Ring of Steel\nends', (0, 45)),
@@ -46,6 +46,7 @@ MELVIC_ANNOTATIONS = [
     ('2020-12-25', 'Christmas\nDay', (-30, -30)),
     ('2020-12-26', 'Boxing\nDay', (0, 30)),
     ('2021-01-01', "New Year's\nDay", (0, -30)),
+    ('2021-01-26', "National\nholiday", (0, -30)),
     ]
 
 def get_abs_lookup(sources, refresh = False):
@@ -1080,7 +1081,6 @@ def update_melsummary():
     canvas = make_melsummary_se_plot()
     canvas.fig.savefig(os.path.join(dataDir, 'melsummaryse.png'), bbox_inches = "tight", dpi = 100)
     canvas.fig.savefig(os.path.join(dataDir, 'melsummaryse_hires.png'), bbox_inches = "tight", dpi = 400)
-    make_melsummarySimple_plot(save = True)
     htmlout += '\n<img src="https://rsbyrne.github.io/mobility-aus/products/melsummaryse.png" alt="Melbourne summary by socioeconomic group">'
 
     htmlout += '''\n
@@ -1110,6 +1110,8 @@ def update_melsummary():
 
     with open(os.path.join(dataDir, 'melsummary.html'), 'w') as f:
         f.write(htmlout)
+
+    make_melsummarySimple_plot(save = True)
 
     # keystr = events_annotate(ax1, avScore)
     # markprint(keystr)
