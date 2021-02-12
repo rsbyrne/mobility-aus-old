@@ -815,37 +815,32 @@ def make_meldash(returnPlot = False):
             <a href="mailto:rohan.byrne@unimelb.edu.au">Rohan Byrne</a>.
             """,
         varNotes = {
-#             'active': """
-#                 This shows the number of active cases in each council
-#                 as of that day per ten thousand people, according to
-#                 <a href="https://covidlive.com.au/">COVID LIVE</a>
-#                 """,
             'cumulative': """
-                This is the cumulative COVID-19 case count per 10,000 people.
-                Be aware that, due to occasional government revisions of estimates,
-                the cumulative cases can sometimes decrease.
-                Sourced from
-                <a href="https://covid19data.com.au/">covid19data.com.au</a>
-                and
-                <a href="https://covidlive.com.au/">covidlive.com.au</a>
+                This is the cumulative number of new locally-sourced COVID-19 cases
+                detected in each council per 10,000 council residents.
+                Sourced from the
+                <a href="https://www.dhhs.vic.gov.au/ncov-covid-cases-by-lga-source-csv">Victorian Department of Health and Human Services.</a>
                 """,
             'new': """
-                This is the daily new COVID-19 cases per 10,000 people,
-                derived by subtracting each day's cumulative cases from the previous day's;
-                hence this value may sometimes go into the negative.
-                Sourced from
-                <a href="https://covid19data.com.au/">covid19data.com.au</a>
-                and
-                <a href="https://covidlive.com.au/">covidlive.com.au</a>
+                This is the number of new locally-sourced COVID-19 cases
+                detected in each council per 10,000 council residents.
+                Sourced from the
+                <a href="https://www.dhhs.vic.gov.au/ncov-covid-cases-by-lga-source-csv">Victorian Department of Health and Human Services.</a>
                 """,
             'new_rolling': """
                 Reported cases tend to oscillate due to uneven sampling rates.
                 This 7-day rolling average of the 'new cases' metric
                 attempts to smooth out this effect to provide a better sense of the overall trend.
-                Sourced from
-                <a href="https://covid19data.com.au/">covid19data.com.au</a>
-                and
-                <a href="https://covidlive.com.au/">covidlive.com.au</a>
+                Sourced from the
+                <a href="https://www.dhhs.vic.gov.au/ncov-covid-cases-by-lga-source-csv">Victorian Department of Health and Human Services.</a>
+                """,
+            'mystery': """
+                This is the number of new locally-sourced COVID-19 cases
+                detected in each council
+                for which the source of transmission is not known,
+                per 10,000 council residents.
+                Sourced from the
+                <a href="https://www.dhhs.vic.gov.au/ncov-covid-cases-by-lga-source-csv">Victorian Department of Health and Human Services.</a>
                 """,
             'km': """
                 This shows the average distance travelled

@@ -5,6 +5,8 @@ import re
 import numpy as np
 import pandas as pd
 from scipy.special import expit
+import itertools
+import datetime
 
 import load
 
@@ -179,16 +181,71 @@ def make_casesFrm_covidlive(region = 'vic'):
     # Return:
     return cases
 
-def make_casesFrm(region = 'vic'):
-#     monashCases = make_casesFrm_monash(region)
-#     covidliveCases = make_casesFrm_covidlive(region)
-#     trimmedMonashCases = monashCases.loc[
-#         monashCases.index.get_level_values('date') \
-#         < covidliveCases.index.get_level_values('date').min()
-#         ]
-#     cases = pd.concat([trimmedMonashCases, covidliveCases]).sort_index()
-    cases = make_casesFrm_monash(region)
+def get_gov_covid_data(agg = 'lga', region = 'vic'):
+    aggchoices = dict(lga = 'name', postcode = 'postcode')
+    agg = aggchoices[agg]
+    url = 'https://www.dhhs.vic.gov.au/ncov-covid-cases-by-lga-source-csv'
+    cases = pd.read_csv(url)
+    cases['diagnosis_date'] = cases['diagnosis_date'].astype('datetime64[ns]')
+    cases = cases.rename(dict(
+        diagnosis_date = 'date',
+        Localgovernmentarea = 'name',
+        acquired = 'source',
+        Postcode = 'postcode',
+        ), axis = 1)
+    cases = cases.loc[cases['source'] != 'Travel overseas']
+    cases = cases.loc[cases['name'] != 'Overseas']
+    cases = cases.loc[cases['name'] != 'Interstate']
+    cases = cases.sort_index()
+    cases['name'] = cases['name'].apply(remove_brackets)
+    cases['mystery'] = cases['source'] == 'Acquired in Australia, unknown source'
+    dropagg = tuple(v for v in aggchoices.values() if not v == agg)
+    cases = cases.drop(['source', *dropagg], axis = 1)
+    cases = cases.sort_values(['date', agg])
+    cases['new'] = 1
+    cases['mystery'] = cases['mystery'].apply(int)
+    cases = cases.groupby(['date', agg])[['new', 'mystery']].sum()
     return cases
+
+def make_casesFrm_gov(region = 'vic', agg = 'lga'):
+
+    cases = get_gov_covid_data()
+
+    names = list(set(cases.index.get_level_values('name')))
+    base = datetime.datetime(2020, 1, 1)
+    days = []
+    day = base
+    maxday = cases.index.get_level_values('date').max() + datetime.timedelta(days = 30)
+    while day < maxday:
+        days.append(day)
+        day += datetime.timedelta(days = 1)
+    blank = pd.DataFrame(
+        itertools.product(days, names, [0], [0]),
+        columns = ('date', 'name', 'new', 'mystery')
+        )
+    blank = blank.set_index(['date', 'name'])
+
+    blank[cases.columns] = cases
+    cases = blank
+    cases = cases.fillna(0)
+
+    lookup = make_sub_lookupFrm(region, 'lga')
+    popDict = dict(zip(lookup.index, lookup['pop']))
+    cases = cases.loc[(slice(None), popDict.keys()),]
+    cases['pop'] = [popDict[n] for n in cases.index.get_level_values('name')]
+    cases['new'] = cases['new'] / cases['pop'] * 10000
+    cases['new_rolling'] = cases['new'].groupby(level = 'name', group_keys = False) \
+        .rolling(7).mean().sort_index()
+    cases['new_rolling'] = cases['new_rolling'].apply(lambda s: 0 if s < 1e-3 else s)
+    cases['cumulative'] = cases.groupby('name')['new'].cumsum()
+    cases = cases.dropna()
+    cases = cases.drop('pop', axis = 1)
+
+    return cases
+
+def make_casesFrm(region = 'vic', agg = 'lga'):
+    if not region == 'vic': raise Exception
+    return make_casesFrm_gov(region, agg)
 
 def remove_brackets(x):
     # Remove brackets from ABS council names:
