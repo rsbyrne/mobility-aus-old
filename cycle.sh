@@ -16,3 +16,4 @@ sudo chmod -R 700 ./.ssh
 echo 'Pushed.'
 echo 'All done.'
 cd $currentDir
+sudo docker rm $(docker ps -a -q)
