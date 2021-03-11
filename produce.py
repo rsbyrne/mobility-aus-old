@@ -49,6 +49,7 @@ MELVIC_ANNOTATIONS = [
     ('2021-01-01', "New Year's\nDay", (0, -30)),
     ('2021-01-26', "National\nholiday", (0, -30)),
     ('2021-02-13', "Circuit\nbreaker", (0, -30)),
+    ('2021-03-08', 'Labour\nDay', (0, -30)),
     ]
 
 def get_abs_lookup(sources, refresh = False):
