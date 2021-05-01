@@ -50,6 +50,8 @@ MELVIC_ANNOTATIONS = [
     ('2021-01-26', "National\nholiday", (0, -30)),
     ('2021-02-13', "Circuit\nbreaker", (0, -30)),
     ('2021-03-08', 'Labour\nDay', (0, -30)),
+    ('2021-04-04', 'Easter', (0, -30)),
+    ('2021-04-25', 'Anzac Day', (0, -30)),
     ]
 
 def get_abs_lookup(sources, refresh = False):
@@ -126,12 +128,32 @@ def get_mob_date(region, aggType = 'lga', refresh = False, get = False, override
         out = out.set_index(['date', 'code'])
         return out
     else:
-        out = make_mob_date(region, aggType, get = get, override = override)
+        if os.path.isfile(filePath):
+            pre = get_mob_date(region, aggType, refresh = False)
+            out = make_mob_date(
+                region, aggType,
+                get = get, override = override, dropdates = pre.index.get_level_values('date'),
+                )
+            if out is None:
+                out = pre
+            else:
+                out = pre.append(out)
+        else:
+            out = make_mob_date(region, aggType, get = get, override = override)
+        out = out.sort_index()
+        out = out.loc[out.index.unique()]
         out.to_csv(filePath)
         return out
-def make_mob_date(region, aggType = 'lga', get = False, override = False):
+
+def make_mob_date(region, aggType = 'lga', get = False, override = False, dropdates = None):
 
     mob = load.load_fb_tiles(region, 'mob', get = get, override = override)
+
+    if not dropdates is None:
+        dropdates = sorted(set([str(date).split(' ')[0] for date in dropdates]))
+        mob = mob.loc[[str(date).split(' ')[0] not in dropdates for date in mob.index.get_level_values('datetime')]]
+        if not len(mob):
+            return None
 
     agg = aggregate.aggregate_mob_tiles_to_abs(mob, region, aggType)
     agg = aggregate.aggregate_by_date(agg)

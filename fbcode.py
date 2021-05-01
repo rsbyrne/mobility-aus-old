@@ -70,6 +70,7 @@ def download(
     global TIMEOUT
     driver.set_page_load_timeout(3)
     newFilename = format_href(link) + outExt
+    outcome = False
     if newFilename in os.listdir(outDir):
         pass
 #         print("File already exists - skipping.")
@@ -100,9 +101,11 @@ def download(
                     maxWait = maxWait
                     )
             print("Downloaded:", newFilename)
+            outcome = True
         except:
             print(f"Something went wrong downloading {link}; skipping.")
     driver.set_page_load_timeout(TIMEOUT)
+    return outcome
 
 class Driver:
     def __init__(self, options, profile, logDir = '.'):
@@ -239,8 +242,9 @@ def pull_datas(
             if not len(links):
                 raise Exception("No data found at destination!")
             print("Downloading all...")
-            for link in links:
-                download(
+            ndown = 0
+            for link in links[::-1]:
+                outcome = download(
                     driver,
                     link,
                     downloadDir,
@@ -248,6 +252,10 @@ def pull_datas(
                     outExt,
                     maxWait,
                     )
+                if outcome:
+                    ndown += 1
+                    if ndown == 12:
+                        break
             print("Done.")
 
 #             submit.click()
