@@ -43,7 +43,7 @@ MELVIC_ANNOTATIONS = [
     ('2020-11-03', 'Cup Day', (0, -30)),
     ('2020-11-08', 'Ring of Steel\nends', (0, 45)),
     ('2020-11-22', 'Last\nStep', (0, -30)),
-    ('2020-12-06', 'COVIDSafe\nSummer', (0, 30)),
+    ('2020-12-06', 'COVIDSafe\nSummer', (0, 45)),
     ('2020-12-25', 'Christmas\nDay', (-30, -30)),
     ('2020-12-26', 'Boxing\nDay', (0, 30)),
     ('2021-01-01', "New Year's\nDay", (0, -30)),
@@ -51,7 +51,7 @@ MELVIC_ANNOTATIONS = [
     ('2021-02-13', "Circuit\nbreaker", (0, -30)),
     ('2021-03-08', 'Labour\nDay', (0, -30)),
     ('2021-04-04', 'Easter', (0, -30)),
-    ('2021-04-25', 'Anzac Day', (0, -30)),
+    ('2021-04-25', 'Anzac Day', (0, -45)),
     ]
 
 def get_abs_lookup(sources, refresh = False):
@@ -948,7 +948,7 @@ def make_melsummary_se_plot():
             ticklabel.set_color(cmap(norm(tickval)))
             ticklabel.set_fontweight('heavy')
 
-    canvas = Canvas(size = (20, 12), shape = (2, 1))
+    canvas = Canvas(size = (24, 12), shape = (2, 1))
     canvas.set_title('Melbourne in Lockdown')
 
     ax1 = canvas.make_ax(place = (0, 0), name = 'Mobility Score')
@@ -1279,7 +1279,7 @@ def make_melsummarySimple_plot(save = False):
     avMob = av['score']
     avCases = av['new_rolling'].apply(lambda s: max(0, s))
 
-    canvas = Canvas(size = (16, 4), title = "Melbourne's lockdown journey")
+    canvas = Canvas(size = (20, 6), title = "Melbourne's lockdown journey")
 
     ax1, ax2 = canvas.make_ax(), canvas.make_ax(superimpose = True)
     # dates = Data(avMob.index, lims = ('2020-04-19', '2020-11-01'), capped = (True, True), label = 'Date')
