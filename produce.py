@@ -141,7 +141,8 @@ def get_mob_date(region, aggType = 'lga', refresh = False, get = False, override
         else:
             out = make_mob_date(region, aggType, get = get, override = override)
         out = out.sort_index()
-        out = out.loc[out.index.unique()]
+        out = out.loc[~out.index.duplicated()]
+#         out = out.loc[out.index.unique()]
         out.to_csv(filePath)
         return out
 
