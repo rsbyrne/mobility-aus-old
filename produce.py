@@ -1048,7 +1048,7 @@ def make_melsummary_plot():
             ticklabel.set_color(cmap(norm(tickval)))
             ticklabel.set_fontweight('heavy')
 
-    canvas = Canvas(size = (20, 4))
+    canvas = Canvas(size = (24, 4))
     ax1 = canvas.make_ax(name = 'Mobility Score')
     ax2 = canvas.make_ax(name = 'COVID Cases')
     ax1.set_title('Mobility Score: Melbourne average')
