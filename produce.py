@@ -1280,7 +1280,7 @@ def make_melsummarySimple_plot(save = False):
     avMob = av['score']
     avCases = av['new_rolling'].apply(lambda s: max(0, s))
 
-    canvas = Canvas(size = (20, 6), title = "Melbourne's lockdown journey")
+    canvas = Canvas(size = (24, 4), title = "Melbourne's lockdown journey")
 
     ax1, ax2 = canvas.make_ax(), canvas.make_ax(superimpose = True)
     # dates = Data(avMob.index, lims = ('2020-04-19', '2020-11-01'), capped = (True, True), label = 'Date')
