@@ -50,8 +50,9 @@ MELVIC_ANNOTATIONS = [
     ('2021-01-26', "National\nholiday", (0, -30)),
     ('2021-02-13', "Circuit\nbreaker", (0, -30)),
     ('2021-03-08', 'Labour\nDay', (0, -30)),
-    ('2021-04-03', 'Easter', (0, -30)),
+    ('2021-04-02', 'Easter', (0, -30)),
     ('2021-04-25', 'Anzac Day', (0, -45)),
+    ('2021-05-11', 'Woller\ncluster', (0, -30)),
     ('2021-05-26', 'Fourth\nlockdown\n(ann.)', (0, -30)),
     ]
 
