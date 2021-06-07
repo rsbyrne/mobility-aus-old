@@ -181,12 +181,25 @@ def make_casesFrm_covidlive(region = 'vic'):
     # Return:
     return cases
 
+def detect_american_dates(dates):
+    months = sorted(set([date.split('/')[0] for date in dates]))
+    return len(months) <= 12
+
+def to_american_date(datestr):
+    day, month, year = datestr.split('/')
+    return '/'.join((month, day, year))
+
 def get_gov_covid_data(agg = 'lga', region = 'vic'):
     aggchoices = dict(lga = 'name', postcode = 'postcode')
     agg = aggchoices[agg]
     url = 'https://www.dhhs.vic.gov.au/ncov-covid-cases-by-lga-source-csv'
     cases = pd.read_csv(url)
-    cases['diagnosis_date'] = cases['diagnosis_date'].astype('datetime64[ns]')
+#     cases['diagnosis_date'] = \
+#         cases['diagnosis_date'].astype('datetime64[ns]')
+    dates = cases['diagnosis_date']
+    if not detect_american_dates(dates):
+        dates = dates.apply(to_american_date)
+    cases['diagnosis_date'] = dates.astype('datetime64[ns]')
     cases = cases.rename(dict(
         diagnosis_date = 'date',
         Localgovernmentarea = 'name',
