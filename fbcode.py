@@ -2,26 +2,109 @@ import os
 import shutil
 import time
 import random
+import zipfile
+import glob
 from urllib.parse import urlparse
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.common import exceptions
+from PIL import Image as PILImage
 
 MAXWAIT = 60.
 TIMEOUT = 60
 
-def format_href(href):
-    if '%3A' in href:
-        return href[-18:].replace('%3A', '').replace('+', '-')
-    elif '%20' in href:
-        return href[-17:].replace('%20', '-')
+def list_elements(element):
+#     return element.find_elements_by_xpath('//*[@id]')
+    return element.find_elements_by_css_selector("*")
+
+def screen(target, name = 'screen'):
+    filename = f"{name}.png"
+    if hasattr(target, 'save_screenshot'):
+        target.save_screenshot(filename)
     else:
-        return href[-15:].replace('+', '-')
-# def check_href(href):
-#     if '%3A' in href:
-#         return href[-21:-18] == 'ds=' and format_href(href).replace('-', '').isnumeric()
-#     else:
-#         return href[-18:-15] == 'ds=' and format_href(href).replace('-', '').isnumeric()
+        target.screenshot(filename)
+    return PILImage.open(filename)
+
+def get_element_pos(element):
+    x, y, width, height = element.rect.values()
+    return int(x + width / 2), int(y + height / 2)
+
+def go_click(driver, refelement, coords, tocoords = None, click = True):
+    if tocoords is None:
+        xoffset, yoffset = coords
+    else:
+        xoffset, yoffset = (a - b for a, b in zip(tocoords, coords))
+    action = webdriver.common.action_chains.ActionChains(driver)
+    action.move_to_element(refelement)
+    action.move_by_offset(xoffset, yoffset)
+    if click:
+        action.click()
+    action.perform()
+    random_sleep(1.)
+
+def screen(target, name = 'screen'):
+    filename = f"{name}.png"
+    if hasattr(target, 'save_screenshot'):
+        target.save_screenshot(filename)
+    else:
+        target.screenshot(filename)
+    return PILImage.open(filename)
+
+def get_element_startswith(element, text):
+    for i, elem in enumerate(list_elements(element)):
+        if not elem.text:
+            continue
+        if elem.text.startswith(text):
+            return elem
+
+def login(driver, loginURL, loginName, loginPass):
+    print("Navigating to login page...")
+    try:
+        driver.get(loginURL)
+    except exceptions.WebDriverException:
+        raise ValueError("No login page found!")
+    print("Navigated to login page.")
+
+    print("Logging in...")
+
+    random_sleep(0.5)
+    username = driver.find_element_by_id("email")
+    password = driver.find_element_by_id("pass")
+    username.send_keys(loginName)
+    random_sleep(0.2)
+    password.send_keys(loginPass)
+    random_sleep(0.2)
+    try:
+        submit = driver.find_element_by_id("loginbutton")
+        submit.click()
+    except exceptions.NoSuchElementException:
+        try:
+            submit = driver.find_element_by_name('login')
+            submit.click()
+        except exceptions.NoSuchElementException:
+            password.send_keys(u'\ue007')
+
+    random_sleep(0.5)
+    try:
+        _ = driver.find_element_by_id("loginbutton")
+        raise Exception("Login failed!")
+    except exceptions.NoSuchElementException:
+        try:
+            _ = driver.find_element_by_id("login_form")
+            raise Exception("Login failed!")
+        except exceptions.NoSuchElementException:
+            pass
+    print("Logged in.")
+
+def go_to_datapage(driver, dataURL, searchstr):
+    driver.get(dataURL)
+    random_sleep(0.5)
+    target = driver.find_element_by_id("js_1")
+    target.click()
+    random_sleep(0.5)
+    target.send_keys(searchstr)
+    random_sleep(0.5)
+    return target
 
 def random_sleep(factor = 1.):
     sleepTime = (random.random() + 1.) * factor
@@ -54,58 +137,13 @@ def wait_check(
                 except:
                     pass
 
-def _file_check(fp):
-    if os.path.isfile(fp):
-        return os.stat(fp).st_size
-    return False
 
-def download(
-        driver,
-        link,
-        downloadDir,
-        outDir,
-        outExt,
-        maxWait = MAXWAIT
-        ):
-    global TIMEOUT
-    driver.set_page_load_timeout(3)
-    newFilename = format_href(link) + outExt
-    outcome = False
-    if newFilename in os.listdir(outDir):
-        pass
-#         print("File already exists - skipping.")
-    else:
-        random_sleep(0.3)
-        try:
-            driver.get(link)
-        except exceptions.TimeoutException:
-            wait_check(lambda: len(os.listdir(downloadDir)), maxWait = maxWait)
-            checkFilenames = [
-                fp for fp in os.listdir(downloadDir) \
-                    if fp.endswith(outExt)
-                ]
-            assert len(checkFilenames) == 1
-            oldFilename = checkFilenames[0]
-            oldFilepath = os.path.join(downloadDir, oldFilename)
-            wait_check(lambda: _file_check(oldFilepath), maxWait = maxWait)
-            newFilepath = os.path.join(outDir, newFilename)
-            random_sleep(0.2)
-            shutil.copyfile(oldFilepath, newFilepath)
-            random_sleep(0.2)
-            wait_check(lambda: _file_check(newFilepath), maxWait = maxWait)
-            for filename in os.listdir(downloadDir):
-                filepath = os.path.join(downloadDir, filename)
-                os.remove(filepath)
-                wait_check(
-                    lambda: not os.path.isfile(filepath),
-                    maxWait = maxWait
-                    )
-            print("Downloaded:", newFilename)
-            outcome = True
-        except:
-            print(f"Something went wrong downloading {link}; skipping.")
-    driver.set_page_load_timeout(TIMEOUT)
-    return outcome
+# from PIL import Image as PILImage
+# im = PILImage.open('screen.png')
+# im.crop((
+#     210, 200, # mins
+#     310, 250, # maxs
+#     ))
 
 class Driver:
     def __init__(self, options, profile, logDir = '.'):
@@ -149,26 +187,35 @@ class TempDir:
         else:
             return True
 
-def pull_datas(
-        dataURL,
+FBSEARCHSTRS = {
+    '786740296523925': 'Melbourne coronavirus disease prevention',
+    '1391268455227059': 'Victoria State coronavirus disease prevention',
+    '1527157520300850': 'Sydney coronavirus disease prevention',
+    '2622370339962564': 'New South Wales coronavirus disease prevention',
+    }
+
+def pull_data(
+        fbid,
         loginName,
         loginPass,
-        outDir,
-        dataMime,
-        outExt,
         maxWait = MAXWAIT
         ):
 
-    parsed = urlparse(dataURL)
-    loginURL = '://'.join(parsed[:2])
-#     loginURL = 'https://en-gb.facebook.com/'
+    print(f"Downloading for {fbid}...")
 
-    outDir = os.path.abspath(outDir)
-    if not os.path.isdir(outDir):
-        os.makedirs(outDir, exist_ok = True)
+    loginURL = 'https://www.facebook.com'
+    dataURL = 'https://partners.facebook.com/data_for_good/data/?partner_id=467378274536608'
+    dataMime = 'application/zip' #'text/csv'
+    searchstr = FBSEARCHSTRS[fbid]
+    targettext = 'Movement between tiles'
+
+    repoPath = os.path.abspath(os.path.dirname(__file__))
+    outDir = os.path.join(repoPath, 'data', fbid)
+    os.makedirs(outDir, exist_ok = True)
 
     downloadDir = os.path.join(outDir, '_temp')
 
+#     os.makedirs(downloadDir, exist_ok = True)
     with TempDir(downloadDir, maxWait = maxWait):
 
         profile = webdriver.FirefoxProfile()
@@ -181,91 +228,54 @@ def pull_datas(
 
         with Driver(options, profile, outDir) as driver:
 
-            print("Navigating to login page...")
-            try:
-                driver.get(loginURL)
-            except exceptions.WebDriverException:
-                raise ValueError("No login page found!")
-            print("Navigated to login page.")
+            login(driver, loginURL, loginName, loginPass)
 
-            print("Logging in...")
+            searchbar = go_to_datapage(driver, dataURL, searchstr)
 
-            random_sleep(0.5)
-            username = driver.find_element_by_id("email")
-            password = driver.find_element_by_id("pass")
-            username.send_keys(loginName)
-            random_sleep(0.2)
-            password.send_keys(loginPass)
-            random_sleep(0.2)
+            target = get_element_startswith(driver, targettext)
+            x, y = get_element_pos(target)
+
+            go_click(driver, target, (250 - x, 40))
+
+            go_click(driver, target, (900 - x, 450 - y))
+
+            getzips = lambda: glob.glob(os.path.join(downloadDir, '*.zip'))
+            def wait_condition():
+                return len(getzips()) and not len(glob.glob(os.path.join(downloadDir, '*.part')))
             try:
-                submit = driver.find_element_by_id("loginbutton")
-                submit.click()
-            except exceptions.NoSuchElementException:
+                wait_check(wait_condition, maxWait = maxWait)
+            except:
+                driver.save_screenshot(os.path.join(outDir, 'screen.png'))
+                raise Exception(f"Download failed for {fbid}; screenshot saved.")
+            zipfilenames = getzips()
+
+        random_sleep(3.)
+
+        csvfilenames = glob.glob(os.path.join(outDir, '*.csv'))
+        for zipfilename in zipfilenames:
+            def open_zipfile():
+                return zipfile.ZipFile(os.path.join(downloadDir, zipfilename), 'r')
+            def wait_condition():
                 try:
-                    submit = driver.find_element_by_name('login')
-                    submit.click()
-                except exceptions.NoSuchElementException:
-                    password.send_keys(u'\ue007')
+                    with open_zipfile() as _:
+                        ...
+                    return True
+                except:
+                    return False
+            wait_check(wait_condition, maxWait = maxWait)
+            with open_zipfile() as zfile:
+                for zname in zfile.namelist():
+                    if zname in csvfilenames:
+                        print(f"File {zname} already acquired: skipping.")
+                    else:
+                        zfile.extract(zname, outDir)
+                        print(f"Downloaded new for {fbid}: {zname}")
 
-            random_sleep(0.5)
-            try:
-                _ = driver.find_element_by_id("loginbutton")
-                raise Exception("Login failed!")
-            except exceptions.NoSuchElementException:
-                try:
-                    _ = driver.find_element_by_id("login_form")
-                    raise Exception("Login failed!")
-                except exceptions.NoSuchElementException:
-                    pass
-            print("Logged in.")
+    print(f"Downloaded all for {fbid}.")
 
-            print("Navigating to data page...")
-            try:
-                driver.get(dataURL)
-            except exceptions.WebDriverException:
-                raise ValueError("Bad data URL!")
-            print("Navigated to data page.")
-
-            random_sleep(0.5)
-
-            print("Finding data...")
-#             links = [
-#                 elem.get_attribute("href")
-#                     for elem in driver.find_elements_by_xpath("//a[@href]")
-#                         if check_href(elem.get_attribute("href"))
-#                 ]
-            alllinks = [
-                elem.get_attribute("href")
-                    for elem in driver.find_elements_by_xpath("//a[@href]")
-                ]
-            links = [link for link in alllinks if 'downloads/vector' in link]
-            if not len(links):
-                raise Exception("No data found at destination!")
-            print("Downloading all...")
-            ndown = 0
-            for link in links[::-1]:
-                outcome = download(
-                    driver,
-                    link,
-                    downloadDir,
-                    outDir,
-                    outExt,
-                    maxWait,
-                    )
-                if outcome:
-                    ndown += 1
-                    if ndown == 12:
-                        break
-            print("Done.")
-
-#             submit.click()
-#             if normalLogin:
-#                 try:
-#                     loginForm = driver.find_element_by_id("login_form")
-#                     raise ValueError("Bad login credentials!")
-#                 except exceptions.NoSuchElementException:
-#                     pass
-#             else:
-#                 e = "Sorry, something went wrong."
-#                 if driver.find_element_by_id("facebook").text.startswith(e):
-#                     raise ValueError("Bad login credentials!")
+def pull_datas(fbids, *args, **kwargs):
+    for fbid in fbids:
+        try:
+            pull_data(fbid, *args, **kwargs)
+        except Exception as exc:
+            print(f"Exception in {fbid}: {exc}")
