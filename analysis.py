@@ -186,7 +186,7 @@ def detect_american_dates(dates):
     return len(months) <= 12
 
 def to_american_date(datestr):
-    day, month, year = datestr.split('/')
+    day, month, year = datestr.split('-')
     return '/'.join((month, day, year))
 
 def get_gov_covid_data(agg = 'lga', region = 'vic'):
