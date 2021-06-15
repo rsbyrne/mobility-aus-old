@@ -182,7 +182,7 @@ def make_casesFrm_covidlive(region = 'vic'):
     return cases
 
 def detect_american_dates(dates):
-    months = sorted(set([date.split('/')[0] for date in dates]))
+    months = sorted(set([date.split('-')[0] for date in dates]))
     return len(months) <= 12
 
 def to_american_date(datestr):
