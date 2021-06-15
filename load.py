@@ -57,7 +57,10 @@ for region in regions:
             FBDATA[region][dataset][agg] = '_'.join([region, dataset, agg])
             FBURLS[region][dataset][agg] = None
 
-
+FBURLS['mel']['mob']['tiles'] = '786740296523925'
+FBURLS['vic']['mob']['tiles'] = '1391268455227059'
+FBURLS['syd']['mob']['tiles'] = '1527157520300850'
+FBURLS['nsw']['mob']['tiles'] = '2622370339962564'
 
 # FBURLS['vic']['pop']['tiles'] = '223808228714910'
 # FBURLS['vic']['pop']['regs'] = '585468802067851'
