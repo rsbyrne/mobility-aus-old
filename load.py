@@ -28,6 +28,7 @@ def default_proc(val):
         return val
 
 def _process_datetime(x):
+    x = x.replace(':', '')
     stripped = datetime.strptime(x.replace(':', ''), '%Y-%m-%d %H%M')
     adjusted = stripped.astimezone(timezone.utc)
     return adjusted
