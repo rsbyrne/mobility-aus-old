@@ -54,6 +54,8 @@ MELVIC_ANNOTATIONS = [
     ('2021-04-25', 'Anzac Day', (0, -45)),
     ('2021-05-11', 'Wollert\ncluster', (0, -30)),
     ('2021-05-28', 'Fourth\nlockdown', (-15, -30)),
+    ('2021-06-11', 'Easing', (-15, 30)),
+#     ('2021-06-14', "Queen's\nBirthday", (0, -15)),
     ]
 
 def get_abs_lookup(sources, refresh = False):
