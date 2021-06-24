@@ -59,6 +59,11 @@ def events_annotate(ax, series, region, lims = (None, None), points = None, retu
     else:
         return keys
 
+citytostate = {
+    'mel': 'vic',
+    'syd': 'nsw',
+    }
+
 def make_lookupFrm():
     # Load and correct ABS lookup frame:
     global dataDir
@@ -69,6 +74,9 @@ def make_lookupFrm():
     lookupFrm['code'] = lookupFrm['code'].astype(str)
     return lookupFrm
 def make_sub_lookupFrm(state = None, aggType = None):
+    global citytostate
+    if not state in citytostate.values():
+        state = citytostate[state]
     lookup = make_lookupFrm()
     lookup['name'] = lookup['name'].apply(remove_brackets)
     if not state is None:
