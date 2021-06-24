@@ -68,7 +68,7 @@ def aggregate_mob_tiles_to_regions(
         outRows = []
         for pair in possibleJourneys:
             (start, startWeight), (end, endWeight) = pair
-            outRow = [start, end, startWeight * endWeight]
+            outRow = [int(start), int(end), startWeight * endWeight]
             outRows.append(outRow)
         return outRows
 
@@ -104,7 +104,7 @@ def aggregate_mob_tiles_to_regions(
     frm['weight'] = frm['weight'].astype(float)
     dropKeys = {'quadkey', 'end_key', 'level_0', 'possible_journeys'}
     frm = frm.drop(dropKeys, axis = 1)
-#     frm['start'], frm['stop'] = frm['start'].astype(int), frm['stop'].astype(int)
+    frm['start'], frm['stop'] = frm['start'].astype(int), frm['stop'].astype(int)
     frm = frm.set_index(['datetime', 'start', 'stop'])
 
     buffer = bounds.buffer(np.sqrt(bounds.area) * 0.1)

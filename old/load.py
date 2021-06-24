@@ -37,108 +37,28 @@ def _process_geometry(x):
 
 FBDATA = {}
 FBURLS = {}
+OLDFBURLS = {}
 regions = {
-#     'aus',
     'vic', 'mel',
     'nsw', 'syd',
-#     'qld', 'bri',
-#     'nt', 'dar',
-#     'act', 'can',
-#     'sa', 'ade',
-#     'wa', 'per',
-#     'tas', 'hob',
     }
 for region in regions:
     FBDATA[region] = dict()
     FBURLS[region] = dict()
+    OLDFBURLS[region] = dict()
     for dataset in {'pop', 'mob'}:
         FBDATA[region][dataset] = dict()
         FBURLS[region][dataset] = dict()
+        OLDFBURLS[region][dataset] = dict()
         for agg in {'tiles', 'regs'}:
             FBDATA[region][dataset][agg] = '_'.join([region, dataset, agg])
             FBURLS[region][dataset][agg] = None
+            OLDFBURLS[region][dataset] = dict()
 
 FBURLS['mel']['mob']['tiles'] = '786740296523925'
 FBURLS['vic']['mob']['tiles'] = '1391268455227059'
 FBURLS['syd']['mob']['tiles'] = '1527157520300850'
 FBURLS['nsw']['mob']['tiles'] = '2622370339962564'
-
-# FBURLS['vic']['pop']['tiles'] = '223808228714910'
-# FBURLS['vic']['pop']['regs'] = '585468802067851'
-# FBURLS['vic']['mob']['tiles'] = '176962986764882'
-# FBURLS['vic']['mob']['regs'] = '981514028938434'
-# FBURLS['mel']['pop']['tiles'] = '1925466407588452'
-# FBURLS['mel']['pop']['regs'] = '565738300965768'
-# FBURLS['mel']['mob']['tiles'] = '2546450865611593'
-# FBURLS['mel']['mob']['regs'] = '701310510605369'
-
-# FBURLS['nsw']['pop']['tiles'] = '658468688050630'
-# FBURLS['nsw']['pop']['regs'] = '596832157845704'
-# FBURLS['nsw']['mob']['tiles'] = '529422397944028'
-# FBURLS['nsw']['mob']['regs'] = '648063726037889'
-# FBURLS['syd']['pop']['tiles'] = '2581274605535108'
-# FBURLS['syd']['pop']['regs'] = '2638111166453119'
-# FBURLS['syd']['mob']['tiles'] = '579800112886221'
-# FBURLS['syd']['mob']['regs'] = '269277164076139'
-
-# FBURLS['qld']['pop']['tiles'] = '237921380649272'
-# FBURLS['qld']['pop']['regs'] = '842807756209584'
-# FBURLS['qld']['mob']['tiles'] = '869575016889368'
-# FBURLS['qld']['mob']['regs'] = '266592891137969'
-# FBURLS['bri']['pop']['tiles'] = None
-# FBURLS['bri']['pop']['regs'] = None
-# FBURLS['bri']['mob']['tiles'] = None
-# FBURLS['bri']['mob']['regs'] = None
-
-# FBURLS['act']['pop']['tiles'] = None
-# FBURLS['act']['pop']['regs'] = None
-# FBURLS['act']['mob']['tiles'] = None
-# FBURLS['act']['mob']['regs'] = None
-# FBURLS['can']['pop']['tiles'] = None
-# FBURLS['can']['pop']['regs'] = None
-# FBURLS['can']['mob']['tiles'] = None
-# FBURLS['can']['mob']['regs'] = None
-
-# FBURLS['nt']['pop']['tiles'] = '265612204816107'
-# FBURLS['nt']['pop']['regs'] = '232940067975299'
-# FBURLS['nt']['mob']['tiles'] = '719906238817043'
-# FBURLS['nt']['mob']['regs'] = '236213960924061'
-# FBURLS['dar']['pop']['tiles'] = None
-# FBURLS['dar']['pop']['regs'] = None
-# FBURLS['dar']['mob']['tiles'] = None
-# FBURLS['dar']['mob']['regs'] = None
-
-# FBURLS['wa']['pop']['tiles'] = '1731649863641382'
-# FBURLS['wa']['pop']['regs'] = '1085292288522910'
-# FBURLS['wa']['mob']['tiles'] = '523885168292314'
-# FBURLS['wa']['mob']['regs'] = '261535465239826'
-# FBURLS['per']['pop']['tiles'] = '585492418979013'
-# FBURLS['per']['pop']['regs'] = '264128567940298'
-# FBURLS['per']['mob']['tiles'] = '636945033816336'
-# FBURLS['per']['mob']['regs'] = '2301294816837741'
-
-# FBURLS['sa']['pop']['tiles'] = '254460345740451'
-# FBURLS['sa']['pop']['regs'] = '347769182849254'
-# FBURLS['sa']['mob']['tiles'] = '302338520760065'
-# FBURLS['sa']['mob']['regs'] = '219876419306608'
-# FBURLS['ade']['pop']['tiles'] = '247296463128810'
-# FBURLS['ade']['pop']['regs'] = '547900422804131'
-# FBURLS['ade']['mob']['tiles'] = '217178312888286'
-# FBURLS['ade']['mob']['regs'] = '838313713317099'
-
-# FBURLS['tas']['pop']['tiles'] = '2370900323204701'
-# FBURLS['tas']['pop']['regs'] = '189120225461391'
-# FBURLS['tas']['mob']['tiles'] = '238484180822579'
-# FBURLS['tas']['mob']['regs'] = '256249448902015'
-# FBURLS['hob']['pop']['tiles'] = None
-# FBURLS['hob']['pop']['regs'] = None
-# FBURLS['hob']['mob']['tiles'] = None
-# FBURLS['hob']['mob']['regs'] = None
-
-# FBURLS['aus']['pop']['tiles'] = '220856239014922'
-# FBURLS['aus']['pop']['regs'] = '2848131948635964'
-# FBURLS['aus']['mob']['tiles'] = '3013895718671644'
-# FBURLS['aus']['mob']['regs'] = '156664265628571'
 
 def quick_pull_data(state, dataset, aggregation):
     from fbapi.code import pull_datas
